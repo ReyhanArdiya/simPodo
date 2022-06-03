@@ -1,0 +1,10 @@
+{
+	"compilerOptions": {
+		"module": "ES6",
+		"moduleResolution": "Node",
+		"target": "ESNext",
+		"allowJs": true
+	},
+	"exclude": ["node_modules", "**/node_modules/*"],
+	"include": ["src"]
+}
