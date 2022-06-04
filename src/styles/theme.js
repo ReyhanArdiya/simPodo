@@ -1,3 +1,5 @@
+import { css } from "styled-components";
+
 const colors = {
 	dark : {
 		UI : {
@@ -48,7 +50,25 @@ const effects = {
 	4 : "box-shadow: 2px 0px 20px rgba(100, 141, 229, 0.25), 6px 0px 20px rgba(183, 208, 249, 0.44);",
 };
 
+const breakpoints = {
+	big(styles) {
+		return css`
+			@media screen and (min-width: 64em) {
+				${styles}
+			}
+		`;
+	},
+	small(styles) {
+		return css`
+			@media screen and (max-width: 63.9375em) {
+				${styles}
+			}
+		`;
+	}
+};
+
 const theme = {
+	breakpoints,
 	colors,
 	effects
 };
