@@ -5,15 +5,39 @@ export default function Document() {
 		<Html lang="en">
 			<Head>
 				<meta charset="UTF-8"/>
-				<meta httpEquiv="X-UA-Compatible" content="IE=edge"/>
-				<meta name="application" content="simPodo"/>
-				<meta name="author" content="Reyhan Ardiya"/>
-				<meta name="description" content="Jolt down your TODO in this simPle toDo app!"/>
-				<meta name="keywords" content="HTML, CSS, JavaScript, React, Next.js, Todo, TodoApp, simple"/>
-				<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-				<link rel="preconnect" href="https://fonts.googleapis.com"/>
-				<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true"/>
-				<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Nunito:wght@300;700;900&display=swap" rel="stylesheet"/>
+				<meta
+					content="IE=edge"
+					httpEquiv="X-UA-Compatible"
+				/>
+				<meta
+					content="simPodo"
+					name="application"
+				/>
+				<meta
+					content="Reyhan Ardiya"
+					name="author"
+				/>
+				<meta
+					content="Jolt down your TODO in this simPle toDo app!"
+					name="description"
+				/>
+				<meta
+					content="HTML, CSS, JavaScript, React, Next.js, Todo, TodoApp, simple"
+					name="keywords"
+				/>
+				<link
+					href="https://fonts.googleapis.com"
+					rel="preconnect"
+				/>
+				<link
+					crossOrigin="true"
+					href="https://fonts.gstatic.com"
+					rel="preconnect"
+				/>
+				<link
+					href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Nunito:wght@300;700;900&display=swap"
+					rel="stylesheet"
+				/>
 			</Head>
 			<body>
 				<Main />
