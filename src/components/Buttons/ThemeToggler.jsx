@@ -5,7 +5,7 @@ import styled from "styled-components";
 import BouncyGrow from "../Animations/BouncyGrow";
 
 const Container = styled.div`
-	font-size: 10em;
+	font-size: 2.5em;
 	position: relative;
 	align-items: center;
 	display: flex;
