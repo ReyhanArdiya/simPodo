@@ -20,6 +20,7 @@ const effects = {
 	`,
 	hoverClick : css`
 	transition: filter ${baseTransitionMs * 0.4}ms ease-in-out;
+	-webkit-tap-highlight-color: transparent;
 
 	&:hover {
 		cursor: pointer;
