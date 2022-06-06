@@ -18,6 +18,7 @@ const effects = {
 		border-radius: 1em 1em 0 0;
 		width: 7.3em;
 		height: 7.3em;
+		position: absolute;
 	`,
 	hoverClick : css`
 	transition: filter ${baseTransitionMs * 0.4}ms ease-in-out;
