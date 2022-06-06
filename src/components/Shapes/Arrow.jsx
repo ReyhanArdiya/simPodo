@@ -30,7 +30,7 @@ const Path = styled.path.attrs({ d : "M1.5 1.66998L6.5 6.66998L11.5 1.66998", })
 	stroke-width: 0.3em;
 `;
 
-const Arrow = (onClick, angle = "down", className = "", dark = false) => {
+const Arrow = ({ onClick, angle = "down", className = "", dark = false }) => {
 	return (
 		<Container
 			angle={angle}
