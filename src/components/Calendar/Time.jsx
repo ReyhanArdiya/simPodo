@@ -26,6 +26,7 @@ const Month = styled.p`
 const Year = styled(Month)`
 	font-size: 1.5em;
 	color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[5] : theme.colors.light.UI[5]};
+    letter-spacing: -0.02em;
 `;
 
 const Time = ({ month, year, onPrevClick, onNextClick, dark = false }) => {
