@@ -41,11 +41,21 @@ const Button = styled.button`
 	align-items: center;
 	border-radius: 0.6rem;
 	display: flex;
-	filter: drop-shadow(0.12em 0.12em 0.36em #2555bb7f);
 	justify-content: center;
 	height: 3em;
 	width: 3em;
 	padding: 0.3em;
+
+	--drop-shadow: drop-shadow(0.12em 0.12em 0.36em #2555bb7f);
+	filter: var(--drop-shadow);
+
+	:hover {
+		filter: var(--drop-shadow) brightness(105%);
+	}
+
+	&:active {
+		filter: var(--drop-shadow) brightness(95%);
+	}
 `;
 
 const Content = styled.p`
@@ -53,7 +63,6 @@ const Content = styled.p`
 	align-items: center;
 	border-radius: 0.5rem;
 	display: flex;
-	filter: drop-shadow(0.1em 0.1em 0.3em rgba(37, 85, 187, 0.5));
 	font: 900 1.6em/1.5em "Nunito", sans-serif;
 	justify-content: center;
 	letter-spacing: -0.03em;
@@ -61,6 +70,17 @@ const Content = styled.p`
 	width: 100%;
 	z-index: 2;
 	text-transform: uppercase;
+
+	--drop-shadow: drop-shadow(0.1em 0.1em 0.3em rgba(37, 85, 187, 0.5));
+	filter: var(--drop-shadow);
+
+	:hover {
+		filter: var(--drop-shadow) brightness(105%);
+	}
+
+	&:active {
+		filter: var(--drop-shadow) brightness(95%);
+	}
 `;
 
 const ButtonSm = ({ children: text = "+", onClick, className = "", dark = false }) => {
