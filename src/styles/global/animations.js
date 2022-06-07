@@ -50,10 +50,12 @@ const bouncyMoveLeft = css`
 	}
 
 	.bouncy-move-left-enter-active {
+        transform-origin: right;
 		animation: bouncyMoveLeft ${baseTransitionMs}ms both ease-in-out 1;
 	}
 
 	.bouncy-move-left-exit-active {
+        transform-origin: left;
 		animation: bouncyMoveLeft ${baseTransitionMs}ms reverse both ease-in-out 1;
 	}
 `;
@@ -78,10 +80,12 @@ const bouncyMoveRight = css`
 	}
 
 	.bouncy-move-right-enter-active {
+        transform-origin: left;
 		animation: bouncyMoveRight ${baseTransitionMs}ms both ease-in-out 1;
 	}
 
 	.bouncy-move-right-exit-active {
+        transform-origin: right;
 		animation: bouncyMoveRight ${baseTransitionMs}ms reverse both ease-in-out 1;
 	}
 `;
