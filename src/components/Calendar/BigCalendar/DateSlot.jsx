@@ -13,6 +13,7 @@ const Container = styled.p`
 	z-index: 2;
 	transition: color ${transMs} ease-in-out;
 	cursor: pointer;
+    display: inline-block;
 
     ::before {
 		content: "";
