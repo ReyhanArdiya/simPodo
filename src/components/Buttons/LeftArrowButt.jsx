@@ -1,4 +1,8 @@
+import { useState } from "react";
+import { CSSTransition } from "react-transition-group";
 import styled from "styled-components";
+
+const bouncyMoveTimeout = 500;
 
 const Container = styled.svg.attrs({
 	viewBox : "0 0 20 16",
@@ -8,16 +12,64 @@ const Container = styled.svg.attrs({
 	max-height: 1.563em;
 	max-width: 1.947em;
 	${({ theme }) => theme.effects.hoverClick}
+	transform-origin: right;
+
+	@keyframes bouncyMove {
+		from {
+			transform: translateX(0);
+		}
+
+		33% {
+			transform: translateX(0.3em);
+		}
+
+		66% {
+			transform: translateX(-1.3em);
+		}
+
+		to {
+			transform: translateX(-1em);
+		}
+	}
+
+	&.bouncy-move-enter-active {
+		animation: bouncyMove ${bouncyMoveTimeout}ms both ease-in-out 1;
+	}
+
+	&.bouncy-move-exit-active {
+		animation: bouncyMove ${bouncyMoveTimeout}ms reverse both ease-in-out 1;
+	}
 `;
 
+let isRunning = false;
 const LeftArrowButt = ({ onClick, dark = false }) => {
+	const [ isClicked, setIsClicked ] = useState(false);
+
+	const onClickHandler = e => {
+		!isRunning && setIsClicked(true);
+		onClick(e);
+	};
+
 	return (
-		<Container dark={dark}>
-			<path
-				d="M9.71863 6.98486L16.3593 0.344238C16.8182 -0.114746 17.5604 -0.114746 18.0145 0.344238L19.118 1.44775C19.577 1.90674 19.577 2.64893 19.118 3.10303L14.4159 7.81494L19.1229 12.522C19.5819 12.981 19.5819 13.7231 19.1229 14.1772L18.0194 15.2856C17.5604 15.7446 16.8182 15.7446 16.3641 15.2856L9.72351 8.64502C9.25965 8.18604 9.25965 7.44385 9.71863 6.98486ZM0.34363 8.64502L6.98426 15.2856C7.44324 15.7446 8.18543 15.7446 8.63953 15.2856L9.74304 14.1821C10.202 13.7231 10.202 12.981 9.74304 12.5269L5.0409 7.81494L9.74793 3.10791C10.2069 2.64893 10.2069 1.90674 9.74793 1.45264L8.64441 0.344238C8.18543 -0.114746 7.44324 -0.114746 6.98914 0.344238L0.348513 6.98486C-0.115354 7.44385 -0.115354 8.18604 0.34363 8.64502Z"
-				onClick={onClick}
-			/>
-		</Container>
+		<CSSTransition
+			classNames="bouncy-move"
+			in={isClicked}
+			onEnter={() => {
+				isRunning = true;
+			}}
+			onEntered={() => {
+				isRunning = false;
+				setIsClicked(false);
+			}}
+			timeout={bouncyMoveTimeout}
+		>
+			<Container dark={dark}>
+				<path
+					d="M9.71863 6.98486L16.3593 0.344238C16.8182 -0.114746 17.5604 -0.114746 18.0145 0.344238L19.118 1.44775C19.577 1.90674 19.577 2.64893 19.118 3.10303L14.4159 7.81494L19.1229 12.522C19.5819 12.981 19.5819 13.7231 19.1229 14.1772L18.0194 15.2856C17.5604 15.7446 16.8182 15.7446 16.3641 15.2856L9.72351 8.64502C9.25965 8.18604 9.25965 7.44385 9.71863 6.98486ZM0.34363 8.64502L6.98426 15.2856C7.44324 15.7446 8.18543 15.7446 8.63953 15.2856L9.74304 14.1821C10.202 13.7231 10.202 12.981 9.74304 12.5269L5.0409 7.81494L9.74793 3.10791C10.2069 2.64893 10.2069 1.90674 9.74793 1.45264L8.64441 0.344238C8.18543 -0.114746 7.44324 -0.114746 6.98914 0.344238L0.348513 6.98486C-0.115354 7.44385 -0.115354 8.18604 0.34363 8.64502Z"
+					onClick={onClickHandler}
+				/>
+			</Container>
+		</CSSTransition>
 	);
 };
 
