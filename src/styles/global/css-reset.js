@@ -139,6 +139,7 @@ const cssReset = css`
 
 	* {
 		box-sizing: border-box;
+		user-select: none;
 	}
 
 	:root {
