@@ -1,16 +1,18 @@
 import styled from "styled-components";
-import Arrow from "../Shapes/Arrow";
+import BouncyMove from "../Animations/BouncyMove";
+import ArrowLeft from "../Shapes/Arrows/ArrowLeft";
+import ArrowRight from "../Shapes/Arrows/ArrowRight";
 
 const Container = styled.div`
-    align-items: center;
+	align-items: center;
 	display: flex;
 	justify-content: center;
-    column-gap: 4.5em;
-    width: max-content;
+	column-gap: 4.5em;
+	width: max-content;
 `;
 
 const Date = styled.div`
-    align-items: center;
+	align-items: center;
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
@@ -26,26 +28,25 @@ const Month = styled.p`
 const Year = styled(Month)`
 	font-size: 1.5em;
 	color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[5] : theme.colors.light.UI[5]};
-    letter-spacing: -0.02em;
+	letter-spacing: -0.02em;
 `;
 
 const Time = ({ month, year, onPrevClick, onNextClick, dark = false }) => {
 	return (
 		<Container dark={dark}>
-			<Arrow
-				angle="left"
-				dark={dark}
-				onClick={onPrevClick}
-			/>
+			<BouncyMove onClick={onPrevClick}>
+				<ArrowLeft dark={dark} />
+			</BouncyMove>
 			<Date>
 				<Month>{month.slice(0, 3)}</Month>
 				<Year>{year}</Year>
 			</Date>
-			<Arrow
-				angle="right"
-				dark={dark}
+			<BouncyMove
+				direction="right"
 				onClick={onNextClick}
-			/>
+			>
+				<ArrowRight dark={dark} />
+			</BouncyMove>
 		</Container>
 	);
 };
