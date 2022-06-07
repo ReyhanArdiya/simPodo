@@ -8,12 +8,11 @@ const Container = styled.li`
 	text-align: center;
 	position: relative;
 	align-items: center;
-	display: flex;
+    display: inline-flex;
 	justify-content: center;
 	z-index: 2;
 	transition: color ${transMs} ease-in-out;
 	cursor: pointer;
-    display: inline-block;
 
     ::before {
 		content: "";
@@ -65,11 +64,11 @@ const Container = styled.li`
 `;
 
 const DateSlot = ({
-	children: date,
-	onClick,
 	active = false,
+	children: date,
+	dark = false,
+	onClick,
 	outside = false,
-	dark = false
 }) => {
 	return (
 		<Container
