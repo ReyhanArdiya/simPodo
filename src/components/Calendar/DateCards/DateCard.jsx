@@ -45,6 +45,10 @@ const Container = styled(Card)`
 			background-color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[3] : theme.colors.light.UI[1]};
 		`;
 	}}
+
+	:hover {
+		cursor: pointer;
+	}
 `;
 
 const Day = styled.p`
