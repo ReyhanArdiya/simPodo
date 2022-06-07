@@ -59,10 +59,10 @@ const Content = ({ activeDayI = 0, dark = false, dates }) => {
 			<DateSlot
 				dark={dark}
 				key={i}
-				{...dates[0]}
-				onClick={dates[0]?.onClick.bind(null, i % 7, dates[0].date)}
+				{...dates[i]}
+				onClick={dates[i]?.onClick.bind(null, i % 7, dates[i].date)}
 			>
-				{dates[0]?.date}
+				{dates[i]?.date}
 			</DateSlot>
 		);
 	}
