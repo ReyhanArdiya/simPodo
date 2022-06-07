@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 
 const transMs = "250ms";
 
-const Container = styled.p`
+const Container = styled.li`
     font: 700 1.6em/1.375em "Inter", sans-serif;
 	letter-spacing: -0.02em;
 	text-align: center;
