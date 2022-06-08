@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import DateCard from "./DateCard";
 import styled from "styled-components";
+import React from "react";
 
 const Container = styled.div`
     display: flex;
@@ -45,4 +46,4 @@ const DateCards = ({
 	return <Container>{dateCards}</Container>;
 };
 
-export default DateCards;
+export default React.memo(DateCards);

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import BouncyMove from "../Animations/BouncyMove";
 import ArrowLeft from "../Shapes/Arrows/ArrowLeft";
 import ArrowRight from "../Shapes/Arrows/ArrowRight";
+import React from "react";
 
 const Container = styled.div`
 	align-items: center;
@@ -51,4 +52,4 @@ const Time = ({ month, year, onPrevClick, onNextClick, dark = false }) => {
 	);
 };
 
-export default Time;
+export default React.memo(Time);

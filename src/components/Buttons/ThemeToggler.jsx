@@ -1,6 +1,6 @@
 import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import BouncyGrow from "../Animations/BouncyGrow";
 
@@ -57,4 +57,4 @@ const ThemeToggler = ({ onClick = e => console.log(e), dark = false }) => {
 	);
 };
 
-export default ThemeToggler;
+export default React.memo(ThemeToggler);

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import BouncyMove from "../Animations/BouncyMove";
+import React from "react";
 
 const Container = styled.svg.attrs({
 	viewBox : "0 0 20 16",
@@ -21,4 +22,4 @@ const LeftArrowButt = ({ onClick, dark = false }) => {
 	);
 };
 
-export default LeftArrowButt;
+export default React.memo(LeftArrowButt);

@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import React from "react";
 
 const baseStyle = css`
 	font-size: 1em;
@@ -97,4 +98,4 @@ const ButtonSm = ({ children: text = "+", onClick, className = "", dark = false 
 	);
 };
 
-export default ButtonSm;
+export default React.memo(ButtonSm);

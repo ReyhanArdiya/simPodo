@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Card from "../../Cards/Card";
 import Content from "./Content";
+import React from "react";
 
 const Container = styled(Card)`
 	${({ dark, theme }) => !dark && theme.effects.boxShadows[3]}
@@ -44,4 +45,4 @@ const BigCalendar = ({
 	);
 };
 
-export default BigCalendar;
+export default React.memo(BigCalendar);

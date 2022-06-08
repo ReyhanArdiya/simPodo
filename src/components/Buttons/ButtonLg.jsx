@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import ButtonSm from "./ButtonSm";
+import React from "react";
 
 const ButtonLg = styled(ButtonSm)`
 	& {
@@ -8,4 +9,4 @@ const ButtonLg = styled(ButtonSm)`
 	}
 `;
 
-export default ButtonLg;
+export default React.memo(ButtonLg);
