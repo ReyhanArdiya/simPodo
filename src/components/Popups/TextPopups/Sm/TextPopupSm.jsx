@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import Card from "../Cards/Card";
+import Card from "../../../Cards/Card";
 import TextSelectionSm from "./TextSelectionSm";
 import { v4 as uuidv4 } from "uuid";
 
+// REFAC I could refactor how i make the lg and sm version by making a base one first but whatevs
 const Container = styled(Card).attrs({ as : "ul" })`
 	flex-direction: column;
     ${({ dark, theme }) => !dark && theme.effects.boxShadows[1]}

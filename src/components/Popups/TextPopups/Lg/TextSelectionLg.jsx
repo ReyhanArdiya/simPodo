@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import TextSelection from "./TextSelection";
+import TextSelection from "../TextSelection";
 
 const Container = styled(TextSelection)`
 	font-size: 3em;

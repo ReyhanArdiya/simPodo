@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Card from "../Cards/Card";
+import Card from "../../../Cards/Card";
 import TextSelectionLg from "./TextSelectionLg";
 import { v4 as uuidv4 } from "uuid";
 
