@@ -152,6 +152,15 @@ const cssReset = css`
     makes working with em easier. */
 		font-size: 1rem;
 	}
+
+	button {
+		padding: 0;
+		margin: 0;
+		border: none;
+		outline: none;
+		cursor: pointer;
+    	background: none;
+	}
 `;
 
 export default cssReset;
