@@ -8,6 +8,7 @@ const Container = styled(TextSelection)`
 const TextSelectionSm = ({
 	children: text,
 	backgroundColor,
+	onClick,
 	active = false,
 	dark = false
 }) => {
@@ -16,6 +17,7 @@ const TextSelectionSm = ({
 			active={active}
 			backgroundColor={backgroundColor}
 			dark={dark}
+			onClick={onClick}
 		>
 			{text}
 		</Container>
