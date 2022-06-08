@@ -84,12 +84,13 @@ const Content = styled.p`
 	}
 `;
 
-const ButtonSm = ({ children: text = "+", onClick, className = "", dark = false }) => {
+const ButtonSm = ({ children: text = "+", onClick, className = "", type = "button", dark = false }) => {
 	return (
 		<Button
 			className={className}
 			dark={dark}
 			onClick={onClick}
+			type={type}
 		>
 			<Content
 				dark={dark}

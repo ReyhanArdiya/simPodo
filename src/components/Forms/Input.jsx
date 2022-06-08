@@ -8,6 +8,11 @@ const Input = styled(Card).attrs({ as : "input" })`
     background-color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[3] : theme.colors.light.UI[1]};
     color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[2] : theme.colors.light.UI[7]};
     padding: 0.15em 0.3em;
+    width: 100%;
+
+    ::placeholder {
+        color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[8] : theme.colors.light.UI[3]};
+    }
 `;
 
 export default Input;
