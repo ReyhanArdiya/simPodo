@@ -30,6 +30,30 @@ const bouncyGrow = css`
 	}
 `;
 
+const bouncyThrob = css`
+	@keyframes bouncyThrob {
+		from {
+			transform: scale(1);
+		}
+
+		33% {
+			transform: scale(1.1);
+		}
+
+		66% {
+			transform: scale(0.9);
+		}
+
+		to {
+			transform: scale(1);
+		}
+	}
+
+	&.bouncy-throb-enter-active {
+		animation: bouncyThrob ${baseTransitionMs * 0.6}ms ease-in-out;
+	}
+`;
+
 const bouncyMoveLeft = css`
 	@keyframes bouncyMoveLeft {
 		from {
@@ -50,18 +74,19 @@ const bouncyMoveLeft = css`
 	}
 
 	.bouncy-move-left-enter-active {
-        transform-origin: right;
+		transform-origin: right;
 		animation: bouncyMoveLeft ${baseTransitionMs}ms both ease-in-out 1;
 	}
 
 	.bouncy-move-left-exit-active {
-        transform-origin: left;
-		animation: bouncyMoveLeft ${baseTransitionMs}ms reverse both ease-in-out 1;
+		transform-origin: left;
+		animation: bouncyMoveLeft ${baseTransitionMs}ms reverse both ease-in-out
+			1;
 	}
 `;
 
 const bouncyMoveRight = css`
-    	@keyframes bouncyMoveRight {
+	@keyframes bouncyMoveRight {
 		from {
 			transform: translateX(0);
 		}
@@ -80,21 +105,22 @@ const bouncyMoveRight = css`
 	}
 
 	.bouncy-move-right-enter-active {
-        transform-origin: left;
+		transform-origin: left;
 		animation: bouncyMoveRight ${baseTransitionMs}ms both ease-in-out 1;
 	}
 
 	.bouncy-move-right-exit-active {
-        transform-origin: right;
-		animation: bouncyMoveRight ${baseTransitionMs}ms reverse both ease-in-out 1;
+		transform-origin: right;
+		animation: bouncyMoveRight ${baseTransitionMs}ms reverse both
+			ease-in-out 1;
 	}
 `;
 
-
 const animations = css`
 	${bouncyGrow}
-    ${bouncyMoveLeft}
+	${bouncyMoveLeft}
     ${bouncyMoveRight}
+    ${bouncyThrob}
 `;
 
 export default animations;
