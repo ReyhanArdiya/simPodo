@@ -96,4 +96,6 @@ const TodoMini = ({
 	);
 };
 
+// CMT Don't memoize TodoMini since if it is editable it's going to cause a lot of
+// rerenders, instead just memoize TodoList later.
 export default TodoMini;

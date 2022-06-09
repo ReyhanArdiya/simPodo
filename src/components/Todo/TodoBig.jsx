@@ -98,4 +98,6 @@ const TodoBig = ({
 	);
 };
 
+// CMT TodoBig is only used when mounting and unmount from modal and while ediitng which means
+// it is going to always rerender a lot, so I don't memoize it.
 export default TodoBig;
