@@ -29,27 +29,7 @@ const Container = styled(Card).attrs({ as : "article" })`
 
 /**
  *
- * @param {{
- *	amPm : string,
- *	dark? : boolean,
- *	edit? : boolean,
- *	hours : number,
- *	minutes : number,
- *	onAmPmClick : EventListener,
- *	onDelete : EventListener,
- *	onEdit : EventListener,
- *	onEditDiscard : EventListener,
- *	onEditDone : EventListener,
- *	onHourClick : EventListener,
- *	onMinuteClick : EventListener,
- *	onTagClick : EventListener,
- *	onTitleChange : EventListener,
- *	onTodoFinish : EventListener,
- *	tagColor : string,
- *	tagName : string,
- *	title : string
- *
- * }} props
+ * @param {TodoMini} props
  *
  * @returns
  */
