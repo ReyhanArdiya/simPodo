@@ -12,16 +12,16 @@ const Unit = styled.span`
 	${({ edit }) => edit && "cursor: pointer;"}
 `;
 
-// CMT 12-H format
+
 const Time = ({
-	amPm = "am",
-	dark = false,
-	edit = false,
+	amPm,
+	dark,
+	edit,
 	hours,
 	minutes,
-	onAmPmClick = () => undefined,
-	onHourClick = () => undefined,
-	onMinuteClick = () => undefined
+	onAmPmClick,
+	onHourClick,
+	onMinuteClick
 }) => {
 	hours = hours < 10 ? `0${hours}` : hours;
 	minutes = minutes < 10 ? `0${minutes}` : minutes;
