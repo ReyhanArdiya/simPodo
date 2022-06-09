@@ -15,6 +15,7 @@ const Container = styled(Card).attrs({ as : "article" })`
 	grid-template-columns: 1fr;
 	padding: 0.3em 0.8em 0.7em 1em;
 
+	min-height: 9em;
 	height: 9em;
 	width: 22.2em;
 
@@ -35,6 +36,7 @@ const Container = styled(Card).attrs({ as : "article" })`
  */
 const TodoMini = ({
 	amPm,
+	className = "",
 	dark = false,
 	edit = false,
 	hours,
@@ -54,7 +56,10 @@ const TodoMini = ({
 	title,
 }) => {
 	return (
-		<Container dark={dark}>
+		<Container
+			className={className}
+			dark={dark}
+		>
 			<Time
 				amPm={amPm}
 				dark={dark}

@@ -5,6 +5,8 @@
  *
  * @property {string} amPm
  *
+ * @property {string} [className=""]
+ *
  * @property {boolean} [dark=false]
  *
  * @property {boolean} [edit=false]
