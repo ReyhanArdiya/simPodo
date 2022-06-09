@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import React from "react";
+import BouncyThrob from "../Animations/BouncyThrob";
 
 const baseStyle = css`
 	font-size: 1em;
@@ -86,16 +87,17 @@ const Content = styled.p`
 
 const ButtonSm = ({ children: text = "+", onClick, className = "", type = "button", dark = false }) => {
 	return (
-		<Button
-			className={className}
-			dark={dark}
-			onClick={onClick}
-			type={type}
-		>
-			<Content
+		<BouncyThrob onClick={onClick}>
+			<Button
+				className={className}
 				dark={dark}
-			>{text}</Content>
-		</Button>
+				type={type}
+			>
+				<Content
+					dark={dark}
+				>{text}</Content>
+			</Button>
+		</BouncyThrob>
 	);
 };
 
