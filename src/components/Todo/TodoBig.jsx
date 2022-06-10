@@ -45,7 +45,7 @@ const TodoBig = ({
 	amPm,
 	className = "",
 	dark = false,
-	draggable = false,
+	draggable,
 	detail,
 	edit = false,
 	hours,

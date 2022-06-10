@@ -9,7 +9,7 @@
  *
  * @property {boolean} [dark=false]
  *
- * @property {boolean} [draggable=false]
+ * @property {import("react-draggable").DraggableProps} [draggable]
  *
  * @property {boolean} [edit=false]
  *
