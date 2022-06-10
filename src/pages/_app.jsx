@@ -1,11 +1,16 @@
 import { createGlobalStyle, ThemeProvider } from "styled-components";
-import cssReset from "../styles/css-reset";
+import cssReset from "../styles/global/css-reset";
 import theme from "../styles/theme";
+import "@fortawesome/fontawesome-svg-core/styles.css"; // import Font Awesome CSS
+import { config } from "@fortawesome/fontawesome-svg-core";
+config.autoAddCss = false; // Tell Font Awesome to skip adding the CSS automatically since it's being imported above
 
 import Head from "next/head";
+import animations from "../styles/global/animations";
 
 const GlobalStyle = createGlobalStyle`
 	${cssReset}
+	${animations}
 `;
 
 const MyApp = ({ Component, pageProps }) => {
@@ -13,13 +18,10 @@ const MyApp = ({ Component, pageProps }) => {
 		<ThemeProvider theme={theme}>
 			<GlobalStyle/>
 			<Head>
-				<meta charset="UTF-8"/>
-				<meta httpEquiv="X-UA-Compatible" content="IE=edge"/>
-				<meta name="application" content="simPodo"/>
-				<meta name="author" content="Reyhan Ardiya"/>
-				<meta name="description" content="Jolt down your TODO in this simPle toDo app!"/>
-				<meta name="keywords" content="HTML, CSS, JavaScript, React, Next.js, Todo, TodoApp, simple"/>
-				<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+				<meta
+					content="width=device-width, initial-scale=1.0"
+					name="viewport"
+				/>
 				<title>simPodo</title>
 			</Head>
 			<Component {...pageProps} />
