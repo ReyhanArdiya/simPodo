@@ -9,6 +9,8 @@
  *
  * @property {boolean} [dark=false]
  *
+ * @property {boolean} [draggable=false]
+ *
  * @property {boolean} [edit=false]
  *
  * @property {number} hours

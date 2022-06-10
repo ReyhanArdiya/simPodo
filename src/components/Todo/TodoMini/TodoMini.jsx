@@ -1,3 +1,5 @@
+import { useState } from "react";
+import Draggable from "react-draggable";
 import styled from "styled-components";
 import Card from "../../Cards/Card";
 import Actions from "./Actions";
@@ -38,6 +40,7 @@ const TodoMini = ({
 	amPm,
 	className = "",
 	dark = false,
+	draggable = false,
 	edit = false,
 	hours,
 	minutes,
@@ -55,7 +58,9 @@ const TodoMini = ({
 	tagName,
 	title,
 }) => {
-	return (
+	const [ originalPos, setOriginalPos ] = useState(null);
+
+	const component =
 		<Container
 			className={className}
 			dark={dark}
@@ -92,7 +97,25 @@ const TodoMini = ({
 				onEditDone={onEditDone}
 				onTodoFinish={onTodoFinish}
 			/>
-		</Container>
+		</Container>;
+
+	const resetPosition = () => setOriginalPos({
+		x : 0,
+		y : 0
+	});
+
+	return (
+		<>
+			{draggable ?
+				<Draggable
+					axis="x"
+					bounds="parent"
+					onStart={resetPosition}
+					onStop={resetPosition}
+					position={originalPos}
+				>{component}</Draggable> :
+				component}
+		</>
 	);
 };
 
