@@ -9,8 +9,6 @@
  *
  * @property {boolean} [dark=false]
  *
- * @property {import("react-draggable").DraggableProps} [draggable]
- *
  * @property {boolean} [edit=false]
  *
  * @property {number} hours

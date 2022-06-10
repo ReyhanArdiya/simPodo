@@ -45,7 +45,6 @@ const TodoBig = ({
 	amPm,
 	className = "",
 	dark = false,
-	draggable,
 	detail,
 	edit = false,
 	hours,
@@ -73,7 +72,6 @@ const TodoBig = ({
 			<TodoMini
 				amPm={amPm}
 				dark={dark}
-				draggable={draggable}
 				edit={edit}
 				hours={hours}
 				minutes={minutes}
