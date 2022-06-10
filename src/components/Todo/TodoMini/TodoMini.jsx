@@ -3,6 +3,8 @@ import Draggable from "react-draggable";
 import styled from "styled-components";
 import Card from "../../Cards/Card";
 import Actions from "./Actions";
+import Delete from "./DragBg/Delete";
+import Done from "./DragBg/Done";
 import Tag from "./Tag";
 import Time from "./Time";
 import Title from "./Title";
@@ -30,6 +32,14 @@ const Container = styled(Card).attrs({ as : "article" })`
 	}
 `;
 
+const DragContainer = styled(Card)`
+	cursor: pointer;
+
+	> :not([class*="dragging"]) {
+		transition: transform 0.2s ease-out;
+	}
+`;
+
 /**
  *
  * @param {TodoMini} props
@@ -40,7 +50,7 @@ const TodoMini = ({
 	amPm,
 	className = "",
 	dark = false,
-	draggable = false,
+	draggable,
 	edit = false,
 	hours,
 	minutes,
@@ -56,9 +66,10 @@ const TodoMini = ({
 	onTodoFinish,
 	tagColor,
 	tagName,
-	title,
+	title
 }) => {
 	const [ originalPos, setOriginalPos ] = useState(null);
+	const [ dragDirection, setDragDirection ] = useState(null);
 
 	const component =
 		<Container
@@ -98,23 +109,46 @@ const TodoMini = ({
 				onTodoFinish={onTodoFinish}
 			/>
 		</Container>;
-
 	const resetPosition = () => setOriginalPos({
 		x : 0,
 		y : 0
 	});
 
+	const onStartHandler = (e, data) => {
+		resetPosition();
+		draggable.onStart(e, data);
+	};
+
+	const onStopHandler = (e, data) => {
+		resetPosition();
+		draggable.onStop(e, data);
+	};
+
+	const detectDragDirection = (_, { x }) => {
+		setDragDirection(x < 0 ? "left" : "right");
+	};
+
 	return (
 		<>
 			{draggable ?
-				<Draggable
-					axis="x"
-					bounds="parent"
-					onStart={resetPosition}
-					onStop={resetPosition}
-					position={originalPos}
-				>{component}</Draggable> :
-				component}
+				<DragContainer>
+					{dragDirection === "left" ?
+						<Delete dark={dark} />					 :
+						<Done dark={dark} />
+					}
+					<Draggable
+						{...draggable}
+						axis="x"
+						onDrag={detectDragDirection}
+						onStart={onStartHandler}
+						onStop={onStopHandler}
+						position={originalPos}
+					>
+						{component}
+					</Draggable>
+				</DragContainer> :
+				component
+			}
 		</>
 	);
 };
