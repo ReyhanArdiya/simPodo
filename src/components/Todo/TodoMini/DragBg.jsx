@@ -23,14 +23,14 @@ const Indicator = styled.div`
     font-size: 2em;
 `;
 
-const Delete = styled(Indicator)`
-    background-color: ${({ dark, theme }) => dark ? theme.colors.dark.tags[1] : theme.colors.light.tags[1]};
+const Done = styled(Indicator)`
+    background-color: ${({ dark, theme }) => dark ? theme.colors.dark.tags[4] : theme.colors.light.tags[4]};
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
 `;
 
-const Done = styled(Indicator)`
-    background-color: ${({ dark, theme }) => dark ? theme.colors.dark.tags[4] : theme.colors.light.tags[4]};
+const Delete = styled(Indicator)`
+    background-color: ${({ dark, theme }) => dark ? theme.colors.dark.tags[1] : theme.colors.light.tags[1]};
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 `;
@@ -38,12 +38,12 @@ const Done = styled(Indicator)`
 const DragBg = ({ dark = false }) => {
 	return (
 		<Container>
-			<Delete dark={dark}>
-				<FontAwesomeIcon icon={faTimes}/>
-			</Delete>
 			<Done dark={dark}>
 				<FontAwesomeIcon icon={faCheck}/>
 			</Done>
+			<Delete dark={dark}>
+				<FontAwesomeIcon icon={faTimes}/>
+			</Delete>
 		</Container>
 	);
 };
