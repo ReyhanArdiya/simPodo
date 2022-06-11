@@ -48,9 +48,11 @@ const TodoMini = ({
 	onEditDone,
 	onHourClick,
 	onMinuteClick,
+	onMouseDown,
 	onTagClick,
 	onTitleChange,
 	onTodoFinish,
+	style,
 	tagColor,
 	tagName,
 	title,
@@ -59,6 +61,8 @@ const TodoMini = ({
 		<Container
 			className={className}
 			dark={dark}
+			onMouseDown={onMouseDown}
+			style={style}
 		>
 			<Time
 				amPm={amPm}
