@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { CSSTransition } from "react-transition-group";
 import styled, { keyframes } from "styled-components";
 import Card from "../../Cards/Card";
@@ -85,4 +86,4 @@ const BaseFlash = ({ children: message, show = true, className = "", dark = fals
 	);
 };
 
-export default BaseFlash;
+export default memo(BaseFlash);
