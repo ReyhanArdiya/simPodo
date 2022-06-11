@@ -10,13 +10,14 @@ const Container = styled(Card).attrs({ as : "aside" })`
     padding: 1.3em 3.5em;
     min-width: 24em;
     text-align: center;
+    text-transform: uppercase;
 `;
 
 const Message = styled.small`
     font: 900 2em "Intertia", sans-serif;
 `;
 
-const BaseFlash = ({ message, className = "", dark = false }) => {
+const BaseFlash = ({ children: message, className = "", dark = false }) => {
 	return (
 		<Container
 			className={`${className} ${dark ? "dark" : ""}`}
