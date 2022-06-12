@@ -1,28 +1,30 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Input from "./Input";
 import { v4 as uuidv4 } from "uuid";
 
 const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 0.5em;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
 `;
 
 const outlineWidth = 3;
 
 const BorderedInput = styled(Input)`
-	outline: ${outlineWidth}px solid black;
-	outline-color: ${({ dark, theme, valid }) => {
+	${({ hasMsg, dark, theme, valid }) => {
 		if (valid) {
-			return dark ?
-				theme.colors.dark.semantic.good :
-				theme.colors.light.semantic.good;
+			return css`
+					outline: ${outlineWidth}px solid ${dark ? theme.colors.dark.semantic.good : theme.colors.light.semantic.good};
+				`;
 		}
+		console.log(hasMsg);
+		if (hasMsg) {
+			return css`
+				outline: ${outlineWidth}px solid ${dark ? theme.colors.dark.semantic.bad : theme.colors.light.semantic.bad};
+			`;
+		}
+	}}
 
-		return dark ?
-			theme.colors.dark.semantic.bad :
-			theme.colors.light.semantic.bad;
-	}};
 	outline-offset: -${outlineWidth}px;
 `;
 
@@ -36,13 +38,12 @@ const ErrorMsg = styled.label`
 
 /**
  *
- * @param {import("react").InputHTMLAttributes & {errorMsg?: ?string, dark?: boolean}} props
+ * @param {import("react").InputHTMLAttributes & {errorMsg?: ?string, dark?: boolean, valid?: boolean}} props
  *
  * @returns
  */
 const SemanticInput = props => {
-	const valid = !props.errorMsg;
-	const id = props.id || uuidv4();
+	const { valid, id = uuidv4() } = props;
 
 	return (
 		<Container
@@ -52,10 +53,11 @@ const SemanticInput = props => {
 			<BorderedInput
 				{...props}
 				dark={props.dark}
+				hasMsg={props.errorMsg}
 				id={id}
 				valid={valid}
 			/>
-			{!valid &&
+			{!valid && props.errorMsg &&
 				<ErrorMsg
 					dark={props.dark}
 					htmlFor={id}
