@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import ButtonLg from "../Buttons/ButtonLg";
 import FormCard from "./FormCard";
@@ -7,7 +7,16 @@ import SemanticInput from "./Inputs/SemanticInput";
 
 const Container = styled(FormCard).attrs({ as : "form" })`
 	gap: 2em;
-	padding: 0 2.8em;
+	${({ hasError }) => {
+		if (hasError) {
+			return css`
+				padding: 1.5em 2.8em;
+				height: max-content;
+			`;
+		}
+
+		return css`padding: 0 2.8em;`;
+	}}
 `;
 
 const Label = styled.label`
@@ -32,16 +41,7 @@ const SingleInputForm = React.forwardRef(
 	 *
 	 * @returns
 	 */
-	(
-		{
-			title,
-			onSubmit,
-			buttonText,
-			inputOpts,
-			dark = false
-		},
-		ref
-	) => {
+	({ title, onSubmit, buttonText, inputOpts, dark = false }, ref) => {
 		const onSubmitHandler = e => {
 			e.preventDefault();
 			onSubmit(e);
@@ -52,12 +52,15 @@ const SingleInputForm = React.forwardRef(
 		return (
 			<Container
 				dark={dark}
+				hasError={inputOpts?.errorMsg}
 				onSubmit={onSubmitHandler}
 			>
 				<Label
 					dark={dark}
 					htmlFor={inputId}
-				>{title}</Label>
+				>
+					{title}
+				</Label>
 				<SemanticInput
 					ref={ref}
 					type="text"
