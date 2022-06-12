@@ -1,13 +1,22 @@
-import styled from "styled-components";
 import React from "react";
-import FormCard from "./FormCard";
-import Input from "./Input";
-import ButtonLg from "../Buttons/ButtonLg";
+import styled, { css } from "styled-components";
 import { v4 as uuidv4 } from "uuid";
+import ButtonLg from "../Buttons/ButtonLg";
+import FormCard from "./FormCard";
+import SemanticInput from "./Inputs/SemanticInput";
 
 const Container = styled(FormCard).attrs({ as : "form" })`
 	gap: 2em;
-	padding: 0 2.8em;
+	${({ hasError }) => {
+		if (hasError) {
+			return css`
+				padding: 1.5em 2.8em;
+				height: max-content;
+			`;
+		}
+
+		return css`padding: 0 2.8em;`;
+	}}
 `;
 
 const Label = styled.label`
@@ -17,35 +26,46 @@ const Label = styled.label`
 `;
 
 const SingleInputForm = React.forwardRef(
-	(
-		{
-			title,
-			onSubmit,
-			buttonText,
-			inputOpts,
-			inputId = uuidv4(),
-			dark = false
-		},
-		ref
-	) => {
+
+	/**
+	 *
+	 * @param {{
+	 * 	title: string,
+	 * 	onSubmit: FormEventHandler,
+	 * 	buttonText: string,
+	 * 	inputOpts: import("./Inputs/SemanticInput").SemanticInput,
+	 *	dark?: boolean
+	 * }} props
+	 *
+	 * @param {import("react").ForwardedRef} ref
+	 *
+	 * @returns
+	 */
+	({ title, onSubmit, buttonText, inputOpts, dark = false }, ref) => {
 		const onSubmitHandler = e => {
 			e.preventDefault();
 			onSubmit(e);
 		};
 
+		const inputId = inputOpts?.id || uuidv4();
+
 		return (
 			<Container
 				dark={dark}
+				hasError={inputOpts?.errorMsg}
 				onSubmit={onSubmitHandler}
 			>
 				<Label
 					dark={dark}
 					htmlFor={inputId}
-				>{title}</Label>
-				<Input
+				>
+					{title}
+				</Label>
+				<SemanticInput
 					ref={ref}
 					type="text"
 					{...inputOpts}
+					colors={{ error : "#c50a5a" }}
 					dark={dark}
 					id={inputId}
 					title={title}
