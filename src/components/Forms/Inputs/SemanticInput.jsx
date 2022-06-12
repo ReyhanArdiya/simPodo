@@ -11,16 +11,18 @@ const Container = styled.div`
 const outlineWidth = 3;
 
 const BorderedInput = styled(Input)`
-	${({ hasMsg, dark, theme, valid }) => {
+	${({ colors, hasMsg, dark, theme, valid }) => {
 		if (valid) {
 			return css`
 					outline: ${outlineWidth}px solid ${dark ? theme.colors.dark.semantic.good : theme.colors.light.semantic.good};
-				`;
+                    ${colors?.valid && css`outline-color: ${colors.valid};`}
+			`;
 		}
-		console.log(hasMsg);
+
 		if (hasMsg) {
 			return css`
 				outline: ${outlineWidth}px solid ${dark ? theme.colors.dark.semantic.bad : theme.colors.light.semantic.bad};
+                ${colors?.error && css`outline-color: ${colors.error};`}
 			`;
 		}
 	}}
@@ -29,17 +31,24 @@ const BorderedInput = styled(Input)`
 `;
 
 const ErrorMsg = styled.label`
-	font: 300 1.6em "Nunito", sans-serif;
+	font: 500 1.6em "Inter", sans-serif;
 	text-align: left;
-	color: ${({ dark, theme }) => dark ?
-		theme.colors.dark.semantic.bad :
-		theme.colors.light.semantic.bad};
+
+	color: ${({ color, dark, theme }) => {
+		if (color) {
+			return color;
+		}
+
+		return dark ?
+			theme.colors.dark.semantic.bad :
+			theme.colors.light.semantic.bad;
+	}};
 `;
 
 /**
  * SemanticInput
  *
- * @typedef {import("react").InputHTMLAttributes & {errorMsg?: ?string, dark?: boolean, valid?: boolean}} SemanticInput
+ * @typedef {import("react").InputHTMLAttributes & {errorMsg?: ?string, dark?: boolean, valid?: boolean, colors?: {error: string, valid: string}}} SemanticInput
  */
 
 /**
@@ -58,6 +67,7 @@ const SemanticInput = props => {
 		>
 			<BorderedInput
 				{...props}
+				colors={props.colors}
 				dark={props.dark}
 				hasMsg={props.errorMsg}
 				id={id}
@@ -65,6 +75,7 @@ const SemanticInput = props => {
 			/>
 			{!valid && props.errorMsg &&
 				<ErrorMsg
+					color={props.colors?.error}
 					dark={props.dark}
 					htmlFor={id}
 				>
