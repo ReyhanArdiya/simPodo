@@ -46,7 +46,7 @@ const light = new Color(
 	},
 	{
 		bad         : "#FF006D",
-		good        : "#95FF70",
+		good        : "#80ed99",
 		information : "#01BEFE",
 		warn        : "#FFDD00",
 	},
