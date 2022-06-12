@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Card from "../Cards/Card";
+import Card from "../../Cards/Card";
 
 const Input = styled(Card).attrs({ as : "input" })`
     outline: none;

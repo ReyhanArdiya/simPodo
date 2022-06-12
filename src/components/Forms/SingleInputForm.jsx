@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React from "react";
 import FormCard from "./FormCard";
-import Input from "./Input";
+import Input from "./Inputs/Input";
 import ButtonLg from "../Buttons/ButtonLg";
 import { v4 as uuidv4 } from "uuid";
 
