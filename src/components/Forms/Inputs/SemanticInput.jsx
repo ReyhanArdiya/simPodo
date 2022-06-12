@@ -37,8 +37,14 @@ const ErrorMsg = styled.label`
 `;
 
 /**
+ * SemanticInput
  *
- * @param {import("react").InputHTMLAttributes & {errorMsg?: ?string, dark?: boolean, valid?: boolean}} props
+ * @typedef {import("react").InputHTMLAttributes & {errorMsg?: ?string, dark?: boolean, valid?: boolean}} SemanticInput
+ */
+
+/**
+ *
+ * @param {SemanticInput} props
  *
  * @returns
  */
