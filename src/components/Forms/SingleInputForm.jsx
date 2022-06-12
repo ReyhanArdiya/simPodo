@@ -65,6 +65,7 @@ const SingleInputForm = React.forwardRef(
 					ref={ref}
 					type="text"
 					{...inputOpts}
+					colors={{ error : "#c50a5a" }}
 					dark={dark}
 					id={inputId}
 					title={title}
