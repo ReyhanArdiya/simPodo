@@ -1,7 +1,8 @@
 {
 	"env": {
 		"node": true,
-		"es2021": true
+		"es2021": true,
+		"jest": true
 	},
 	"extends": [
 		"eslint:recommended",
@@ -16,7 +17,7 @@
 			"modules": true
 		}
 	},
-	"plugins": ["jsdoc"],
+	"plugins": ["jsdoc", "jest"],
 	"rules": {
 		"array-bracket-spacing": ["warn", "always"],
 		"array-element-newline": ["warn", "consistent"],
@@ -39,6 +40,11 @@
 		"grouped-accessor-pairs": "warn",
 		"implicit-arrow-linebreak": "warn",
 		"indent": ["error", "tab", { "SwitchCase": 1 }],
+		"jest/no-disabled-tests": "warn",
+		"jest/no-focused-tests": "error",
+		"jest/no-identical-title": "error",
+		"jest/prefer-to-have-length": "warn",
+		"jest/valid-expect": "error",
 		"jsdoc/check-access": "warn",
 		"jsdoc/check-alignment": "warn",
 		// "jsdoc/check-examples": "warn",

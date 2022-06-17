@@ -1,12 +1,13 @@
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css"; // import Font Awesome CSS
+import Head from "next/head";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
+import wrapper from "../store";
+import animations from "../styles/global/animations";
 import cssReset from "../styles/global/css-reset";
 import theme from "../styles/theme";
-import "@fortawesome/fontawesome-svg-core/styles.css"; // import Font Awesome CSS
-import { config } from "@fortawesome/fontawesome-svg-core";
-config.autoAddCss = false; // Tell Font Awesome to skip adding the CSS automatically since it's being imported above
 
-import Head from "next/head";
-import animations from "../styles/global/animations";
+config.autoAddCss = false; // Tell Font Awesome to skip adding the CSS automatically since it's being imported above
 
 const GlobalStyle = createGlobalStyle`
 	${cssReset}
@@ -29,4 +30,4 @@ const MyApp = ({ Component, pageProps }) => {
 	);
 };
 
-export default MyApp;
+export default wrapper.withRedux(MyApp);
