@@ -13,20 +13,44 @@ const todosSlice = createSlice({
 			};
 		}
 	},
-	initialState : { todos : {} },
-	name         : "todos",
-	reducers     : {
-		addTodo : (state, { payload: todo }) => {
+	initialState : {
+		completedTotal : 0,
+		todos          : {
+			todoId : {
+				completed : false,
+				id        : "todoId",
+				title     : "todoTitle"
+			}
+		},
+	},
+	name     : "todos",
+	reducers : {
+		addTodo(state, { payload: todo }) {
 			state.todos[todo.id] = todo;
 		},
-		deleteTodo : (state, { payload: id }) => {
+		completeTodo(state, { payload: id }) {
+			if (!state.todos[id].completed) {
+				state.todos[id].completed = true;
+				state.completedTotal++;
+			}
+		},
+		deleteTodo(state, { payload: id }) {
 			delete state.todos[id];
 		},
-		replaceTodos : (state, { payload: newTodos }) => {
+		replaceTodos(state, { payload: newTodos }) {
 			state.todos = newTodos;
 		},
+		updateTodo(state, { payload: { title, completed, id } }) {
+			state.todos[id].title = title;
+			state.todos[id].completed = completed;
+		}
 	},
 });
 
-export const { actions: todosSliceActions, name: todosSliceName } = todosSlice;
+export const {
+	actions: todosSliceActions,
+	name: todosSliceName,
+	reducer: todoSliceReducer
+} = todosSlice;
+
 export default todosSlice;
