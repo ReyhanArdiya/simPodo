@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import React from "react";
 import BouncyThrob from "../Animations/BouncyThrob";
+import PropTypes from "prop-types";
 
 const baseStyle = css`
 	font-size: 1em;
@@ -18,7 +19,8 @@ const baseStyle = css`
 		cursor: pointer;
 	}
 
-	::before, ::after {
+	::before,
+	::after {
 		${({ theme }) => theme.effects.gradientRect}
 		content: "";
 		height: 56.05%;
@@ -85,7 +87,13 @@ const Content = styled.p`
 	}
 `;
 
-const ButtonSm = ({ children: text = "+", onClick, className = "", type = "button", dark = false }) => {
+const ButtonSm = ({
+	children: text = "+",
+	onClick,
+	className = "",
+	type = "button",
+	dark = false
+}) => {
 	return (
 		<BouncyThrob onClick={onClick}>
 			<Button
@@ -93,12 +101,18 @@ const ButtonSm = ({ children: text = "+", onClick, className = "", type = "butto
 				dark={dark}
 				type={type}
 			>
-				<Content
-					dark={dark}
-				>{text}</Content>
+				<Content dark={dark}>{text}</Content>
 			</Button>
 		</BouncyThrob>
 	);
+};
+
+ButtonSm.propTypes = {
+	children  : PropTypes.string,
+	className : PropTypes.string,
+	dark      : PropTypes.bool,
+	onClick   : PropTypes.func.isRequired,
+	type      : PropTypes.string,
 };
 
 export default React.memo(ButtonSm);
