@@ -251,7 +251,7 @@
 				"asyncArrow": "always"
 			}
 		],
-		"sort-keys": ["warn", "asc", { "natural": true }],
+		"sort-keys": ["off", "asc", { "natural": true }],
 		"space-in-parens": ["warn", "never"],
 		"space-infix-ops": "warn",
 		"space-unary-ops": ["warn", { "words": true }],
