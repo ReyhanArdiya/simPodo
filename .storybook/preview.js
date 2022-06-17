@@ -9,6 +9,28 @@ export const parameters = {
 			color: /(background|color)$/i,
 			date: /Date$/
 		}
+	},
+	layout: "centered",
+	viewport: {
+		viewports: {
+			smallScreen: {
+				name: "Small Screen",
+				styles: {
+					width: "320px",
+					height: "640px"
+				},
+				type: "mobile"
+			},
+			bigScreen: {
+				name: "Big Screen",
+				styles: {
+					width: "768px",
+					height: "1080px"
+				},
+				type: "desktop"
+			},
+		},
+		defaultViewport: "responsive"
 	}
 };
 
