@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import BouncyThrob from "../../Animations/BouncyThrob";
+import PropTypes from "prop-types";
 
 
 const Button = styled.button`
@@ -33,6 +34,13 @@ const IconButton = ({ onClick, fill, icon, className = "" }) => {
 		</BouncyThrob>
 
 	);
+};
+
+IconButton.propTypes = {
+	className : PropTypes.string,
+	fill      : PropTypes.string.isRequired,
+	icon      : PropTypes.object.isRequired,
+	onClick   : PropTypes.func.isRequired,
 };
 
 export default IconButton;
