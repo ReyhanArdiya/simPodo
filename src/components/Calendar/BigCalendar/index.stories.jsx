@@ -41,6 +41,8 @@ const Template = args => {
 	       />;
 };
 
+export const Default = Template.bind({});
+
 export const Light = Template.bind({});
 Light.args = { dark : false };
 
