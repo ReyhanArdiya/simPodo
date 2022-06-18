@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import BouncyThrob from "../../Animations/BouncyThrob";
 import Card from "../../Cards/Card";
 
 const Container = styled(Card)`
@@ -80,24 +81,26 @@ const DateCard = ({ onClick, day, date, active = false, dark = false }) => {
 	date = date < 10 ? `0${date}` : date;
 
 	return (
-		<Container
-			active={active}
-			dark={dark}
-			onClick={onClick}
-		>
-			<Day
+		<BouncyThrob onClick={onClick}>
+			<Container
 				active={active}
 				dark={dark}
+				onClick={onClick}
 			>
-				{day}
-			</Day>
-			<Date
-				active={active}
-				dark={dark}
-			>
-				{date}
-			</Date>
-		</Container>
+				<Day
+					active={active}
+					dark={dark}
+				>
+					{day}
+				</Day>
+				<Date
+					active={active}
+					dark={dark}
+				>
+					{date}
+				</Date>
+			</Container>
+		</BouncyThrob>
 	);
 };
 

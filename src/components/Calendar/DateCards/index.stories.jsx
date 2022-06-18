@@ -2,7 +2,10 @@ import DateCard from "./DateCard";
 import DateCards from "./DateCards";
 
 /** @type {import("@storybook/react").Meta} */
-const Meta = { args : { dark : false }, };
+const Meta = {
+	args     : { dark : false },
+	argTypes : { onClick : { action : "clicked!" }	}
+};
 
 
 export const Single = DateCard;
@@ -35,7 +38,7 @@ export const List = ({ quant = 31, ...args }) => {
 			day    : "monday",
 			date   : i,
 			onClick(day, date) {
-				console.log(day, date);
+				args.onClick(day, date);
 			},
 			dark : args.dark
 		});
