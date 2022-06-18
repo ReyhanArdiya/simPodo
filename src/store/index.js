@@ -6,7 +6,7 @@ import tagsSlice, { tagsSliceName } from "./tags/slice";
 import themeSlice, { themeSliceName } from "./theme/slice";
 import todosSlice, { todosSliceName } from "./todos/slice";
 
-const makeStore = () => configureStore({
+export const makeStore = () => configureStore({
 	reducer : {
 		[authSliceName]     : authSlice.reducer,
 		[calendarSliceName] : calendarSlice.reducer,

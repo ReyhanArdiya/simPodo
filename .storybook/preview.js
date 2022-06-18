@@ -1,6 +1,8 @@
 import { ThemeProvider } from "styled-components";
 import theme from "../src/styles/theme";
+import { makeStore } from "../src/store";
 import GlobalStyle from "../src/styles/global";
+import { Provider } from "react-redux";
 
 export const parameters = {
 	actions: { argTypesRegex: "^on[A-Z].*" },
@@ -28,17 +30,19 @@ export const parameters = {
 					height: "1080px"
 				},
 				type: "desktop"
-			},
+			}
 		},
 		defaultViewport: "responsive"
 	}
 };
 
 export const decorators = [
-  (Story) => (
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <Story />
-    </ThemeProvider>
-  ),
+	Story => (
+		<Provider store={makeStore()}>
+			<ThemeProvider theme={theme}>
+				<GlobalStyle />
+				<Story />
+			</ThemeProvider>
+		</Provider>
+	)
 ];
