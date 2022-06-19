@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Card from "../Cards/Card";
 import React from "react";
+import BouncyThrob from "../Animations/BouncyThrob";
 
 const Container = styled(Card)`
     align-items: center;
@@ -40,12 +41,16 @@ const Circle = styled.div`
 const Colors = ({ colors, dark = false }) => {
 	return (
 		<Container dark={dark}>
-			{colors.map((color, i) => {
+			{colors.map(({ color, onClick }, i) => {
 				return (
-					<Circle
-						color={color}
+					<BouncyThrob
 						key={i}
-					/>
+						onClick={onClick}
+					>
+						<Circle
+							color={color}
+						/>
+					</BouncyThrob>
 				);
 			})}
 		</Container>
