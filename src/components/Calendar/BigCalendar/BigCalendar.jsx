@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Card from "../../Cards/Card";
 import Content from "./Content";
 import React from "react";
+import PropTypes from "prop-types";
 
 const Container = styled(Card)`
 	${({ dark, theme }) => !dark && theme.effects.boxShadows[3]}
@@ -44,5 +45,19 @@ const BigCalendar = ({
 		</Container>
 	);
 };
+
+// Change JSDOC to propTypes
+BigCalendar.propTypes = {
+	activeDayI : PropTypes.number.isRequired,
+	dark       : PropTypes.bool,
+	dates      : PropTypes.arrayOf(PropTypes.shape({
+		active  : PropTypes.bool,
+		dark    : PropTypes.bool,
+		date    : PropTypes.number.isRequired,
+		onClick : PropTypes.func.isRequired,
+		outside : PropTypes.bool
+	})).isRequired
+};
+
 
 export default React.memo(BigCalendar);

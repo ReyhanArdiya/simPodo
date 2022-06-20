@@ -7,6 +7,8 @@
 	"extends": [
 		"eslint:recommended",
 		"plugin:jsdoc/recommended",
+		"plugin:jest/recommended",
+		"plugin:storybook/recommended",
 		"next/core-web-vitals"
 	],
 	"root": true,
@@ -17,7 +19,7 @@
 			"modules": true
 		}
 	},
-	"plugins": ["jsdoc", "jest"],
+	"plugins": ["jsdoc", "jest", "storybook"],
 	"rules": {
 		"array-bracket-spacing": ["warn", "always"],
 		"array-element-newline": ["warn", "consistent"],
@@ -249,7 +251,7 @@
 				"asyncArrow": "always"
 			}
 		],
-		"sort-keys": ["warn", "asc", { "natural": true }],
+		"sort-keys": ["off", "asc", { "natural": true }],
 		"space-in-parens": ["warn", "never"],
 		"space-infix-ops": "warn",
 		"space-unary-ops": ["warn", { "words": true }],

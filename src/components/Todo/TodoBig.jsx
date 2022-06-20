@@ -19,6 +19,7 @@ const Detail = styled.textarea`
     resize: none;
     padding: 0.75em 0.9166666666666666em 1.25em 0.9166666666666666em;
     color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[2] : theme.colors.light.UI[7]};
+	flex-grow: 1;
 
     ::-webkit-scrollbar {
         width: 0.5em;

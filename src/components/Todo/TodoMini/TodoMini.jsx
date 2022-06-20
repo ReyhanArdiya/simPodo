@@ -76,6 +76,7 @@ const TodoMini = ({
 			/>
 			<Tag
 				color={tagColor}
+				edit={edit}
 				onClick={onTagClick}
 			>
 				{tagName}

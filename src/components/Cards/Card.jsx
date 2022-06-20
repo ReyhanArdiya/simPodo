@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const Card = styled.div`
     align-items: center;
@@ -9,5 +10,8 @@ const Card = styled.div`
     ${({ theme }) => theme.effects.borderRadius}
     position: relative;
 `;
+
+Card.defaultProps = { dark : false, };
+Card.propTypes = { dark : PropTypes.bool };
 
 export default Card;
