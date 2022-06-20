@@ -3,13 +3,13 @@ import styled from "styled-components";
 import BGrow from "./BouncyGrow";
 import BMove from "./BouncyMove";
 import BThrob from "./BouncyThrob";
-import type { Meta, StoryFn } from "@storybook/react";
+import type { Meta as Met, StoryFn } from "@storybook/react";
 
 interface Args {
 	transitionKey?: unknown;
 }
 
-const Meta: Meta<Args> = {
+const Meta: Met<Args> = {
 	args : {
 		transitionKey : false
 	}
