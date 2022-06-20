@@ -24,6 +24,7 @@ const Meta = {
 		},
 		onClick : { action : "dayDate" }
 	},
+	parameters : { jest : [ "BigCalendar" ] }
 };
 
 const Template = args => {
