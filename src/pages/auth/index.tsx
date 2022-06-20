@@ -1,7 +1,8 @@
-/**
- * @type {import("next").GetServerSideProps}
- */
-export const getServerSideProps = ({ resolvedUrl }) => {
+import { GetServerSideProps } from "next";
+
+export const getServerSideProps: GetServerSideProps = async (
+	{ resolvedUrl }
+) => {
 	return {
 		redirect : {
 			destination : `${resolvedUrl}/credentials?mode=login`,
