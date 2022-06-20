@@ -205,12 +205,7 @@
 		"no-useless-rename": "warn",
 		"no-var": "error",
 		"no-whitespace-before-property": "error",
-		"object-curly-newline": [
-			"warn",
-			{
-				"multiline": true
-			}
-		],
+		"object-curly-newline": ["warn", "always"],
 		"object-curly-spacing": ["warn", "always"],
 		"object-property-newline": "error",
 		"operator-linebreak": ["warn", "after"],
