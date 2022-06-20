@@ -1,7 +1,7 @@
 import { ThemeProvider } from "styled-components";
 import theme from "../styles/theme";
 
-const MockTheme = ({ children }) => {
+const MockTheme = ({ children }: {children: JSX.Element}) => {
 	return (
 		<ThemeProvider theme={theme}>
 			{children}
