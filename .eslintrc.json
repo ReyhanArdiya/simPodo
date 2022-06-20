@@ -205,7 +205,24 @@
 		"no-useless-rename": "warn",
 		"no-var": "error",
 		"no-whitespace-before-property": "error",
-		"object-curly-newline": ["warn", "always"],
+		"object-curly-newline": [
+			"warn",
+			{
+				"ObjectExpression": {
+					"multiline": true,
+					"consistent": true
+				},
+				"ObjectPattern": {
+					"multiline": true,
+					"consistent": true
+				},
+				"ImportDeclaration": "never",
+				"ExportDeclaration": {
+					"multiline": true,
+					"consistent": true
+				}
+			}
+		],
 		"object-curly-spacing": ["warn", "always"],
 		"object-property-newline": "error",
 		"operator-linebreak": ["warn", "after"],
