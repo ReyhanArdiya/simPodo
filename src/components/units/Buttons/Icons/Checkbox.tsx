@@ -2,7 +2,10 @@ import { faCheckSquare } from "@fortawesome/free-solid-svg-icons";
 import styled, { css } from "styled-components";
 import IconButton from "./IconButton";
 
-const Checkbox = styled(IconButton).attrs({ icon : faCheckSquare })`
+const Checkbox = styled(IconButton).attrs({ icon : faCheckSquare })<{
+	edit?: boolean;
+	dark?: boolean;
+}>`
 	color: ${({ edit, dark, theme }) => {
 		if (edit) {
 			return css`

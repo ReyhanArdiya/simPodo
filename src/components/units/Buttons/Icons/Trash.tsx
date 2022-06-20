@@ -4,8 +4,11 @@ import IconButton from "./IconButton";
 
 const Trash = styled(IconButton).attrs({
 	fixedWidth : true,
-	icon       : faTrash,
-})`
+	icon       : faTrash
+})<{
+	edit: boolean;
+	dark: boolean;
+}>`
 	color: ${({ edit, dark, theme }) => {
 		if (edit) {
 			return css`
