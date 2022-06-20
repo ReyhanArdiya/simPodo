@@ -1,23 +1,25 @@
-import React, { useState } from "react";
+import React, { MouseEventHandler, useState } from "react";
 import { CSSTransition } from "react-transition-group";
+import { CSSTransitionProps } from "react-transition-group/CSSTransition";
 import baseTransitionMs from "../../../styles/global/base-transition-ms";
 
 /**
  * Activate `bouncyMove[Left | Right]` animation on enter and exit.
- *
- * @param {{children: any, onClick: (e: Event) => void, direction?: "left" | "right", CSSTransitionOpts?: any}} props
- *
- * @returns
  */
 const BouncyMove = ({
 	children,
 	onClick,
 	direction = "left",
-	CSSTransitionOpts = {}
+	CSSTransitionOpts,
+}: {
+	children: any;
+	onClick: MouseEventHandler;
+	direction?: "left" | "right";
+	CSSTransitionOpts?: CSSTransitionProps;
 }) => {
 	const [ isClicked, setIsClicked ] = useState(false);
 
-	const onClickHandler = e => {
+	const onClickHandler = (e: React.MouseEvent<Element, MouseEvent>) => {
 		setIsClicked(true);
 		onClick(e);
 	};
