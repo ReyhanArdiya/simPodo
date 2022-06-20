@@ -1,12 +1,6 @@
-import React, {
-	MouseEventHandler, useState
-} from "react";
-import {
-	CSSTransition
-} from "react-transition-group";
-import {
-	CSSTransitionProps
-} from "react-transition-group/CSSTransition";
+import React, { MouseEventHandler, useState } from "react";
+import { CSSTransition } from "react-transition-group";
+import { CSSTransitionProps } from "react-transition-group/CSSTransition";
 import baseTransitionMs from "../../../styles/global/base-transition-ms";
 
 /**
