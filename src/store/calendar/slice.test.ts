@@ -2,7 +2,7 @@ import calendarSlice from "./slice";
 
 const { getInitialState, actions, reducer } = calendarSlice;
 
-const deepClone = obj => JSON.parse(JSON.stringify(obj));
+const deepClone = (obj: object) => JSON.parse(JSON.stringify(obj));
 
 describe("Calendar slice", () => {
 	const expectedState = {
@@ -17,7 +17,7 @@ describe("Calendar slice", () => {
 		}
 	};
 
-	let initialState;
+	let initialState: ReturnType<typeof deepClone>;
 	beforeEach(() => {
 		initialState = deepClone(getInitialState());
 	});
