@@ -19,6 +19,14 @@
 			"modules": true
 		}
 	},
+	"overrides": [
+		{
+			"files": ["*.ts", "*.tsx"],
+			"rules": {
+				"no-undef": "off"
+			}
+		}
+	],
 	"plugins": ["jsdoc", "jest", "storybook"],
 	"rules": {
 		"array-bracket-spacing": ["warn", "always"],
