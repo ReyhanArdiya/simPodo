@@ -8,6 +8,7 @@
 # testing
 /coverage
 **/develop.jsx
+.jest-test-results.json
 
 # next.js
 /.next/
