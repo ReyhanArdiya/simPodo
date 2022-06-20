@@ -223,6 +223,7 @@
 				}
 			}
 		],
+		"@typescript-eslint/no-redeclare": ["error"],
 		"object-curly-spacing": ["warn", "always"],
 		"object-property-newline": "error",
 		"operator-linebreak": ["warn", "after"],
