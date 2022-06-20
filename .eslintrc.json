@@ -91,10 +91,10 @@
 				"checkConstructors": false
 			}
 		],
-		"jsdoc/require-param": "warn",
+		"jsdoc/require-param": "off",
 		"jsdoc/require-param-description": "off",
 		"jsdoc/require-param-name": "warn",
-		"jsdoc/require-param-type": "warn",
+		"jsdoc/require-param-type": "off",
 		"jsdoc/require-property": "warn",
 		"jsdoc/require-property-description": "off",
 		"jsdoc/require-property-name": "warn",
