@@ -3,6 +3,8 @@ import theme from "../src/styles/theme";
 import { makeStore } from "../src/store";
 import GlobalStyle from "../src/styles/global";
 import { Provider } from "react-redux";
+import { withTests } from "@storybook/addon-jest";
+import results from "../.jest-test-results.json";
 
 export const parameters = {
 	actions: { argTypesRegex: "^on[A-Z].*" },
@@ -44,5 +46,13 @@ export const decorators = [
 				<Story />
 			</ThemeProvider>
 		</Provider>
-	)
+	),
+	Story => (
+		<Provider store={makeStore()}>
+			<Story />
+		</Provider>
+	),
+	withTests({
+		results
+	})
 ];
