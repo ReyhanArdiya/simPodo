@@ -9,7 +9,9 @@
 		"plugin:jsdoc/recommended",
 		"plugin:jest/recommended",
 		"plugin:storybook/recommended",
-		"next/core-web-vitals"
+		"next/core-web-vitals",
+		"plugin:@typescript-eslint/eslint-recommended",
+		"plugin:@typescript-eslint/recommended"
 	],
 	"root": true,
 	"parserOptions": {
@@ -27,7 +29,7 @@
 			}
 		}
 	],
-	"plugins": ["jsdoc", "jest", "storybook"],
+	"plugins": ["jsdoc", "jest", "storybook", "@typescript-eslint"],
 	"rules": {
 		"array-bracket-spacing": ["warn", "always"],
 		"array-element-newline": ["warn", "consistent"],
