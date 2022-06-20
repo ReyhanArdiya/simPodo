@@ -10,6 +10,8 @@ config.autoAddCss = false; // Tell Font Awesome to skip adding the CSS automatic
 
 
 const MyApp = ({ Component, pageProps }) => {
+	const getLayout = Component.getLayout || (page => page);
+
 	return (
 		<ThemeProvider theme={theme}>
 			<GlobalStyle/>
@@ -20,7 +22,7 @@ const MyApp = ({ Component, pageProps }) => {
 				/>
 				<title>simPodo</title>
 			</Head>
-			<Component {...pageProps} />
+			{getLayout(<Component {...pageProps} />)}
 		</ThemeProvider>
 	);
 };
