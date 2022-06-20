@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import MockTheme from "../../tests/MockTheme";
+import MockTheme from "../../../tests/MockTheme";
 import ButtonSm from "./ButtonSm";
 
 describe("ButtonSm", () => {

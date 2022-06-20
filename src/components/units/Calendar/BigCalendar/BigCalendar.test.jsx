@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import MockTheme from "../../../tests/MockTheme";
+import MockTheme from "../../../../tests/MockTheme";
 import BigCalendar from "./BigCalendar";
 
 const getDateElements = dates => {

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { CSSTransition } from "react-transition-group";
-import baseTransitionMs from "../../styles/global/base-transition-ms";
+import baseTransitionMs from "../../../styles/global/base-transition-ms";
 
 /**
  * Activate bouncyThrob animation on hover and click.

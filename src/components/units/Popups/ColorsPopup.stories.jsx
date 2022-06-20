@@ -1,5 +1,5 @@
 import { action } from "@storybook/addon-actions";
-import theme from "../../styles/theme";
+import theme from "../../../styles/theme";
 import ColorsPopupComponent from "./ColorsPopup";
 
 /** @type {import("@storybook/react").Meta} */

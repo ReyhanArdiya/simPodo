@@ -1,5 +1,5 @@
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import baseTransitionMs from "../../styles/global/base-transition-ms";
+import baseTransitionMs from "../../../styles/global/base-transition-ms";
 
 /**
  * Activate bouncyGrow animation on appear. You can also pass children and different
