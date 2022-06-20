@@ -46,6 +46,7 @@
 		"@types/react-transition-group": "^4.4.4",
 		"@types/styled-components": "^5.1.25",
 		"babel-loader": "^8.2.5",
+		"@types/yargs": "^17.0.10",
 		"eslint": "8.16.0",
 		"eslint-config-next": "12.1.6",
 		"eslint-plugin-jest": "^26.5.3",
