@@ -2,6 +2,7 @@ import styled, { css, keyframes } from "styled-components";
 import Input from "./Input";
 import { v4 as uuidv4 } from "uuid";
 import { CSSTransition } from "react-transition-group";
+import type { InputHTMLAttributes } from "react";
 
 const shakeEm = 1;
 
@@ -45,7 +46,17 @@ const Container = styled.div`
 
 const outlineWidth = 3;
 
-const BorderedInput = styled(Input)`
+interface BorderedInputProps {
+	colors?: {
+		error: string;
+		valid: string;
+	};
+	dark?: boolean;
+	hasError?: boolean;
+	valid?: boolean;
+}
+
+const BorderedInput = styled(Input)<BorderedInputProps>`
 	${({ colors, hasError, dark, theme, valid }) => {
 		if (valid) {
 			return css`
@@ -65,7 +76,7 @@ const BorderedInput = styled(Input)`
 	outline-offset: -${outlineWidth}px;
 `;
 
-const ErrorMsg = styled.label`
+const ErrorMsg = styled.label<{dark?: boolean}>`
 	font: 500 1.6em "Inter", sans-serif;
 	text-align: left;
 
@@ -80,20 +91,18 @@ const ErrorMsg = styled.label`
 	}};
 `;
 
-/**
- * SemanticInput
- *
- * @typedef {import("react").InputHTMLAttributes & {errorMsg?: ?string, dark?: boolean, valid?: boolean, colors?: {error: string, valid: string}}} SemanticInput
- */
+interface SemanticInputProps extends InputHTMLAttributes<HTMLInputElement> {
+	errorMsg?: string;
+	dark?: boolean;
+	valid?: boolean;
+	colors?: {
+		error: string;
+		valid: string;
+	};
+}
 
-/**
- *
- * @param {SemanticInput} props
- *
- * @returns
- */
-const SemanticInput = props => {
-	const { valid, id = uuidv4() } = props;
+const SemanticInput = (props: SemanticInputProps) => {
+	const { valid, id = uuidv4(), ...borderedInputProps } = props;
 
 	return (
 		<CSSTransition
@@ -101,15 +110,13 @@ const SemanticInput = props => {
 			in={!!props.errorMsg}
 			timeout={animationMs}
 		>
-			<Container
-				dark={props.dark}
-				valid={valid}
-			>
+			<Container>
 				<BorderedInput
-					{...props}
+					as="input"
+					{...borderedInputProps}
 					colors={props.colors}
 					dark={props.dark}
-					hasError={props.errorMsg}
+					hasError={!!props.errorMsg}
 					id={id}
 					valid={valid}
 				/>
