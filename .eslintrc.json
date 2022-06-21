@@ -32,6 +32,7 @@
 	"plugins": ["jsdoc", "jest", "storybook", "@typescript-eslint"],
 	"rules": {
 		"@typescript-eslint/no-non-null-assertion": "off",
+		"@typescript-eslint/member-delimiter-style": "warn",
 		"array-bracket-spacing": ["warn", "always"],
 		"array-element-newline": ["warn", "consistent"],
 		// "arrow-body-style": ["error", "as-needed"],
