@@ -2,10 +2,10 @@ import styled, { css } from "styled-components";
 import BouncyThrob from "../../Animations/BouncyThrob";
 import Card from "../../Cards/Card";
 
-const Container = styled(Card)`
+const Container = styled(Card)<{ active?: boolean; dark?: boolean }>`
 	display: flex;
 	flex-direction: column;
-    position: relative;
+	position: relative;
 
 	${({ dark, theme }) => !dark && theme.effects.boxShadows[1]}
 
@@ -52,7 +52,7 @@ const Container = styled(Card)`
 	}
 `;
 
-const Day = styled.p`
+const Day = styled.p<{ active?: boolean; dark?: boolean }>`
 	color: ${({ active, dark, theme }) => {
 		if (active) {
 			return "inherit";
@@ -76,28 +76,41 @@ const Date = styled(Day)`
 	}};
 `;
 
-const DateCard = ({ onClick, day, date, active = false, dark = false }) => {
-	day = day.slice(0, 3);
-	date = date < 10 ? `0${date}` : date;
+export interface DateCardProps {
+	active?: boolean;
+	dark?: boolean;
+	date: number;
+	day: string;
+	onClick(day?: string, date?: number): void;
+}
+
+const DateCard = ({
+	onClick,
+	day,
+	date,
+	active = false,
+	dark = false
+}: DateCardProps) => {
+	const slicedDay = day.slice(0, 3);
+	const newDate = date < 10 ? `0${date}` : date;
 
 	return (
 		<BouncyThrob onClick={onClick}>
 			<Container
 				active={active}
 				dark={dark}
-				onClick={onClick}
 			>
 				<Day
 					active={active}
 					dark={dark}
 				>
-					{day}
+					{slicedDay}
 				</Day>
 				<Date
 					active={active}
 					dark={dark}
 				>
-					{date}
+					{newDate}
 				</Date>
 			</Container>
 		</BouncyThrob>

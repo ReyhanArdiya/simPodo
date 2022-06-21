@@ -4,17 +4,13 @@ import baseTransitionMs from "../../../styles/global/base-transition-ms";
 
 /**
  * Activate bouncyThrob animation on hover and click.
- *
- * @param {{children: any, onClick: EventListener}} props
- *
- * @returns
  */
 const BouncyThrob = ({
 	children,
 	onClick
 }: {
 	children: JSX.Element;
-	onClick: MouseEventHandler;
+	onClick: MouseEventHandler | (() => void);
 }) => {
 	const [ animate, setAnimate ] = useState(false);
 

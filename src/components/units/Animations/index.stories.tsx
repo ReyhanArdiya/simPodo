@@ -22,7 +22,7 @@ const RedBlock = styled.div`
 	cursor: pointer;
 `;
 
-export const Default: StoryFn = RedBlock;
+export const Default = RedBlock;
 
 export const BouncyGrow: StoryFn = (args: Args) => {
 	const [ animate, setAnimate ] = useState(args.transitionKey);

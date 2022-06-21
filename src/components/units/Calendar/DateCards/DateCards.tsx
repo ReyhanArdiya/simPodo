@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import DateCard from "./DateCard";
+import DateCard, { DateCardProps } from "./DateCard";
 import styled from "styled-components";
 import React from "react";
 
@@ -22,14 +22,16 @@ const Container = styled.div`
 const DateCards = ({
 	dates = [
 		{
-			active  : false,
-			dark    : false,
-			date    : 1,
-			day     : "monday",
-			onClick : (day = "monday", date = 0) => console.log(day, date)
+			active : false,
+			dark   : false,
+			date   : 1,
+			day    : "monday",
+			onClick(day = "monday", date = 0) {
+				console.log(day, date);
+			}
 		}
 	]
-}) => {
+}: {dates: DateCardProps[]}) => {
 	const dateCards = dates.map(({ active, day, date, onClick, dark }) => {
 		return (
 			<DateCard
