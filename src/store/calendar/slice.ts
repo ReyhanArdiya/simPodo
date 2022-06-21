@@ -20,28 +20,25 @@ const calendarSlice = createSlice({
 		) => {
 			state.selectedDate.date = newSelectedDate;
 		},
-		selectMonth : (
-			state,
-			{ payload: newSelectedMonth }: { payload: number }
-		) => {
+		selectMonth(state, { payload: newSelectedMonth }: { payload: number }) {
 			state.selectedDate.monthIndex = newSelectedMonth;
 		},
-		setDaysInMonth : (
+		setDaysInMonth(
 			state,
 			{ payload: newDaysInMonth }: { payload: number }
-		) => {
+		) {
 			state.viewDate.daysInMonth = newDaysInMonth;
 		},
-		setViewMonthIndex : (
+		setViewMonthIndex(
 			state,
-			{ payload: newMonthIndex } : { payload: number }
-		) => {
+			{ payload: newMonthIndex }: { payload: number }
+		) {
 			state.viewDate.monthIndex = newMonthIndex;
 		},
-		setViewStartingDayOfWeek : (
+		setViewStartingDayOfWeek(
 			state,
 			{ payload: newStartingDayOfWeek }: { payload: number }
-		) => {
+		) {
 			state.viewDate.startingDayOfWeek = newStartingDayOfWeek;
 		}
 	}
