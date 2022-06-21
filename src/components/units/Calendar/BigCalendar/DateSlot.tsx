@@ -1,8 +1,13 @@
+import type { MouseEventHandler } from "react";
 import styled, { css } from "styled-components";
 
 const transMs = "250ms";
 
-const Container = styled.li`
+const Container = styled.li<{
+	active?: boolean;
+	dark?: boolean;
+	outside?: boolean;
+}>`
     font: 700 1.6em/1.375em "Inter", sans-serif;
 	letter-spacing: -0.02em;
 	text-align: center;
@@ -63,13 +68,21 @@ const Container = styled.li`
 	}}
 `;
 
+export interface DateSlotProps {
+	active?: boolean;
+	children: number;
+	dark?: boolean;
+	onClick: MouseEventHandler;
+	outside?: boolean;
+}
+
 const DateSlot = ({
 	active = false,
 	children: date,
 	dark = false,
 	onClick,
 	outside = false,
-}) => {
+}: DateSlotProps) => {
 	return (
 		<Container
 			active={active}

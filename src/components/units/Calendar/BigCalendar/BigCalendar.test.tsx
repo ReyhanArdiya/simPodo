@@ -2,16 +2,24 @@ import { render, screen } from "@testing-library/react";
 import MockTheme from "../../../../tests/MockTheme";
 import BigCalendar from "./BigCalendar";
 
-const getDateElements = dates => {
+interface Date {
+	active : boolean;
+	dark : boolean;
+	date : number;
+	onClick : jest.Mock;
+	outside : boolean;
+}
+
+const getDateElements = (dates: Date[]) => {
 	return dates.map(({ date }) => {
-		date = date < 10 ? `0${date}` : date;
-		return screen.getByText(date);
+		const newDate = date < 10 ? `0${date}` : date;
+		return screen.getByText(newDate);
 	});
 };
 
 describe("BigCalendar", () => {
 	const numOfDates = 42;
-	const dates = [];
+	const dates: Date[] = [];
 	const mockClick = jest.fn();
 	for (let i = 0; i < numOfDates; i++) {
 		dates.push({

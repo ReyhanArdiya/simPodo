@@ -2,7 +2,10 @@ import styled, { css } from "styled-components";
 
 const transMs = "250ms";
 
-const Container = styled.li`
+const Container = styled.li<{
+	active?: boolean;
+	dark?: boolean;
+}>`
     font: 700 1.6em/1.375em "Inter", sans-serif;
 	letter-spacing: -0.02em;
 	text-align: center;
@@ -27,11 +30,17 @@ const Container = styled.li`
 	}}
 `;
 
+interface DaySlotProps {
+	children: string;
+	active?: boolean;
+	dark?: boolean;
+}
+
 const DaySlot = ({
 	children: day,
 	active = false,
 	dark = false
-}) => {
+}: DaySlotProps) => {
 	return (
 		<Container
 			active={active}

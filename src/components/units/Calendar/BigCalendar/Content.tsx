@@ -25,22 +25,22 @@ const days = [
 	"saturday"
 ];
 
-/**
- *
- * @param {{
- * activeDayI: number,
- * dates: {
- *  active  : false,
- *  dark    : false,
- *  date    : 1,
- *  onClick : (dayI = 0, date = 0) => void,
- *  outside : false
- *}[],
- * dark?: boolean
- *
- * }} props
- */
-const Content = ({ activeDayI = 0, dark = false, dates }) => {
+export interface ContentProps {
+	activeDayI: number;
+
+	/**
+	 * Pass in 42 entries to `dates` to fill the entire calendar.
+	 */
+	dates: {
+		active: boolean;
+		date: number;
+		onClick: (dayI?: number, date?: number) => void;
+		outside: boolean;
+	}[];
+	dark?: boolean;
+}
+
+const Content = ({ activeDayI = 0, dark = false, dates }: ContentProps) => {
 	const daySlots = days.map((day, i) => {
 		return (
 			<DaySlot
@@ -57,9 +57,9 @@ const Content = ({ activeDayI = 0, dark = false, dates }) => {
 	for (let i = 0; i < 42; i++) {
 		dateSlots.push(
 			<DateSlot
+				{...dates[i]}
 				dark={dark}
 				key={i}
-				{...dates[i]}
 				onClick={dates[i]?.onClick.bind(null, i % 7, dates[i].date)}
 			>
 				{dates[i]?.date}
