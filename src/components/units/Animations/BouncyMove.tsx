@@ -1,6 +1,13 @@
-import React, { MouseEventHandler, useState } from "react";
+import React, {
+	Attributes,
+	JSXElementConstructor,
+	MouseEventHandler,
+	ReactElement,
+	ReactNode,
+	useState
+} from "react";
 import { CSSTransition } from "react-transition-group";
-import { CSSTransitionProps } from "react-transition-group/CSSTransition";
+import type { CSSTransitionProps } from "react-transition-group/CSSTransition";
 import baseTransitionMs from "../../../styles/global/base-transition-ms";
 
 /**
@@ -10,9 +17,9 @@ const BouncyMove = ({
 	children,
 	onClick,
 	direction = "left",
-	CSSTransitionOpts,
+	CSSTransitionOpts
 }: {
-	children: JSX.Element;
+	children: ReactNode;
 	onClick: MouseEventHandler;
 	direction?: "left" | "right";
 	CSSTransitionOpts?: CSSTransitionProps;
@@ -32,9 +39,15 @@ const BouncyMove = ({
 			{...CSSTransitionOpts}
 			onEntered={() => setIsClicked(false)}
 		>
-			{React.cloneElement(children, {
-				onClick : onClickHandler
-			})}
+			{React.cloneElement(
+				children as ReactElement<
+					unknown,
+					string | JSXElementConstructor<unknown>
+				>,
+				{
+					onClick : onClickHandler
+				} as Attributes
+			)}
 		</CSSTransition>
 	);
 };

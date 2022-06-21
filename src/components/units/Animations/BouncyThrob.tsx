@@ -1,4 +1,11 @@
-import React, { MouseEventHandler, useState } from "react";
+import React, {
+	Attributes,
+	JSXElementConstructor,
+	MouseEventHandler,
+	ReactElement,
+	ReactNode,
+	useState
+} from "react";
 import { CSSTransition } from "react-transition-group";
 import baseTransitionMs from "../../../styles/global/base-transition-ms";
 
@@ -9,7 +16,7 @@ const BouncyThrob = ({
 	children,
 	onClick
 }: {
-	children: JSX.Element;
+	children: ReactNode;
 	onClick: MouseEventHandler | (() => void);
 }) => {
 	const [ animate, setAnimate ] = useState(false);
@@ -28,10 +35,16 @@ const BouncyThrob = ({
 			onEntered={() => setAnimate(false)}
 			timeout={baseTransitionMs}
 		>
-			{React.cloneElement(children, {
-				onClick      : onClickHandler,
-				onMouseEnter : startAnimation
-			})}
+			{React.cloneElement(
+				children as ReactElement<
+					unknown,
+					string | JSXElementConstructor<unknown>
+				>,
+				{
+					onClick      : onClickHandler,
+					onMouseEnter : startAnimation
+				} as Attributes
+			)}
 		</CSSTransition>
 	);
 };

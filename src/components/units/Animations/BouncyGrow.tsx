@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import baseTransitionMs from "../../../styles/global/base-transition-ms";
 
@@ -9,7 +10,7 @@ const BouncyGrow = ({
 	children,
 	transitionKey
 }: {
-	children: JSX.Element;
+	children: ReactNode;
 	transitionKey: never;
 }) => {
 	return (
