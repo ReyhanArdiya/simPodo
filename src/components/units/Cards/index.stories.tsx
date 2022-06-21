@@ -1,10 +1,14 @@
+import type { Meta, StoryFn } from "@storybook/react";
+import type { CSSProperties } from "react";
 import BlueCard from "./BlueCard";
 import Card from "./Card";
 
-/**
- * @type {import('@storybook/react').Meta}
- */
-const Meta = {
+interface Args {
+	dark?: boolean;
+	style? : CSSProperties;
+}
+
+const meta: Meta<Args> = {
 	argTypes : {
 		dark : {
 			defaultValue : false,
@@ -19,7 +23,7 @@ const Meta = {
 	}
 };
 
-const Template = args => <Card {...args} />;
+const Template : StoryFn<Args> = args => <Card {...args} />;
 
 export const Light = Template.bind({});
 Light.parameters = { backgrounds : { default : "dark", }, };
@@ -28,7 +32,7 @@ Light.args = { dark : false, };
 export const Dark = Template.bind({});
 Dark.args = { dark : true, };
 
-export const Blue = args => <BlueCard {...args} />;
+export const Blue : StoryFn<Args> = args => <BlueCard {...args} />;
 Blue.args = { dark : false, };
 
-export default Meta;
+export default meta;

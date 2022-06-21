@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import PropTypes from "prop-types";
 
-const Card = styled.div`
+const Card = styled.div<{dark?:boolean}>`
     align-items: center;
     display: flex;
     justify-content: center;
@@ -10,8 +9,5 @@ const Card = styled.div`
     ${({ theme }) => theme.effects.borderRadius}
     position: relative;
 `;
-
-Card.defaultProps = { dark : false, };
-Card.propTypes = { dark : PropTypes.bool };
 
 export default Card;
