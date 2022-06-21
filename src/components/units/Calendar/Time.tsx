@@ -2,7 +2,7 @@ import styled from "styled-components";
 import BouncyMove from "../Animations/BouncyMove";
 import ArrowLeft from "../Shapes/Arrows/ArrowLeft";
 import ArrowRight from "../Shapes/Arrows/ArrowRight";
-import React from "react";
+import React, { MouseEventHandler } from "react";
 
 const Container = styled.div`
 	align-items: center;
@@ -19,22 +19,36 @@ const Date = styled.div`
 	flex-direction: column;
 `;
 
-const Month = styled.p`
+const Month = styled.p<{ dark?: boolean }>`
 	color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[6] : theme.colors.light.UI[2]};
 	font: 900 4em/1.15em "Nunito", sans-serif;
 	text-align: center;
 	text-transform: capitalize;
 `;
 
-const Year = styled(Month)`
+const Year = styled(Month)<{ dark?: boolean }>`
 	font-size: 1.5em;
 	color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[5] : theme.colors.light.UI[5]};
 	letter-spacing: -0.02em;
 `;
 
-const Time = ({ month, year, onPrevClick, onNextClick, dark = false }) => {
+interface TimeProps {
+	month: string;
+	year: number;
+	onPrevClick: MouseEventHandler;
+	onNextClick: MouseEventHandler;
+	dark?: boolean;
+}
+
+const Time = ({
+	month,
+	year,
+	onPrevClick,
+	onNextClick,
+	dark = false
+}: TimeProps) => {
 	return (
-		<Container dark={dark}>
+		<Container>
 			<BouncyMove onClick={onPrevClick}>
 				<ArrowLeft dark={dark} />
 			</BouncyMove>
