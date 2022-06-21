@@ -1,18 +1,24 @@
 import styled from "styled-components";
 import BouncyMove from "../Animations/BouncyMove";
-import React from "react";
+import React, { MouseEventHandler } from "react";
 
 const Container = styled.svg.attrs({
 	viewBox : "0 0 20 16",
 	xmlns   : "http://www.w3.org/2000/svg"
-})`
+})<{ dark: boolean }>`
 	fill: ${({ dark, theme }) => dark ? theme.colors.dark.UI[5] : theme.colors.light.UI[6]};
 	max-height: 1.563em;
 	max-width: 1.947em;
 	${({ theme }) => theme.effects.hoverClick}
 `;
 
-const LeftArrowButt = ({ onClick, dark = false }) => {
+const LeftArrowButt = ({
+	onClick,
+	dark = false
+}: {
+	onClick: MouseEventHandler;
+	dark?: boolean;
+}) => {
 	return (
 		<BouncyMove onClick={onClick}>
 			<Container dark={dark}>

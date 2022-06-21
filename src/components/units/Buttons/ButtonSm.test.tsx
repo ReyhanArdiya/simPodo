@@ -19,7 +19,7 @@ describe("ButtonSm", () => {
 	it("can have different text", () => {
 		render(
 			<MockTheme>
-				<ButtonSm>Hello</ButtonSm>
+				<ButtonSm onClick={() => null}>Hello</ButtonSm>
 			</MockTheme>
 		);
 		expect(screen.getByRole("button")).toHaveTextContent("Hello");

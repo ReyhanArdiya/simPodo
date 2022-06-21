@@ -1,6 +1,6 @@
 import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { MouseEvent, MouseEventHandler, useState } from "react";
 import styled from "styled-components";
 import BouncyGrow from "../Animations/BouncyGrow";
 
@@ -33,10 +33,13 @@ const Moon = styled(FontAwesomeIcon).attrs({ icon : faMoon })`
 	${({ theme }) => theme.effects.hoverClick}
 `;
 
-const ThemeToggler = ({ onClick = e => console.log(e), dark = false }) => {
+const ThemeToggler = ({ onClick, dark = false }: {
+	onClick: MouseEventHandler;
+	dark?: boolean;
+}) => {
 	const [ showDark, setShowDark ] = useState(dark);
 
-	const onIconClick = e => {
+	const onIconClick = (e: MouseEvent) => {
 		setShowDark(showDark => !showDark);
 		onClick(e);
 	};
@@ -44,7 +47,7 @@ const ThemeToggler = ({ onClick = e => console.log(e), dark = false }) => {
 	return (
 		<Container>
 			<BouncyGrow
-				transitionKey={showDark}
+				transitionKey={showDark as never}
 			>
 				{showDark ?
 					<Moon
