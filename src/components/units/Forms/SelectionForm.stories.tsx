@@ -1,8 +1,21 @@
 import SelectionFormComponent from "./SelectionForm";
-import { action } from "@storybook/addon-actions";
+import { action, HandlerFunction } from "@storybook/addon-actions";
+import type { Meta, StoryFn } from "@storybook/react";
 
-/** @type {import("@storybook/react").Meta} */
-const Meta = {
+interface Args {
+	button1: {
+		text: string;
+		onClick: HandlerFunction;
+	};
+	button2: {
+		text: string;
+		onClick: HandlerFunction;
+	};
+	title: string;
+	dark: boolean;
+}
+
+const meta: Meta<Args> = {
 	component : SelectionFormComponent,
 	args      : {
 		button1 : {
@@ -18,14 +31,13 @@ const Meta = {
 	}
 };
 
-const Template = args => <SelectionFormComponent {...args} />;
+const Template: StoryFn<Args> = args => <SelectionFormComponent {...args} />;
 export const Default = Template.bind({});
 
 export const Light = Template.bind({});
-Light.args = { dark : false, };
+Light.args = { dark : false };
 
 export const Dark = Template.bind({});
-Dark.args = { dark : true, };
+Dark.args = { dark : true };
 
-
-export default Meta;
+export default meta;

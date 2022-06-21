@@ -1,8 +1,15 @@
-import { action } from "@storybook/addon-actions";
-import SingleInputFormComponent from "./SingleInputForm";
+import { action, HandlerFunction } from "@storybook/addon-actions";
+import type { Meta, StoryFn } from "@storybook/react";
+import SingleInputFormComponent, { SingleInputFormProps } from "./SingleInputForm";
 
-/** @type {import("@storybook/react").Meta} */
-const Meta = {
+interface Args {
+	title?: string;
+	onSubmit?: HandlerFunction;
+	buttonText?: string;
+	dark?: boolean;
+}
+
+const meta: Meta<Args> = {
 	component : SingleInputFormComponent,
 	args      : {
 		title      : "Enter New Username",
@@ -12,9 +19,11 @@ const Meta = {
 	}
 };
 
-const Template = args => <SingleInputFormComponent {...args} />;
-
+const Template: StoryFn<
+	Args & SingleInputFormProps
+	> = args => {
+		return <SingleInputFormComponent {...args} />;
+	};
 export const SingleInputForm = Template.bind({});
 
-
-export default Meta;
+export default meta;

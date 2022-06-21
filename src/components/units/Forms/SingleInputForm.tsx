@@ -1,11 +1,11 @@
-import React from "react";
+import React, { FormEvent, FormEventHandler } from "react";
 import styled, { css } from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import ButtonLg from "../Buttons/ButtonLg";
 import FormCard from "./FormCard";
-import SemanticInput from "./Inputs/SemanticInput";
+import SemanticInput, { SemanticInputProps } from "./Inputs/SemanticInput";
 
-const Container = styled(FormCard).attrs({ as : "form" })`
+const Container = styled(FormCard)<{hasError?: boolean}>`
 	gap: 2em;
 	${({ hasError }) => {
 		if (hasError) {
@@ -15,34 +15,29 @@ const Container = styled(FormCard).attrs({ as : "form" })`
 			`;
 		}
 
-		return css`padding: 0 2.8em;`;
+		return css`
+			padding: 0 2.8em;
+		`;
 	}}
 `;
 
-const Label = styled.label`
+const Label = styled.label<{ dark?: boolean }>`
 	color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[2] : theme.colors.light.UI[1]};
 	font: 900 2em "Nunito", sans-serif;
 	text-align: center;
 `;
 
-const SingleInputForm = React.forwardRef(
+export interface SingleInputFormProps {
+	title: string;
+	onSubmit: FormEventHandler;
+	buttonText: string;
+	inputOpts: SemanticInputProps;
+	dark?: boolean;
+}
 
-	/**
-	 *
-	 * @param {{
-	 * 	title: string,
-	 * 	onSubmit: FormEventHandler,
-	 * 	buttonText: string,
-	 * 	inputOpts: import("./Inputs/SemanticInput").SemanticInput,
-	 *	dark?: boolean
-	 * }} props
-	 *
-	 * @param {import("react").ForwardedRef} ref
-	 *
-	 * @returns
-	 */
+const SingleInputForm = React.forwardRef<HTMLFormElement, SingleInputFormProps>(
 	({ title, onSubmit, buttonText, inputOpts, dark = false }, ref) => {
-		const onSubmitHandler = e => {
+		const onSubmitHandler = (e: FormEvent) => {
 			e.preventDefault();
 			onSubmit(e);
 		};
@@ -51,8 +46,8 @@ const SingleInputForm = React.forwardRef(
 
 		return (
 			<Container
-				dark={dark}
-				hasError={inputOpts?.errorMsg}
+				as="form"
+				hasError={!!inputOpts?.errorMsg}
 				onSubmit={onSubmitHandler}
 			>
 				<Label
@@ -62,7 +57,7 @@ const SingleInputForm = React.forwardRef(
 					{title}
 				</Label>
 				<SemanticInput
-					ref={ref}
+					ref={ref as never}
 					type="text"
 					{...inputOpts}
 					colors={{ error : "#c50a5a" }}

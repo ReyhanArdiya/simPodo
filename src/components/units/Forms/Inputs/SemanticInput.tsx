@@ -1,8 +1,8 @@
-import styled, { css, keyframes } from "styled-components";
-import Input from "./Input";
-import { v4 as uuidv4 } from "uuid";
-import { CSSTransition } from "react-transition-group";
 import type { InputHTMLAttributes } from "react";
+import { CSSTransition } from "react-transition-group";
+import styled, { css, keyframes } from "styled-components";
+import { v4 as uuidv4 } from "uuid";
+import Input from "./Input";
 
 const shakeEm = 1;
 
@@ -48,8 +48,8 @@ const outlineWidth = 3;
 
 interface BorderedInputProps {
 	colors?: {
-		error: string;
-		valid: string;
+		error?: string;
+		valid?: string;
 	};
 	dark?: boolean;
 	hasError?: boolean;
@@ -91,14 +91,16 @@ const ErrorMsg = styled.label<{dark?: boolean}>`
 	}};
 `;
 
-interface SemanticInputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface SemanticInputProps
+	extends InputHTMLAttributes<HTMLInputElement> {
 	errorMsg?: string;
 	dark?: boolean;
 	valid?: boolean;
 	colors?: {
-		error: string;
-		valid: string;
+		error?: string;
+		valid?: string;
 	};
+	ref?: never;
 }
 
 const SemanticInput = (props: SemanticInputProps) => {

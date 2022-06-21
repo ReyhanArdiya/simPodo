@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import React, { MouseEventHandler } from "react";
+import React, { ButtonHTMLAttributes, MouseEventHandler } from "react";
 import BouncyThrob from "../Animations/BouncyThrob";
 import PropTypes from "prop-types";
 
@@ -97,13 +97,13 @@ const ButtonSm = ({
 	dark = false
 }: {
 		children?: string;
-		onClick: MouseEventHandler;
+		onClick?: MouseEventHandler;
 		className?: string;
-		type?: "button";
+		type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
 		dark?: boolean;
 }) => {
 	return (
-		<BouncyThrob onClick={onClick}>
+		<BouncyThrob onClick={onClick!}>
 			<Button
 				className={className}
 				dark={dark}

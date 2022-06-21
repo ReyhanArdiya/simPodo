@@ -1,37 +1,45 @@
+import type { MouseEventHandler } from "react";
 import styled from "styled-components";
 import ButtonLg from "../Buttons/ButtonLg";
 import FormCard from "./FormCard";
 
 const Container = styled(FormCard)`
-    padding: 0 3.1em;
-    row-gap: 3em;
+	padding: 0 3.1em;
+	row-gap: 3em;
 `;
 
-const Title = styled.p`
+const Title = styled.p<{ dark?: boolean }>`
 	color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[2] : theme.colors.light.UI[1]};
-    font: 900 3.6em "Nunito", sans-serif;
+	font: 900 3.6em "Nunito", sans-serif;
 `;
 
 const Actions = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    column-gap: 4.5em;
-    width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	column-gap: 4.5em;
+	width: 100%;
 `;
 
-/**
- *
- * @param {{
- *  title: string,
- *  button1: {text: string, onClick: (e) => void},
- *  button2: {text: string, onClick: (e) => void},
- *  dark? : boolean
- * }} props
- *
- * @returns
- */
-const SelectionForm = ({ title, button1, button2, dark = false }) => {
+interface SelectionFormProps {
+	title: string;
+	button1: {
+		text: string;
+		onClick: MouseEventHandler;
+	};
+	button2: {
+		text: string;
+		onClick: MouseEventHandler;
+	};
+	dark?: boolean;
+}
+
+const SelectionForm = ({
+	title,
+	button1,
+	button2,
+	dark = false
+}: SelectionFormProps) => {
 	return (
 		<Container dark={dark}>
 			<Title dark={dark}>{title}</Title>
