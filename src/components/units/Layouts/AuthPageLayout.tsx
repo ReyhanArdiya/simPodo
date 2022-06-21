@@ -1,8 +1,9 @@
+import type { ReactNode } from "react";
 import styled from "styled-components";
 import BlueCard from "../Cards/BlueCard";
 import GradientRect from "../Shapes/GradientRect";
 
-const Container = styled(BlueCard).attrs({ as : "section" })`
+const Container = styled(BlueCard)`
     display: flex;
     width: 100vw;
     height: 100vh;
@@ -28,9 +29,9 @@ const GR3 = styled(StyledGradientRect)`
     right: 0;
 `;
 
-const AuthPageLayout = ({ children }) => {
+const AuthPageLayout = ({ children }: {children: ReactNode}) => {
 	return (
-		<Container>
+		<Container as="section">
 			<GR1 />
 			<GR2 />
 			<GR3 />
