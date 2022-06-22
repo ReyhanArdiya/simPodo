@@ -65,10 +65,7 @@ const SingleInputForm = React.forwardRef<HTMLFormElement, SingleInputFormProps>(
 					id={inputId}
 					title={title}
 				/>
-				<ButtonLg
-					dark={dark}
-					type="submit"
-				>
+				<ButtonLg dark={dark} onClick={() => null} type="submit">
 					{buttonText}
 				</ButtonLg>
 			</Container>
