@@ -154,7 +154,7 @@
 		"no-extra-parens": [
 			"warn",
 			"all",
-			{ "nestedBinaryExpressions": false }
+			{ "nestedBinaryExpressions": false, "ignoreJSX": "multi-line" }
 		],
 		"no-fallthrough": "off",
 		"no-implicit-globals": "error",
