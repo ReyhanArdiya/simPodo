@@ -49,8 +49,20 @@ const Time = ({
 }: TimeProps) => {
 	return (
 		<Container>
-			<BouncyMove onClick={onPrevClick}>
-				<ArrowLeft dark={dark} />
+			<BouncyMove
+				direction="left"
+			>
+				{startAnimation => {
+					return (
+						<ArrowLeft
+							dark={dark}
+							onClick={e => {
+								onPrevClick(e);
+								startAnimation();
+							}}
+						/>
+					);
+				}}
 			</BouncyMove>
 			<Date>
 				<Month>{month.slice(0, 3)}</Month>
@@ -58,9 +70,18 @@ const Time = ({
 			</Date>
 			<BouncyMove
 				direction="right"
-				onClick={onNextClick}
 			>
-				<ArrowRight dark={dark} />
+				{startAnimation => {
+					return (
+						<ArrowRight
+							dark={dark}
+							onClick={e => {
+								onNextClick(e);
+								startAnimation();
+							}}
+						/>
+					);
+				}}
 			</BouncyMove>
 		</Container>
 	);

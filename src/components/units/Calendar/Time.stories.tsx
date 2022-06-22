@@ -26,7 +26,7 @@ const meta: Meta<Args> = {
 	}
 };
 
-const Template : StoryFn<Args> = args => <TimeComp {...args} />;
+const Template: StoryFn<Args> = args => <TimeComp {...args} />;
 
 export const Time = Template.bind({});
 
