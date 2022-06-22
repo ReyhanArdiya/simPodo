@@ -1,9 +1,20 @@
+import type { HandlerFunction } from "@storybook/addon-actions";
+import type { Meta, StoryFn } from "@storybook/react";
 import BigCalendar from "./BigCalendar";
 
-/** @type {import("@storybook/react").Meta} */
-const Meta = {
+interface Args {
+	activeDate: number;
+	activeDayI: number;
+	onClick: HandlerFunction;
+	dark: boolean;
+}
+
+const meta: Meta<Args> = {
 	component : BigCalendar,
-	argTypes  : {
+	args      : {
+		dark : false,
+	},
+	argTypes : {
 		activeDate : {
 			type    : "number",
 			control : {
@@ -27,7 +38,7 @@ const Meta = {
 	parameters : { jest : [ "BigCalendar" ] }
 };
 
-const Template = args => {
+const Template: StoryFn<Args> = args => {
 	const dates = Array(42).fill(1).map((_, i) => ({
 		active  : args.activeDate === i + 1,
 		dark    : false,
@@ -42,13 +53,13 @@ const Template = args => {
 	       />;
 };
 
-export const Default = Template.bind({});
+export const Default: StoryFn<Args> = Template.bind({});
 
-export const Light = Template.bind({});
+export const Light: StoryFn<Args> = Template.bind({});
 Light.args = { dark : false };
 
-export const Dark = Template.bind({});
+export const Dark: StoryFn<Args> = Template.bind({});
 Dark.args = { dark : true };
 
 
-export default Meta;
+export default meta;
