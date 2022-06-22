@@ -1,50 +1,32 @@
-import React, {
-	Attributes,
-	JSXElementConstructor,
-	MouseEventHandler,
-	ReactElement,
-	ReactNode,
-	useState
-} from "react";
+import { ReactNode, useState } from "react";
 import { CSSTransition } from "react-transition-group";
+import type { CSSTransitionProps } from "react-transition-group/CSSTransition";
 import baseTransitionMs from "../../../styles/global/base-transition-ms";
+import type { StartAnimation } from "./start-animation.interface";
+
+type BouncyThrobStartAnimation = StartAnimation
+
+interface BouncyThrobProps {
+	CSSTransitionOpts?: CSSTransitionProps;
+	children(startAnimation: BouncyThrobStartAnimation): ReactNode;
+}
 
 /**
- * Activate bouncyThrob animation on hover and click.
+ * `children` as a function receives {@link startAnimation} to animate.
  */
-const BouncyThrob = ({
-	children,
-	onClick
-}: {
-	children: ReactNode;
-	onClick: MouseEventHandler | (() => void);
-}) => {
+const BouncyThrob = ({ CSSTransitionOpts, children }: BouncyThrobProps) => {
 	const [ animate, setAnimate ] = useState(false);
-
 	const startAnimation = () => setAnimate(true);
-
-	const onClickHandler = (e: React.MouseEvent<Element, MouseEvent>) => {
-		startAnimation();
-		onClick(e);
-	};
 
 	return (
 		<CSSTransition
 			classNames="bouncy-throb"
 			in={animate}
-			onEntered={() => setAnimate(false)}
 			timeout={baseTransitionMs}
+			{...CSSTransitionOpts}
+			onEntered={() => setAnimate(false)}
 		>
-			{React.cloneElement(
-				children as ReactElement<
-					unknown,
-					string | JSXElementConstructor<unknown>
-				>,
-				{
-					onClick      : onClickHandler,
-					onMouseEnter : startAnimation
-				} as Attributes
-			)}
+			{children(startAnimation)}
 		</CSSTransition>
 	);
 };

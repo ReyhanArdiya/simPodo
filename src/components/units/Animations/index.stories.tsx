@@ -44,7 +44,7 @@ export const BouncyGrow: StoryFn = (args: Args) => {
 BouncyGrow.parameters = {
 	docs : {
 		description : {
-			story : "Activate bouncyGrow animation on appear. You can also pass children and different transitionKey on each rerender to switch content while doing bouncyGrow animation."
+			story : "Activate bouncyGrow animation on appear. You can also pass different children and transitionKey on each rerender to switch content while doing bouncyGrow animation."
 		}
 	}
 };
@@ -55,7 +55,7 @@ export const BouncyMove = (args: Args & {onClick: MouseEventHandler}) => {
 			<p>Click me!</p>
 
 			<BMove {...args}>
-				<RedBlock />
+				{startAnimation => <RedBlock onClick={startAnimation}/>}
 			</BMove>
 		</>
 	);
@@ -75,7 +75,7 @@ BouncyMove.argTypes = {
 BouncyMove.parameters = {
 	docs : {
 		description : {
-			story : "Activate bouncyMove[Left | Right] animation on enter and exit."
+			story : "`children` as a function receives `startAnimation` that wil activate `bouncyMove[Left | Right]` based on `direction`."
 		}
 	}
 };
@@ -83,14 +83,21 @@ BouncyMove.parameters = {
 export const BouncyThrob = (args: Args & {onClick: MouseEventHandler}) => {
 	return (
 		<BThrob {...args}>
-			<RedBlock />
+			{startAnimation => {
+				return (
+					<RedBlock
+						onClick={startAnimation}
+						onMouseEnter={startAnimation}
+					/>
+				);
+			}}
 		</BThrob>
 	);
 };
 BouncyThrob.parameters = {
 	docs : {
 		description : {
-			story : "Activate bouncyThrob animation on hover and click."
+			story : "`children` as a function receives `startAnimation` to animate."
 		}
 	},
 	actions : {

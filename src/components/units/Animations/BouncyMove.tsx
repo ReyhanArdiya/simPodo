@@ -1,53 +1,38 @@
-import React, {
-	Attributes,
-	JSXElementConstructor,
-	MouseEventHandler,
-	ReactElement,
-	ReactNode,
-	useState
-} from "react";
+import { ReactNode, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import type { CSSTransitionProps } from "react-transition-group/CSSTransition";
 import baseTransitionMs from "../../../styles/global/base-transition-ms";
+import type { StartAnimation } from "./start-animation.interface";
+
+type BouncyMoveStartAnimation = StartAnimation
+
+interface BouncyMoveProps {
+	CSSTransitionOpts?: CSSTransitionProps;
+	children(startAnimation: BouncyMoveStartAnimation): ReactNode;
+	direction?: "left" | "right";
+}
 
 /**
- * Activate `bouncyMove[Left | Right]` animation on enter and exit.
+ * `children` as a function receives {@link startAnimation} that wil activate
+ * `bouncyMove[Left | Right]` based on `direction`.
  */
 const BouncyMove = ({
+	CSSTransitionOpts,
 	children,
-	onClick,
 	direction = "left",
-	CSSTransitionOpts
-}: {
-	children: ReactNode;
-	onClick: MouseEventHandler;
-	direction?: "left" | "right";
-	CSSTransitionOpts?: CSSTransitionProps;
-}) => {
-	const [ isClicked, setIsClicked ] = useState(false);
-
-	const onClickHandler = (e: React.MouseEvent<Element, MouseEvent>) => {
-		setIsClicked(true);
-		onClick(e);
-	};
+}: BouncyMoveProps) => {
+	const [ animate, setAnimate ] = useState(false);
+	const startAnimation = () => setAnimate(true);
 
 	return (
 		<CSSTransition
 			classNames={`bouncy-move-${direction}`}
-			in={isClicked}
+			in={animate}
 			timeout={baseTransitionMs}
 			{...CSSTransitionOpts}
-			onEntered={() => setIsClicked(false)}
+			onEntered={() => setAnimate(false)}
 		>
-			{React.cloneElement(
-				children as ReactElement<
-					unknown,
-					string | JSXElementConstructor<unknown>
-				>,
-				{
-					onClick : onClickHandler
-				} as Attributes
-			)}
+			{children(startAnimation)}
 		</CSSTransition>
 	);
 };
