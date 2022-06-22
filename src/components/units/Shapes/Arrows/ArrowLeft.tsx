@@ -1,6 +1,7 @@
 import styled from "styled-components";
+import type { ArrowProps } from "./arrow-props.interface";
 
-const Container = styled.svg.attrs({
+const Container = styled.svg.attrs < { dark: boolean } >({
 	viewBox : "0 0 10 14",
 	xmlns   : "http://www.w3.org/2000/svg"
 })`
@@ -17,7 +18,7 @@ const Path = styled.path.attrs({ d : "M8 12L3 7L8 2" })`
 	stroke-width: 0.3em;
 `;
 
-const ArrowLeft = ({ onClick, className = "", dark = false }) => {
+const ArrowLeft = ({ onClick, className = "", dark = false }: ArrowProps) => {
 	return (
 		<Container
 			className={className}

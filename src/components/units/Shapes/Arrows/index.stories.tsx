@@ -1,10 +1,16 @@
-import { action } from "@storybook/addon-actions";
+import { action, HandlerFunction } from "@storybook/addon-actions";
+import type { Meta, StoryFn } from "@storybook/react";
 import ArrowDown from "./ArrowDown";
 import ArrowLeft from "./ArrowLeft";
 import ArrowRight from "./ArrowRight";
 
-/** @type {import("@storybook/react").Meta} */
-const Meta = {
+interface Args {
+	dark: boolean;
+	onClick: HandlerFunction;
+	direction: string;
+}
+
+const meta: Meta<Args> = {
 	args : {
 		dark    : false,
 		onClick : action("Clicked"),
@@ -20,16 +26,17 @@ const Meta = {
 	}
 };
 
-export const Arrows = ({ direction, ...args }) => {
+export const Arrows: StoryFn<Args> = ({ direction, ...args }) => {
 	switch (direction) {
-		case "left" :
-			return <ArrowLeft {...args} />;
-		case "right" :
-			return <ArrowRight {...args} />;
 		case "down" :
 			return <ArrowDown {...args} />;
+		case "right" :
+			return <ArrowRight {...args} />;
+		case "left" :
+		default :
+			return <ArrowLeft {...args} />;
 	}
 };
 
 
-export default Meta;
+export default meta;
