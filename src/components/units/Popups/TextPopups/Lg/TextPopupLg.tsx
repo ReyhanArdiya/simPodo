@@ -2,35 +2,29 @@ import styled from "styled-components";
 import Card from "../../../Cards/Card";
 import TextSelectionLg from "./TextSelectionLg";
 import { v4 as uuidv4 } from "uuid";
+import type { MouseEventHandler } from "react";
 
-const Container = styled(Card).attrs({ as : "ul" })`
+const Container = styled(Card)`
 	flex-direction: column;
-    ${({ dark, theme }) => !dark && theme.effects.boxShadows[1]}
-    background-color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[3] : theme.colors.light.UI[1]};
+	${({ dark, theme }) => !dark && theme.effects.boxShadows[1]}
+	background-color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[3] : theme.colors.light.UI[1]};
 	border-radius: 0.9em;
 `;
 
-/**
- *
- * @param {{
- * text: {
- * 	backgroundColor: string,
- * 	text: string,
- * 	onClick: (e) => void,
- * 	active?: boolean,
- * }[],
- * dark: boolean,
- * className?: string
- * }} props
- *
- * @returns
- */
-const TextPopupLg = ({ text, className = "", dark = false }) => {
+interface TextPopupLgProps {
+	text: {
+		backgroundColor: string;
+		text: string;
+		onClick: MouseEventHandler;
+		active?: boolean;
+	}[];
+	dark: boolean;
+	className?: string;
+}
+
+const TextPopupLg = ({ text, className = "", dark = false }: TextPopupLgProps) => {
 	return (
-		<Container
-			className={className}
-			dark={dark}
-		>
+		<Container as="ul" className={className} dark={dark}>
 			{text.map(({ backgroundColor, text, onClick, active }) => {
 				return (
 					<TextSelectionLg

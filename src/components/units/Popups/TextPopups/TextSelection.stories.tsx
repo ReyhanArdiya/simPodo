@@ -1,9 +1,19 @@
+import { action, HandlerFunction } from "@storybook/addon-actions";
+import type { Meta, StoryFn } from "@storybook/react";
 import TextSelectionLg from "./Lg/TextSelectionLg";
 import TextSelectionSm from "./Sm/TextSelectionSm";
 import TextSelectionComponent from "./TextSelection";
 
-/** @type {import("@storybook/react").Meta} */
-const Meta = {
+interface Args {
+	backgroundColor: string;
+	size: string;
+	children: string;
+	active: boolean;
+	dark: boolean;
+	onClick: HandlerFunction;
+}
+
+const meta: Meta<Args> = {
 	component : TextSelectionComponent,
 	argTypes  : {
 		backgroundColor : {
@@ -17,6 +27,7 @@ const Meta = {
 			},
 			defaultValue : "sm"
 		},
+		onClick : action("clicked!")
 	},
 	args : {
 		children : "Personal",
@@ -26,14 +37,14 @@ const Meta = {
 	parameters : { actions : { handles : [ "mouseenter" ] } }
 };
 
-export const TextSelection = ({ size, ...args }) => {
+export const TextSelection: StoryFn<Args> = ({ size, ...args }) => {
 	if (size === "sm") {
 		return <TextSelectionSm {...args} />;
-	} else if (size === "lg") {
+	} else {
 		return <TextSelectionLg {...args} />;
 	}
 
 };
 
 
-export default Meta;
+export default meta;

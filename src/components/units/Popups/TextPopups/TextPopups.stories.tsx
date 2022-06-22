@@ -1,9 +1,17 @@
 import { action } from "@storybook/addon-actions";
+import type { Meta, StoryFn } from "@storybook/react";
 import TextPopupLg from "./Lg/TextPopupLg";
 import TextPopupSm from "./Sm/TextPopupSm";
 
-/** @type {import("@storybook/react").Meta} */
-const Meta = {
+interface Args {
+	selections: number;
+	dark: boolean;
+	selectionText: string;
+	backgroundColor: string;
+	size: string;
+}
+
+const meta: Meta<Args> = {
 	args : {
 		selections    : 5,
 		dark          : false,
@@ -24,7 +32,7 @@ const Meta = {
 	}
 };
 
-export const TextPopups = ({
+export const TextPopups: StoryFn<Args> = ({
 	size,
 	selections,
 	backgroundColor,
@@ -54,4 +62,4 @@ export const TextPopups = ({
 	}
 };
 
-export default Meta;
+export default meta;
