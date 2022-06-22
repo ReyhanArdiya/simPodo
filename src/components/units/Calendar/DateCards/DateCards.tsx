@@ -4,34 +4,22 @@ import styled from "styled-components";
 import React from "react";
 
 const Container = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 2.1em;
-    max-width: 100%;
-    overflow-x: auto;
-    height: 17em;
-    margin: -4.25em 0;
+	display: flex;
+	align-items: center;
+	gap: 2.1em;
+	max-width: 100%;
+	overflow-x: auto;
+	height: 17em;
+	margin: -4.25em 0;
 	padding: 0 1.85em;
 
-    ::-webkit-scrollbar {
-        display: none;
-    }
+	::-webkit-scrollbar {
+		display: none;
+	}
 `;
 
 // CMT this is a dumb component, changing the active is the parent's job
-const DateCards = ({
-	dates = [
-		{
-			active : false,
-			dark   : false,
-			date   : 1,
-			day    : "monday",
-			onClick(day = "monday", date = 0) {
-				console.log(day, date);
-			}
-		}
-	]
-}: {dates: DateCardProps[]}) => {
+const DateCards = ({ dates }: { dates: DateCardProps[] }) => {
 	const dateCards = dates.map(({ active, day, date, onClick, dark }) => {
 		return (
 			<DateCard
@@ -40,7 +28,7 @@ const DateCards = ({
 				date={date}
 				day={day}
 				key={uuidv4()}
-				onClick={onClick.bind(null, day, date)}
+				onClick={(day, date) => onClick(day, date)}
 			/>
 		);
 	});

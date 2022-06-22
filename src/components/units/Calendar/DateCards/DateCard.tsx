@@ -1,3 +1,4 @@
+import type { MouseEventHandler } from "react";
 import styled, { css } from "styled-components";
 import BouncyThrob from "../../Animations/BouncyThrob";
 import Card from "../../Cards/Card";
@@ -81,7 +82,7 @@ export interface DateCardProps {
 	dark?: boolean;
 	date: number;
 	day: string;
-	onClick(day?: string, date?: number): void;
+	onClick: (day?: string, date?: number) => void;
 }
 
 const DateCard = ({
@@ -95,24 +96,35 @@ const DateCard = ({
 	const newDate = date < 10 ? `0${date}` : date;
 
 	return (
-		<BouncyThrob onClick={onClick}>
-			<Container
-				active={active}
-				dark={dark}
-			>
-				<Day
-					active={active}
-					dark={dark}
-				>
-					{slicedDay}
-				</Day>
-				<Date
-					active={active}
-					dark={dark}
-				>
-					{newDate}
-				</Date>
-			</Container>
+		<BouncyThrob>
+			{startAnimation => {
+				const onClickHandler: MouseEventHandler = () => {
+					startAnimation();
+					onClick(day, date);
+				};
+
+				return (
+					<Container
+						active={active}
+						dark={dark}
+						onClick={onClickHandler}
+						onMouseEnter={startAnimation}
+					>
+						<Day
+							active={active}
+							dark={dark}
+						>
+							{slicedDay}
+						</Day>
+						<Date
+							active={active}
+							dark={dark}
+						>
+							{newDate}
+						</Date>
+					</Container>
+				);
+			}}
 		</BouncyThrob>
 	);
 };
