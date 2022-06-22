@@ -23,6 +23,6 @@ const Meta: Met<Args> = {
 
 export const Checkbox = (args: Args) => <Cbx {...args} />;
 export const Pen = (args: Args) => <Pn {...args} />;
-export const Trash = (args: Args) => <Trsh {...args} />;
+export const Trash = (args: Args) => <Trsh {...args} fixedWidth={false} />;
 
 export default Meta;

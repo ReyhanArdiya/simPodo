@@ -8,9 +8,8 @@ import ThemeToggler from "./ThemeToggler";
 interface Args {
 	children: string;
 	dark: boolean;
-	onClick: HandlerFunction
+	onClick: HandlerFunction;
 }
-
 
 const meta: Meta<Args> = {
 	argTypes : {

@@ -97,20 +97,31 @@ const ButtonSm = ({
 	dark = false
 }: {
 		children?: string;
-		onClick?: MouseEventHandler;
+		onClick: MouseEventHandler;
 		className?: string;
 		type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
 		dark?: boolean;
 }) => {
 	return (
-		<BouncyThrob onClick={onClick!}>
-			<Button
-				className={className}
-				dark={dark}
-				type={type}
-			>
-				<Content dark={dark}>{text}</Content>
-			</Button>
+		<BouncyThrob>
+			{startAnimation => {
+				const onClickHandler: MouseEventHandler = e => {
+					startAnimation();
+					onClick(e);
+				};
+
+				return (
+					<Button
+						className={className}
+						dark={dark}
+						onClick={onClickHandler}
+						onMouseEnter={startAnimation}
+						type={type}
+					>
+						<Content dark={dark}>{text}</Content>
+					</Button>
+				);
+			}}
 		</BouncyThrob>
 	);
 };

@@ -1,6 +1,6 @@
-import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import type { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { MouseEventHandler } from "react";
+import type { MouseEventHandler } from "react";
 import styled from "styled-components";
 import BouncyThrob from "../../Animations/BouncyThrob";
 
@@ -32,13 +32,25 @@ const IconButton = ({
 	className = ""
 }: IconButtonProps) => {
 	return (
-		<BouncyThrob onClick={onClick}>
-			<Button className={`${className}`}>
-				<Icon
-					fill={fill}
-					icon={icon}
-				/>
-			</Button>
+		<BouncyThrob>
+			{startAnimation => {
+				const onClickHandler: MouseEventHandler = e => {
+					startAnimation();
+					onClick(e);
+				};
+
+				return (
+					<Button
+						className={`${className}`}
+						onClick={onClickHandler}
+					>
+						<Icon
+							fill={fill}
+							icon={icon}
+						/>
+					</Button>
+				);
+			}}
 		</BouncyThrob>
 	);
 };
