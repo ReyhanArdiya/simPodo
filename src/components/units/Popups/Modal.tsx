@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
 
@@ -15,7 +15,11 @@ const Container = styled.div`
     justify-content: center;
 `;
 
-const Modal = ({ children }) => {
+interface ModalProps {
+	children: ReactNode;
+}
+
+const Modal = ({ children }: ModalProps) => {
 	const [ mounted, setMounted ] = useState(false);
 
 	useEffect(() => {
@@ -34,7 +38,7 @@ const Modal = ({ children }) => {
 			<Container>
 				{children}
 			</Container>,
-			document.getElementById("__next")
+			document.getElementById("__next") as HTMLDivElement
 		) :
 		null;
 };
