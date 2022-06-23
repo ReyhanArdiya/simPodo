@@ -259,7 +259,7 @@
 		"prefer-template": "warn",
 		"quotes": ["warn", "double"],
 		"rest-spread-spacing": ["error", "never"],
-		"react/jsx-closing-bracket-location": "warn",
+		"react/jsx-closing-bracket-location": ["warn", "line-aligned"],
 		"react/jsx-first-prop-new-line": "warn",
 		"react/jsx-max-props-per-line": [
 			"warn",
