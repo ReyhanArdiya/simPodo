@@ -48,7 +48,7 @@ interface ColorsProps {
 	dark?: boolean;
 }
 
-const Colors = ({ colors, dark = false }: ColorsProps) => (
+const ColorsPopup = ({ colors, dark = false }: ColorsProps) => (
 	<Container dark={dark}>
 		{colors.map(({ color, onClick }) => {
 			return (
@@ -69,4 +69,4 @@ const Colors = ({ colors, dark = false }: ColorsProps) => (
 	</Container>
 );
 
-export default React.memo(Colors);
+export default React.memo(ColorsPopup);
