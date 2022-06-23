@@ -1,12 +1,11 @@
+import type { Meta } from "@storybook/react";
 import GradientRectComponent from "./GradientRect";
 
-
-/** @type {import("@storybook/react").Meta} */
-const Meta = {
+const meta: Meta = {
 	component  : GradientRectComponent,
 	parameters : { backgrounds : { default : "dark", } }
 };
 
-export const GradientRect = args => <GradientRectComponent {...args} />;
+export const GradientRect = () => <GradientRectComponent />;
 
-export default Meta;
+export default meta;
