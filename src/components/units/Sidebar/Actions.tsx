@@ -1,3 +1,4 @@
+import type { MouseEventHandler } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -8,7 +9,12 @@ const Container = styled.div`
 	row-gap: 2.5em;
 `;
 
-const Action = styled.button`
+interface ActionProps {
+	alert: boolean;
+	dark: boolean;
+}
+
+const Action = styled.button<ActionProps>`
     padding: 0;
 	margin: 0;
 	border: none;
@@ -27,27 +33,27 @@ const Action = styled.button`
     text-align: center;
 `;
 
-/**
- *
- * @param {{
- *  actions: {text: string, onClick: (e: any) => void, alert?: boolean}[],
- *  dark?: boolean
- * }} props
- *
- * @returns
- */
-const Actions = ({ actions, dark = false }) => {
+interface ActionsProps {
+	actions: {
+		text: string;
+		onClick: MouseEventHandler;
+		alert?: boolean;
+	}[];
+	dark?: boolean;
+}
+
+const Actions = ({ actions, dark = false }: ActionsProps) => {
 	return (
 		<Container>
-			{actions.map((action, i) => {
+			{actions.map(({ onClick, text, alert = false }, i) => {
 				return (
 					<Action
-						alert={action.alert}
+						alert={alert}
 						dark={dark}
 						key={i}
-						onClick={action.onClick}
+						onClick={onClick}
 					>
-						{action.text}
+						{text}
 					</Action>
 				);
 			})}

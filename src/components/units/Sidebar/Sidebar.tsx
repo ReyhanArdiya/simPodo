@@ -1,10 +1,11 @@
+import type { MouseEventHandler } from "react";
 import styled from "styled-components";
 import ButtonLg from "../Buttons/ButtonLg";
 import Card from "../Cards/Card";
 import Actions from "./Actions";
 import UserGreeting from "./UserGreeting";
 
-const Container = styled(Card).attrs({ as : "nav" })`
+const Container = styled(Card)<{dark?: boolean}>`
 	height: 100vh;
 	min-width: 16em;
 	color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[6] : theme.colors.light.UI[2]};
@@ -16,29 +17,23 @@ const Container = styled(Card).attrs({ as : "nav" })`
 	background-color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[3] : theme.colors.light.UI[1]};
 `;
 
-/**
- *
- * @param {{
- *  actions: {text: string, onClick: (e: any) => void, alert?: boolean}[],
- *  button: {text: string, onClick: (e: any) => void},
- *  username: string,
- *  dark?: boolean
- * }} props
- *
- * @returns
- */
-const Sidebar = ({ actions, button, username, dark = false }) => {
+interface SidebarProps {
+	actions: {
+		text: string;
+		onClick: MouseEventHandler;
+		alert?: boolean;
+	}[];
+	button: { text: string; onClick: MouseEventHandler };
+	username: string;
+	dark?: boolean;
+}
+
+const Sidebar = ({ actions, button, username, dark = false }: SidebarProps) => {
 	return (
-		<Container dark={dark}>
+		<Container as="nav" dark={dark}>
 			<UserGreeting dark={dark}>{username || "Username"}</UserGreeting>
-			<Actions
-				actions={actions}
-				dark={dark}
-			/>
-			<ButtonLg
-				dark={dark}
-				onClick={button.onClick}
-			>
+			<Actions actions={actions} dark={dark} />
+			<ButtonLg dark={dark} onClick={button.onClick}>
 				{button.text}
 			</ButtonLg>
 		</Container>

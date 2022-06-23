@@ -1,8 +1,22 @@
-import { action } from "@storybook/addon-actions";
+import { action, HandlerFunction } from "@storybook/addon-actions";
+import type { Meta, StoryFn } from "@storybook/react";
 import Sidebar from "./Sidebar";
 
-/** @type {import("@storybook/react").Meta} */
-const Meta = {
+interface Args {
+	dark?: boolean;
+	username: string;
+	actions: {
+		text: string;
+		onClick: HandlerFunction;
+		alert?: boolean;
+	}[];
+	button: {
+		text: string;
+		onClick: HandlerFunction;
+	};
+}
+
+const meta: Meta<Args> = {
 	component : Sidebar,
 	args      : {
 		dark     : false,
@@ -29,8 +43,7 @@ const Meta = {
 	}
 };
 
-export const Default = args => <Sidebar {...args} />;
+export const Default: StoryFn<Args> = args => <Sidebar {...args} />;
 Default.storyName = "Sidebar";
 
-
-export default Meta;
+export default meta;
