@@ -7,9 +7,7 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"test": "jest --watch",
-		"test:generate-output": "jest --json --outputFile=.jest-test-results.json",
-		"test-output-watch": "npm run test:generate-output -- --watch",
+		"test": "jest --json --outputFile=.jest-test-results.json --watch",
 		"storybook": "start-storybook -p 6006",
 		"build-storybook": "build-storybook"
 	},
