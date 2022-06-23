@@ -1,7 +1,12 @@
+import type { Meta, StoryFn } from "@storybook/react";
 import TodoCounter from "./TodoCounter";
 
-/** @type {import("@storybook/react").Meta} */
-const Meta = {
+interface Args {
+	finished: number;
+	total: number;
+}
+
+const meta: Meta<Args> = {
 	component : TodoCounter,
 	args      : {
 		finished : 0,
@@ -9,8 +14,8 @@ const Meta = {
 	}
 };
 
-export const Default = args => <TodoCounter {...args} />;
+export const Default : StoryFn<Args> = args => <TodoCounter {...args} />;
 Default.storyName = "TodoCounter";
 
 
-export default Meta;
+export default meta;

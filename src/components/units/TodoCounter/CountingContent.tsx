@@ -10,7 +10,7 @@ const Container = styled.div`
     gap: 0.5em;
 `;
 
-const Text = styled.p`
+const Text = styled.p<{dark?: boolean}>`
 	font: 700 1.3em "Inter", sans-serif;
 	text-align: center;
 	color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[2] : theme.colors.light.UI[1]};
@@ -22,7 +22,7 @@ const Counter = styled(Text)`
 	line-height: 1.2em;
 `;
 
-const Small = styled(Text).attrs({ as : "small" })`
+const Small = styled(Text)`
 	font: 700 1.2em "Nunito", sans-serif;
 	color: #dcdee9;
 	position: absolute;
@@ -30,20 +30,25 @@ const Small = styled(Text).attrs({ as : "small" })`
     z-index: 2;
 `;
 
-const CountingContent = ({ finished, total }) => {
-	finished = finished < 10 ? `0${finished}` : finished;
-	total = total < 10 ? `0${total}` : total;
+export interface CountingContentProps {
+	finished: number;
+	total: number;
+}
+
+const CountingContent = ({ finished, total }: CountingContentProps) => {
+	const finishedStr = finished < 10 ? `0${finished}` : finished;
+	const totalStr = total < 10 ? `0${total}` : total;
 
 	return (
 		<>
 			<Container>
 				<Text>You&apos;ve Done...</Text>
 				<Counter>
-					{finished}/{total}
+					{finishedStr}/{totalStr}
 				</Counter>
 				<Text>Todos</Text>
 			</Container>
-			<Small>Keep it up!</Small>
+			<Small as="small">Keep it up!</Small>
 		</>
 	);
 };
