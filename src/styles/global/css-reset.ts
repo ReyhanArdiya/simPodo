@@ -139,6 +139,7 @@ const cssReset = css`
 
 	* {
 		box-sizing: border-box;
+		user-select: none;
 	}
 
 	:root {
@@ -150,6 +151,15 @@ const cssReset = css`
 		/* Assuming :root is 62.5%, 1em = 10px. I'm more of an em person so this
     makes working with em easier. */
 		font-size: 1rem;
+	}
+
+	button {
+		padding: 0;
+		margin: 0;
+		border: none;
+		outline: none;
+		cursor: pointer;
+    	background: none;
 	}
 `;
 
