@@ -2,7 +2,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import styled, { css } from "styled-components";
 import IconButton from "./IconButton";
 
-const Trash = styled(IconButton).attrs({
+const Trash = styled(IconButton).attrs<{fixedWidth?: boolean}>({
 	fixedWidth : true,
 	icon       : faTrash
 })<{

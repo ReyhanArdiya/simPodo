@@ -1,4 +1,4 @@
-import type { IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import { faQuestion, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { MouseEventHandler } from "react";
 import styled from "styled-components";
@@ -20,8 +20,8 @@ const Icon = styled(FontAwesomeIcon)`
 
 export interface IconButtonProps {
 	onClick: MouseEventHandler;
-	fill: string;
-	icon: IconDefinition;
+	fill?: string;
+	icon?: IconDefinition;
 	className?: string;
 }
 
@@ -30,29 +30,27 @@ const IconButton = ({
 	fill,
 	icon,
 	className = ""
-}: IconButtonProps) => {
-	return (
-		<BouncyThrob>
-			{startAnimation => {
-				const onClickHandler: MouseEventHandler = e => {
-					startAnimation();
-					onClick(e);
-				};
+}: IconButtonProps) => (
+	<BouncyThrob>
+		{startAnimation => {
+			const onClickHandler: MouseEventHandler = e => {
+				startAnimation();
+				onClick(e);
+			};
 
-				return (
-					<Button
-						className={`${className}`}
-						onClick={onClickHandler}
-					>
-						<Icon
-							fill={fill}
-							icon={icon}
-						/>
-					</Button>
-				);
-			}}
-		</BouncyThrob>
-	);
-};
+			return (
+				<Button
+					className={`${className}`}
+					onClick={onClickHandler}
+				>
+					<Icon
+						fill={fill}
+						icon={icon || faQuestion}
+					/>
+				</Button>
+			);
+		}}
+	</BouncyThrob>
+);
 
 export default IconButton;
