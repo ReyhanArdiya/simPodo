@@ -1,87 +1,100 @@
 import { action } from "@storybook/addon-actions";
+import type { Meta, StoryFn } from "@storybook/react";
 import { useState } from "react";
 import TodoMini from "./TodoMini/TodoMini";
 import TodoMiniDraggable from "./TodoMiniDraggable";
 
-/** @type {import("@storybook/react").Meta} */
-const Meta = {
+interface Args {
+	dark: boolean;
+	edit: boolean;
+	draggable: boolean;
+	title: string;
+	tagName: string;
+	tagColor: string;
+	amPm: string;
+	hours: number;
+	minutes: number;
+}
+
+const meta: Meta<Args> = {
 	args : {
 		dark      : false,
 		edit      : false,
 		draggable : false,
 		title     : "This is a todo",
 		tagName   : "Important",
-		tagColor  : "red",
+		tagColor  : "red"
 	},
 	argTypes : {
 		amPm : {
 			control : {
 				type    : "radio",
-				options : [ "am", "pm" ],
+				options : [ "am", "pm" ]
 			},
-			defaultValue : "am",
+			defaultValue : "am"
 		},
 		hours : {
 			control : {
 				type : "range",
 				min  : 1,
-				max  : 12,
+				max  : 12
 			},
-			defaultValue : 1,
+			defaultValue : 1
 		},
 		minutes : {
 			control : {
 				type : "range",
 				min  : 0,
-				max  : 59,
+				max  : 59
 			},
-			defaultValue : 0,
-		},
-	},
-
+			defaultValue : 0
+		}
+	}
 };
 
-export const Default = ({ draggable, ...args }) => {
-	args.onAmPmClick = action("Clicked AM/PM");
-	args.onDelete = action("Clicked Delete");
-	args.onEdit = action("Clicked Edit");
-	args.onEditDiscard = action("Clicked Discard");
-	args.onEditDone = action("Clicked Done");
-	args.onHourClick = action("Clicked Hour");
-	args.onMinuteClick = action("Clicked Minute");
-	args.onTagClick = action("Clicked Tag");
-	args.onTitleChange = action("Changed Title");
-	args.onTodoFinish = action("Clicked Finish");
+const todoHandlerActions = {
+	onAmPmClick   : action("Clicked AM/PM"),
+	onDelete      : action("Clicked Delete"),
+	onEdit        : action("Clicked Edit"),
+	onEditDiscard : action("Clicked Discard"),
+	onEditDone    : action("Clicked Done"),
+	onHourClick   : action("Clicked Hour"),
+	onMinuteClick : action("Clicked Minute"),
+	onTagClick    : action("Clicked Tag"),
+	onTitleChange : action("Changed Title"),
+	onTodoFinish  : action("Clicked Finish"),
+};
 
+export const Default: StoryFn<Args> = ({ draggable, ...args }) => {
 	const [ show, setShow ] = useState(true);
 
 	const removeTodo = () => {
 		setShow(false);
-		setTimeout(
-			() => {
-				setShow(true);
-			},
-			1000
-		);
+		setTimeout(() => {
+			setShow(true);
+		}, 1000);
 	};
 
 	if (!draggable) {
-		return <TodoMini {...args} />;
-	} else {
-		return <TodoMiniDraggable
+		return <TodoMini
 			{...args}
-			draggable={{
-				onStart : action("Started Dragging"),
-				onStop  : e => {
+			{...todoHandlerActions}
+		/>;
+	} else {
+		return (
+			<TodoMiniDraggable
+				{...args}
+				{...todoHandlerActions}
+				onDragStart={action("Started Dragging")}
+				onDragStop={e => {
 					action("Activates when out of exitThreshold")(e);
 					removeTodo();
-				},
-			}}
-			transitionIn={show}
-		       />;
+				}}
+				transitionIn={show}
+			/>
+		);
 	}
 };
 Default.storyName = "TodoMini";
 
-
-export default Meta;
+export default meta;
