@@ -9,7 +9,9 @@
 		"plugin:jsdoc/recommended",
 		"plugin:jest/recommended",
 		"plugin:storybook/recommended",
-		"next/core-web-vitals"
+		"next/core-web-vitals",
+		"plugin:@typescript-eslint/eslint-recommended",
+		"plugin:@typescript-eslint/recommended"
 	],
 	"root": true,
 	"parserOptions": {
@@ -19,8 +21,18 @@
 			"modules": true
 		}
 	},
-	"plugins": ["jsdoc", "jest", "storybook"],
+	"overrides": [
+		{
+			"files": ["*.ts", "*.tsx"],
+			"rules": {
+				"no-undef": "off"
+			}
+		}
+	],
+	"plugins": ["jsdoc", "jest", "storybook", "@typescript-eslint"],
 	"rules": {
+		"@typescript-eslint/no-non-null-assertion": "off",
+		"@typescript-eslint/member-delimiter-style": "warn",
 		"array-bracket-spacing": ["warn", "always"],
 		"array-element-newline": ["warn", "consistent"],
 		// "arrow-body-style": ["error", "as-needed"],
@@ -91,10 +103,10 @@
 				"checkConstructors": false
 			}
 		],
-		"jsdoc/require-param": "warn",
+		"jsdoc/require-param": "off",
 		"jsdoc/require-param-description": "off",
 		"jsdoc/require-param-name": "warn",
-		"jsdoc/require-param-type": "warn",
+		"jsdoc/require-param-type": "off",
 		"jsdoc/require-property": "warn",
 		"jsdoc/require-property-description": "off",
 		"jsdoc/require-property-name": "warn",
@@ -142,7 +154,7 @@
 		"no-extra-parens": [
 			"warn",
 			"all",
-			{ "nestedBinaryExpressions": false }
+			{ "nestedBinaryExpressions": false, "ignoreJSX": "multi-line" }
 		],
 		"no-fallthrough": "off",
 		"no-implicit-globals": "error",
@@ -186,7 +198,7 @@
 				"allowTaggedTemplates": true
 			}
 		],
-		"no-unused-vars": "error",
+		"no-unused-vars": "off",
 		"no-use-before-define": "error",
 		"no-useless-concat": "warn",
 		"no-useless-constructor": "warn",
@@ -197,9 +209,25 @@
 		"object-curly-newline": [
 			"warn",
 			{
-				"multiline": true
+				"ObjectExpression": {
+					"multiline": true,
+					"consistent": true
+				},
+				"ObjectPattern": {
+					"multiline": true,
+					"consistent": true
+				},
+				"ImportDeclaration": {
+					"multiline": true,
+					"consistent": true
+				},
+				"ExportDeclaration": {
+					"multiline": true,
+					"consistent": true
+				}
 			}
 		],
+		"@typescript-eslint/no-redeclare": ["error"],
 		"object-curly-spacing": ["warn", "always"],
 		"object-property-newline": "error",
 		"operator-linebreak": ["warn", "after"],
@@ -231,9 +259,12 @@
 		"prefer-template": "warn",
 		"quotes": ["warn", "double"],
 		"rest-spread-spacing": ["error", "never"],
-		"react/jsx-closing-bracket-location": "warn",
+		"react/jsx-closing-bracket-location": ["warn", "line-aligned"],
 		"react/jsx-first-prop-new-line": "warn",
-		"react/jsx-max-props-per-line": "warn",
+		"react/jsx-max-props-per-line": [
+			"warn",
+			{ "maximum": 1, "when": "multiline" }
+		],
 		"react/jsx-sort-props": "warn",
 		"semi": "error",
 		"semi-spacing": "error",
