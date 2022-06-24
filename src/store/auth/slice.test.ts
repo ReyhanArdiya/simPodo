@@ -1,8 +1,9 @@
+import type { IUser } from "../../models/user";
 import authSlice, { authSliceActions } from "./slice";
 
 const { reducer } = authSlice;
 let initialState: ReturnType<typeof authSlice.getInitialState>;
-let user;
+let user : IUser;
 
 describe("authSlice actions", () => {
 	beforeEach(() => {
@@ -10,7 +11,8 @@ describe("authSlice actions", () => {
 		user = {
 			localId  : "1",
 			token    : "1234",
-			username : "test"
+			username : "test",
+			email    : "randomemail@gmail.com"
 		};
 	});
 
@@ -42,7 +44,7 @@ describe("authSlice actions", () => {
 			authSliceActions.refreshToken("newToken")
 		);
 
-		expect(newState.user.token).not.toEqual(oldUserToken);
+		expect(newState.user?.token).not.toEqual(oldUserToken);
 	});
 
 	it("changes username using changeUsername", () => {
@@ -52,7 +54,7 @@ describe("authSlice actions", () => {
 			authSliceActions.changeUsername("newUsername")
 		);
 
-		expect(newState.user.username).not.toEqual(oldUsername);
+		expect(newState.user?.username).not.toEqual(oldUsername);
 	});
 });
 
@@ -62,7 +64,8 @@ describe("authSlice actions after logout", () => {
 		user = {
 			localId  : "1",
 			token    : "1234",
-			username : "test"
+			username : "test",
+			email    : "randomemail@gmail.com"
 		};
 		initialState = reducer(initialState, authSliceActions.logout());
 	});

@@ -5,7 +5,7 @@ interface InitialState {
 		localId: string;
 		token: string;
 		username: string;
-	}
+	};
 }
 
 const initialState: InitialState = {
