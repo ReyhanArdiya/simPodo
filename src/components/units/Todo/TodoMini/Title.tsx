@@ -1,3 +1,4 @@
+import type { HTMLInputTypeAttribute } from "react";
 import styled from "styled-components";
 import type { TitleProps } from "./interfaces/title-props.interface";
 
@@ -11,7 +12,7 @@ const Text = styled.h3<{ dark?: boolean }>`
 	white-space: nowrap;
 `;
 
-const Input = styled(Text)`
+const Input = styled(Text)<{type?: HTMLInputTypeAttribute}>`
 	outline: none;
 	border: none;
 	padding: 0;
@@ -29,6 +30,7 @@ const Title = ({
 		dark={dark}
 		defaultValue={title}
 		onChange={onTitleChange}
+		type="text"
 	/>	:
 	<Text dark={dark}>{title}</Text>;
 
