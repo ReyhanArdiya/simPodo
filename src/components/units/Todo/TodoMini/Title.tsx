@@ -1,7 +1,8 @@
 import styled from "styled-components";
+import type { TitleProps } from "./interfaces/title-props.interface";
 
-const Text = styled.h3`
-    text-overflow: ellipsis;
+const Text = styled.h3<{ dark?: boolean }>`
+	text-overflow: ellipsis;
 	overflow: hidden;
 	color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[4] : theme.colors.light.UI[7]};
 	width: 100%;
@@ -10,39 +11,25 @@ const Text = styled.h3`
 	white-space: nowrap;
 `;
 
-const Input = styled(Text).attrs({
-	as   : "input",
-	type : "text"
-})`
-    outline: none;
-    border: none;
-    padding: 0;
+const Input = styled(Text)`
+	outline: none;
+	border: none;
+	padding: 0;
 	background: none;
 `;
 
 const Title = ({
-	children: title,
+	title,
 	onTitleChange,
 	edit = false,
 	dark = false
-}) => {
-	return (
-		<>
-			{edit ?
-				<Input
-					dark={dark}
-					edit={edit}
-					onChange={onTitleChange}
-					value={title}
-				/> :
-				<Text
-					dark={dark}
-				>
-					{title}
-				</Text>
-			}
-		</>
-	);
-};
+}: TitleProps) => edit ?
+	<Input
+		as="input"
+		dark={dark}
+		defaultValue={title}
+		onChange={onTitleChange}
+	/>	:
+	<Text dark={dark}>{title}</Text>;
 
 export default Title;

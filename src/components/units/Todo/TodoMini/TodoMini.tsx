@@ -1,11 +1,12 @@
 import styled from "styled-components";
 import Card from "../../Cards/Card";
 import Actions from "./Actions";
+import type { TodoMiniProps } from "./interfaces/todo-mini-props.interface";
 import Tag from "./Tag";
 import Time from "./Time";
 import Title from "./Title";
 
-const Container = styled(Card).attrs({ as : "article" })`
+const Container = styled(Card)`
 	display: grid;
 	grid-template-areas:
 		"time"
@@ -28,12 +29,6 @@ const Container = styled(Card).attrs({ as : "article" })`
 	}
 `;
 
-/**
- *
- * @param {TodoMini} props
- *
- * @returns
- */
 const TodoMini = ({
 	amPm,
 	className = "",
@@ -56,50 +51,48 @@ const TodoMini = ({
 	tagColor,
 	tagName,
 	title,
-}) => {
-	return (
-		<Container
-			className={className}
+}: TodoMiniProps) => (
+	<Container
+		as="article"
+		className={className}
+		dark={dark}
+		onMouseDown={onMouseDown}
+		style={style}
+	>
+		<Time
+			amPm={amPm}
 			dark={dark}
-			onMouseDown={onMouseDown}
-			style={style}
+			edit={edit}
+			hours={hours}
+			minutes={minutes}
+			onAmPmClick={onAmPmClick}
+			onHourClick={onHourClick}
+			onMinuteClick={onMinuteClick}
+		/>
+		<Tag
+			edit={edit}
+			onTagClick={onTagClick}
+			tagColor={tagColor}
 		>
-			<Time
-				amPm={amPm}
-				dark={dark}
-				edit={edit}
-				hours={hours}
-				minutes={minutes}
-				onAmPmClick={onAmPmClick}
-				onHourClick={onHourClick}
-				onMinuteClick={onMinuteClick}
-			/>
-			<Tag
-				color={tagColor}
-				edit={edit}
-				onClick={onTagClick}
-			>
-				{tagName}
-			</Tag>
-			<Title
-				dark={dark}
-				edit={edit}
-				onTitleChange={onTitleChange}
-			>
-				{title}
-			</Title>
-			<Actions
-				dark={dark}
-				edit={edit}
-				onDelete={onDelete}
-				onEdit={onEdit}
-				onEditDiscard={onEditDiscard}
-				onEditDone={onEditDone}
-				onTodoFinish={onTodoFinish}
-			/>
-		</Container>
-	);
-};
+			{tagName}
+		</Tag>
+		<Title
+			dark={dark}
+			edit={edit}
+			onTitleChange={onTitleChange}
+			title={title}
+		/>
+		<Actions
+			dark={dark}
+			edit={edit}
+			onDelete={onDelete}
+			onEdit={onEdit}
+			onEditDiscard={onEditDiscard}
+			onEditDone={onEditDone}
+			onTodoFinish={onTodoFinish}
+		/>
+	</Container>
+);
 
 // CMT Don't memoize TodoMini since if it is editable it's going to cause a lot of
 // rerenders, instead just memoize TodoList later.

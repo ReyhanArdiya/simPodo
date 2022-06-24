@@ -1,13 +1,14 @@
 import styled from "styled-components";
+import type { TimeProps } from "./interfaces/time-props.interface";
 
-const Container = styled.p`
+const Container = styled.p<{dark?: boolean}>`
 	font: 900 1.2em "Nunito", sans-serif;
 	text-align: right;
 	letter-spacing: 0.03em;
 	color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[5] : theme.colors.light.UI[5]};
 `;
 
-const Unit = styled.span`
+const Unit = styled.span<Pick<TimeProps, "edit">>`
 	text-transform: uppercase;
 	${({ edit }) => edit && "cursor: pointer;"}
 `;
@@ -22,9 +23,9 @@ const Time = ({
 	onAmPmClick,
 	onHourClick,
 	onMinuteClick
-}) => {
-	hours = hours < 10 ? `0${hours}` : hours;
-	minutes = minutes < 10 ? `0${minutes}` : minutes;
+}: TimeProps) => {
+	const hoursStr = hours < 10 ? `0${hours}` : hours;
+	const minutesStr = minutes < 10 ? `0${minutes}` : minutes;
 
 	return (
 		<Container dark={dark}>
@@ -32,14 +33,14 @@ const Time = ({
 				edit={edit}
 				onClick={onHourClick}
 			>
-				{hours}
+				{hoursStr}
 			</Unit>
 			:
 			<Unit
 				edit={edit}
 				onClick={onMinuteClick}
 			>
-				{minutes}
+				{minutesStr}
 			</Unit>{" "}
 			<Unit
 				edit={edit}

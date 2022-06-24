@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Checkbox from "../../Buttons/Icons/Checkbox";
 import Pen from "../../Buttons/Icons/Pen";
 import Trash from "../../Buttons/Icons/Trash";
+import type { ActionsProps } from "./interfaces/actions-props.interface";
 
 const ThreeButtonsLayout = styled.div`
 	width: 100%;
@@ -30,40 +31,33 @@ const Actions = ({
 	onTodoFinish,
 	edit = false,
 	dark = false
-}) => {
-	return (
-		<>
-			{
-				edit ?
-					<TwoButtonsLayout>
-						<Trash
-							dark={dark}
-							edit={edit}
-							onClick={onEditDiscard}
-						/>
-						<Checkbox
-							dark={dark}
-							edit={edit}
-							onClick={onEditDone}
-						/>
-					</TwoButtonsLayout> :
-					<ThreeButtonsLayout>
-						<Checkbox
-							dark={dark}
-							onClick={onTodoFinish}
-						/>
-						<Trash
-							dark={dark}
-							onClick={onDelete}
-						/>
-						<Pen
-							dark={dark}
-							onClick={onEdit}
-						/>
-					</ThreeButtonsLayout>
-			}
-		</>
-	);
-};
+}: ActionsProps) => edit ?
+	<TwoButtonsLayout>
+		<Trash
+			dark={dark}
+			edit={edit}
+			onClick={onEditDiscard}
+		/>
+		<Checkbox
+			dark={dark}
+			edit={edit}
+			onClick={onEditDone}
+		/>
+	</TwoButtonsLayout> :
+	<ThreeButtonsLayout>
+		<Checkbox
+			dark={dark}
+			onClick={onTodoFinish}
+		/>
+		<Trash
+			dark={dark}
+			edit={edit}
+			onClick={onDelete}
+		/>
+		<Pen
+			dark={dark}
+			onClick={onEdit}
+		/>
+	</ThreeButtonsLayout>;
 
 export default Actions;

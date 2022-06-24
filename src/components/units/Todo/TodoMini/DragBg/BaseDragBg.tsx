@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const BaseDragBg = styled.div`
+const BaseDragBg = styled.div<{dark?: boolean}>`
 	align-items: center;
 	border-radius: inherit;
 	color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[1] : theme.colors.light.UI[1]};
