@@ -1,11 +1,15 @@
 import { useState } from "react";
-import Draggable from "react-draggable";
+import Draggable, {
+	DraggableEventHandler,
+	DraggableProps
+} from "react-draggable";
 import { CSSTransition } from "react-transition-group";
 import styled from "styled-components";
 import nodeExceedsParentsWidth from "../../../helpers/node-exceeds-parents-width";
 import Card from "../Cards/Card";
 import Delete from "./TodoMini/DragBg/Delete";
 import Done from "./TodoMini/DragBg/Done";
+import type { TodoMiniProps } from "./TodoMini/interfaces/todo-mini-props.interface";
 import TodoMini from "./TodoMini/TodoMini";
 
 const animationMs = 500;
@@ -17,36 +21,42 @@ const Container = styled(Card)`
 		transition: transform 0.2s ease-out;
 	}
 
-    @keyframes removeTodo {
-        from {
-            opacity: 1;
-        }
+	@keyframes removeTodo {
+		from {
+			opacity: 1;
+		}
 
-        to {
-            opacity: 0;
-			/* transform: translateX(${({ dragDirection }) => dragDirection === "left" ? "-100%" : "100%"}); */
-        }
-    }
+		to {
+			opacity: 0;
+		}
+	}
 
-    &.remove-todo-exit-active  {
-        animation: removeTodo ${animationMs}ms ease-out;
-    }
+	&.remove-todo-exit-active {
+		animation: removeTodo ${animationMs}ms ease-out;
+	}
 `;
 
-/**
- *
- * @param {TodoMini & {draggable: import("react-draggable").DraggableProps, dark: boolean, transitionIn?: boolean, exitThreshold? : number}} props
- *
- */
+export interface TodoMiniDraggableProps extends TodoMiniProps {
+	draggable?: DraggableProps;
+	dark: boolean;
+	transitionIn?: boolean;
+	exitThreshold?: number;
+	onDragStart: DraggableEventHandler;
+	onDragStop: DraggableEventHandler;
+}
+
 const TodoMiniDraggable = ({
 	amPm,
 	dark = false,
 	draggable,
 	edit = false,
+	exitThreshold = 0.3,
 	hours,
 	minutes,
 	onAmPmClick,
 	onDelete,
+	onDragStart,
+	onDragStop,
 	onEdit,
 	onEditDiscard,
 	onEditDone,
@@ -59,42 +69,41 @@ const TodoMiniDraggable = ({
 	tagName,
 	title,
 	transitionIn = true,
-	exitThreshold = 0.3,
-}) => {
-	const [ originalPos, setOriginalPos ] = useState(null);
-	const [ dragDirection, setDragDirection ] = useState(null);
+}: TodoMiniDraggableProps) => {
+	type originalPosTypes = undefined | { x: number; y: number };
+	const [ originalPos, setOriginalPos ] = useState<originalPosTypes>();
+	const [ dragDirection, setDragDirection ] = useState<undefined | string>();
 
-	const resetPosition = () => transitionIn && setOriginalPos({
-		x : 0,
-		y : 0
-	});
+	const resetPosition = () => transitionIn &&
+		setOriginalPos({
+			x : 0,
+			y : 0
+		});
 
-	const detectDragDirection = (_, { x }) => {
+	const detectDragDirection: DraggableEventHandler = (_, { x }) => {
 		setDragDirection(x < 0 ? "left" : "right");
 	};
 
-	const onStartHandler = (e, data) => {
-		draggable.onStart(e, data);
+	const onStartHandler: DraggableEventHandler = (e, data) => {
+		onDragStart(e, data);
 		resetPosition();
-
 	};
 
-	const onDragHandler = (e, data) => {
+	const onDragHandler: DraggableEventHandler = (e, data) => {
 		detectDragDirection(e, data);
 
 		if (nodeExceedsParentsWidth(data.x, data.node, exitThreshold)) {
-			setOriginalPos(null);
+			setOriginalPos(undefined);
 		}
 	};
 
-	const onStopHandler = (e, data) => {
+	const onStopHandler: DraggableEventHandler = (e, data) => {
 		if (nodeExceedsParentsWidth(data.x, data.node, exitThreshold)) {
-			draggable.onStop(e, data);
+			onDragStop(e, data);
 		} else {
 			resetPosition();
 		}
 	};
-
 
 	return (
 		<CSSTransition
@@ -107,7 +116,7 @@ const TodoMiniDraggable = ({
 		>
 			<Container>
 				{dragDirection === "left" ?
-					<Delete dark={dark} /> :
+					<Delete dark={dark} />				:
 					<Done dark={dark} />
 				}
 				<Draggable
