@@ -1,47 +1,48 @@
+import type { ChangeEventHandler } from "react";
 import styled from "styled-components";
 import Card from "../Cards/Card";
+import type { TodoMiniProps } from "./TodoMini/interfaces/todo-mini-props.interface";
 import TodoMini from "./TodoMini/TodoMini";
 
-const Container = styled(Card).attrs({ as : "article" })`
-    flex-direction: column;
-    min-height: 22.4em;
-    ${({ dark, theme }) => !dark && theme.effects.boxShadows[3]}
+const Container = styled(Card)`
+	flex-direction: column;
+	min-height: 22.4em;
+	${({ dark, theme }) => !dark && theme.effects.boxShadows[3]}
 `;
 
-const Detail = styled.textarea`
-    border: none;
-    outline: none;
-    background: none;
-    width: 100%;
-    height: 100%;
-    font: 400 1.2em "Inter", sans-serif;
-    letter-spacing: -0.03em;
-    resize: none;
-    padding: 0.75em 0.9166666666666666em 1.25em 0.9166666666666666em;
-    color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[2] : theme.colors.light.UI[7]};
+const Detail = styled.textarea<{dark?: boolean}>`
+	border: none;
+	outline: none;
+	background: none;
+	width: 100%;
+	height: 100%;
+	font: 400 1.2em "Inter", sans-serif;
+	letter-spacing: -0.03em;
+	resize: none;
+	padding: 0.75em 0.9166666666666666em 1.25em 0.9166666666666666em;
+	color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[2] : theme.colors.light.UI[7]};
 	flex-grow: 1;
 
-    ::-webkit-scrollbar {
-        width: 0.5em;
-    }
+	::-webkit-scrollbar {
+		width: 0.5em;
+	}
 
-    ::-webkit-scrollbar-track {
-        background-color: transparent;
-        margin-bottom: 1.25em;
-    }
+	::-webkit-scrollbar-track {
+		background-color: transparent;
+		margin-bottom: 1.25em;
+	}
 
-    ::-webkit-scrollbar-thumb {
-        background-color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[4] : theme.colors.light.UI[6]};
-        border-radius: 1em;
-    }
+	::-webkit-scrollbar-thumb {
+		background-color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[4] : theme.colors.light.UI[6]};
+		border-radius: 1em;
+	}
 `;
 
-/**
- *
- * @param {TodoMini & {detail : string, onDetailChange : EventListener}} props
- *
- * @returns
- */
+export interface TodoBigProps extends TodoMiniProps {
+	detail: string;
+	onDetailChange: ChangeEventHandler;
+}
+
 const TodoBig = ({
 	amPm,
 	className = "",
@@ -63,13 +64,10 @@ const TodoBig = ({
 	onTodoFinish,
 	tagColor,
 	tagName,
-	title,
-}) => {
+	title
+}: TodoBigProps) => {
 	return (
-		<Container
-			className={className}
-			dark={dark}
-		>
+		<Container as="article" className={className} dark={dark}>
 			<TodoMini
 				amPm={amPm}
 				dark={dark}
@@ -90,11 +88,9 @@ const TodoBig = ({
 				tagName={tagName}
 				title={title}
 			/>
-			<Detail
-				dark={dark}
-				onChange={onDetailChange}
-				readOnly={!edit}
-			>{detail}</Detail>
+			<Detail dark={dark} onChange={onDetailChange} readOnly={!edit}>
+				{detail}
+			</Detail>
 		</Container>
 	);
 };
