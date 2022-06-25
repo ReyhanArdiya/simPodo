@@ -1,13 +1,18 @@
-import mongoose, { Types } from "mongoose";
-import type { ITag } from "./tag";
+import mongoose from "mongoose";
+import Tag, { ITag } from "./tag";
+import type { ITodo } from "./todo";
 
 export interface IUser {
     username: string;
     email: string;
     token: string;
-	localId: string;
-	tags: ITag[];
-	todos: Types.ObjectId[];
+    _id: string;
+	tags: {
+		[tagId: ITag["id"]] : ITag;
+	};
+	todos: {
+		[todoId: ITodo["_id"]] : ITodo;
+	};
 }
 
 const UserSchema = new mongoose.Schema<IUser>({
@@ -23,9 +28,17 @@ const UserSchema = new mongoose.Schema<IUser>({
 		type     : String,
 		required : true
 	},
-	localId : {
-		type     : String,
-		required : true
+	tags : {
+		required : true,
+		type     : Map,
+		of       : Tag
+	},
+	todos : {
+		type : Map,
+		of   : {
+			type : "ObjectId",
+			ref  : "Todo"
+		}
 	}
 }, { strict : "throw" });
 
