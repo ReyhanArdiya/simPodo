@@ -1,4 +1,5 @@
-import tagsSlice, { Tag, TagsSliceState } from "./slice";
+import type { ITag } from "../../models/tag";
+import tagsSlice, { TagsSliceState } from "./slice";
 
 const { actions, reducer } = tagsSlice;
 
@@ -19,7 +20,7 @@ describe("Tags slice", () => {
 	describe("reducers", () => {
 		it("adds a new tag", () => {
 			const id = initialId;
-			const newTag: Tag = {
+			const newTag: ITag = {
 				color : "red",
 				id,
 				name  : "tag1"
