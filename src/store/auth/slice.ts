@@ -1,20 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
+import type { IUser } from "../../models/user";
 
-interface InitialState {
-	user?: {
-		localId: string;
-		token: string;
-		username: string;
-	};
+interface TodoSliceState {
+	user?: IUser;
 }
 
-const initialState: InitialState = {
-	user : {
-		localId  : "",
-		token    : "",
-		username : ""
-	}
-};
+const initialState: TodoSliceState = {};
 
 const authSlice = createSlice(
 	{
