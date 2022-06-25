@@ -7,13 +7,28 @@ let user : IUser;
 
 describe("authSlice actions", () => {
 	beforeEach(() => {
-		initialState = authSlice.getInitialState();
 		user = {
 			localId  : "1",
 			token    : "1234",
 			username : "test",
-			email    : "randomemail@gmail.com"
+			email    : "randomemail@gmail.com",
+			tags     : {
+				"personalId" : {
+					color : "red",
+					id    : "personalId",
+					name  : "personal"
+				}
+			},
+			todos : {
+				"todo1" : {
+					completed : false,
+					id        : "todo1",
+					title     : "todo1"
+				}
+			}
 		};
+
+		initialState = { user };
 	});
 
 	test("if login adds auth properties to state", () => {
@@ -60,13 +75,28 @@ describe("authSlice actions", () => {
 
 describe("authSlice actions after logout", () => {
 	beforeEach(() => {
-		initialState = authSlice.getInitialState();
 		user = {
 			localId  : "1",
 			token    : "1234",
 			username : "test",
-			email    : "randomemail@gmail.com"
+			email    : "randomemail@gmail.com",
+			tags     : {
+				"personalId" : {
+					color : "red",
+					id    : "personalId",
+					name  : "personal"
+				}
+			},
+			todos : {
+				"todo1" : {
+					completed : false,
+					id        : "todo1",
+					title     : "todo1"
+				}
+			}
 		};
+
+		initialState = { user };
 		initialState = reducer(initialState, authSliceActions.logout());
 	});
 
