@@ -1,8 +1,6 @@
-import calendarSlice from "./slice";
+import calendarSlice, { CalendarSliceState } from "./slice";
 
-const { getInitialState, actions, reducer } = calendarSlice;
-
-const deepClone = (obj: object) => JSON.parse(JSON.stringify(obj));
+const { actions, reducer } = calendarSlice;
 
 describe("Calendar slice", () => {
 	const expectedState = {
@@ -17,9 +15,19 @@ describe("Calendar slice", () => {
 		}
 	};
 
-	let initialState: ReturnType<typeof deepClone>;
+	let initialState: CalendarSliceState;
 	beforeEach(() => {
-		initialState = deepClone(getInitialState());
+		initialState = {
+			selectedDate : {
+				date       : 0,
+				monthIndex : 0
+			},
+			viewDate : {
+				daysInMonth       : 31,
+				monthIndex        : 0,
+				startingDayOfWeek : 0
+			}
+		};
 	});
 
 	it("should contain these initialStates", () => {

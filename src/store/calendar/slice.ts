@@ -12,22 +12,10 @@ export interface CalendarSliceState {
 	};
 }
 
-const initialState: CalendarSliceState = {
-	selectedDate : {
-		date       : 0,
-		monthIndex : 0
-	},
-	viewDate : {
-		daysInMonth       : 31,
-		monthIndex        : 0,
-		startingDayOfWeek : 0
-	}
-};
-
 const calendarSlice = createSlice({
-	initialState,
-	name     : "calendar",
-	reducers : {
+	initialState : {} as CalendarSliceState,
+	name         : "calendar",
+	reducers     : {
 		selectDate : (
 			state,
 			{ payload: newSelectedDate }: PayloadAction<number>
