@@ -19,13 +19,17 @@ const tagsSlice = createSlice({
 		},
 		updateTag(
 			state,
-			{ payload }: PayloadAction<Partial<ITag> & { id: string }>
+			// CMT Partial here because we can selectively pick which prop to update
+			{ payload }: PayloadAction<Partial<ITag>>
 		) {
 			const { id } = payload;
 
 			for (const key in payload) {
+				type K = Omit<ITag, "id">;
+
 				if (key !== "id") {
-					state[id][key as keyof ITag] = payload[key as keyof ITag]!;
+					state[id!][key as keyof K] =
+						payload[key as keyof K]!;
 				}
 			}
 		}
