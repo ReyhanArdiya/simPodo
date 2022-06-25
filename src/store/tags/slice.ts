@@ -1,26 +1,39 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+export interface Tag {
+	color: string;
+	id: string;
+	name: string;
+}
+
+export interface TagsSliceState {
+	[id: string]: Tag;
+}
+
+const initialState: TagsSliceState = {};
 
 const tagsSlice = createSlice({
-	initialState : {
-		"1" : {
-			color : "red",
-			id    : "tagId",
-			name  : "tagName"
-		}
-	},
+	initialState,
 	name     : "tags",
 	reducers : {
-		addTag(state, { payload: newTag }) {
+		addTag(state, { payload: newTag }: PayloadAction<Tag>) {
 			state[newTag.id] = newTag;
 		},
-		deleteTag(state, { payload: id }) {
+		deleteTag(state, { payload: id }: PayloadAction<Tag["id"]>) {
 			delete state[id];
 		},
-		updateTag(state, { payload: { color, id, name } }) {
-			state[id].color = color;
-			state[id].name = name;
-		},
+		updateTag(
+			state,
+			{ payload }: PayloadAction<Partial<Tag> & { id: string }>
+		) {
+			const { id } = payload;
 
+			for (const key in payload) {
+				if (key !== "id") {
+					state[id][key as keyof Tag] = payload[key as keyof Tag]!;
+				}
+			}
+		}
 	}
 });
 

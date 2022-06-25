@@ -1,42 +1,34 @@
-import tagsSlice from "./slice";
+import tagsSlice, { Tag, TagsSliceState } from "./slice";
 
-const { getInitialState, actions, reducer } = tagsSlice;
-
-const deepClone = obj => JSON.parse(JSON.stringify(obj));
+const { actions, reducer } = tagsSlice;
 
 describe("Tags slice", () => {
 	const initialId = "1";
-	const expectedState = {
-		[initialId] : {
-			color : expect.any(String),
-			id    : expect.any(String),
-			name  : expect.any(String),
-		}
-	};
 
-	let initialState;
+	let initialState: TagsSliceState;
 	beforeEach(() => {
-		initialState = deepClone(getInitialState());
-	});
-
-	it("should contain these initialStates", () => {
-		expect(initialState).toEqual(expectedState);
+		initialState = {
+			[initialId] : {
+				color : expect.any(String),
+				id    : expect.any(String),
+				name  : expect.any(String)
+			}
+		};
 	});
 
 	describe("reducers", () => {
 		it("adds a new tag", () => {
 			const id = initialId;
+			const newTag: Tag = {
+				color : "red",
+				id,
+				name  : "tag1"
+			};
 
-			const newState = reducer(
-				initialState,
-				actions.addTag({
-					color : "red",
-					id,
-					name  : "tag1"
-				})
-			);
+			const newState = reducer(initialState, actions.addTag(newTag));
 
 			expect(newState).toHaveProperty(id);
+			expect(newState[id]).toEqual(newTag);
 		});
 
 		it("updates a tag name", () => {
@@ -60,20 +52,38 @@ describe("Tags slice", () => {
 				initialState,
 				actions.updateTag({
 					color : "blue",
-					id,
+					id
 				})
 			);
 
 			expect(newState[id].color).toEqual("blue");
 		});
 
+		const changeK = "name";
+		it(`updates a property (e.g.: ${changeK}) without changing the others`, () => {
+			const id = initialId;
+
+			const { [id]: oldTag } = initialState;
+			const { [id]: newTag } = reducer(
+				initialState,
+				actions.updateTag({
+					[changeK] : "newVal",
+					id
+				})
+			);
+
+			expect(newTag[changeK]).not.toBe(oldTag[changeK]);
+
+			for (const key in Object.keys(newTag).filter(k => k !== "name")) {
+				expect(newTag[key as keyof typeof newTag])
+					.toBe(oldTag[key as keyof typeof oldTag]);
+			}
+		});
+
 		it("deletes a tag", () => {
 			const id = initialId;
 
-			const newState = reducer(
-				initialState,
-				actions.deleteTag(id)
-			);
+			const newState = reducer(initialState, actions.deleteTag(id));
 
 			expect(newState).not.toHaveProperty(id);
 		});
