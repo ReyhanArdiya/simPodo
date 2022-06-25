@@ -1,43 +1,60 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+export interface CalendarSliceState {
+	selectedDate: {
+		date: number;
+		monthIndex: number;
+	};
+	viewDate: {
+		daysInMonth: number;
+		monthIndex: number;
+		startingDayOfWeek: number;
+	};
+}
+
+const initialState: CalendarSliceState = {
+	selectedDate : {
+		date       : 0,
+		monthIndex : 0
+	},
+	viewDate : {
+		daysInMonth       : 31,
+		monthIndex        : 0,
+		startingDayOfWeek : 0
+	}
+};
 
 const calendarSlice = createSlice({
-	initialState : {
-		selectedDate : {
-			date       : 0,
-			monthIndex : 0
-		},
-		viewDate : {
-			daysInMonth       : 31,
-			monthIndex        : 0,
-			startingDayOfWeek : 0
-		}
-	},
+	initialState,
 	name     : "calendar",
 	reducers : {
 		selectDate : (
 			state,
-			{ payload: newSelectedDate }: { payload: number }
+			{ payload: newSelectedDate }: PayloadAction<number>
 		) => {
 			state.selectedDate.date = newSelectedDate;
 		},
-		selectMonth(state, { payload: newSelectedMonth }: { payload: number }) {
+		selectMonth(
+			state,
+			{ payload: newSelectedMonth }: PayloadAction<number>
+		) {
 			state.selectedDate.monthIndex = newSelectedMonth;
 		},
 		setDaysInMonth(
 			state,
-			{ payload: newDaysInMonth }: { payload: number }
+			{ payload: newDaysInMonth }: PayloadAction<number>
 		) {
 			state.viewDate.daysInMonth = newDaysInMonth;
 		},
 		setViewMonthIndex(
 			state,
-			{ payload: newMonthIndex }: { payload: number }
+			{ payload: newMonthIndex }: PayloadAction<number>
 		) {
 			state.viewDate.monthIndex = newMonthIndex;
 		},
 		setViewStartingDayOfWeek(
 			state,
-			{ payload: newStartingDayOfWeek }: { payload: number }
+			{ payload: newStartingDayOfWeek }: PayloadAction<number>
 		) {
 			state.viewDate.startingDayOfWeek = newStartingDayOfWeek;
 		}
