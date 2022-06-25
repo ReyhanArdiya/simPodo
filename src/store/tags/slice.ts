@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { ITag } from "../../models/tag";
 
 export interface TagsSliceState {
-	[id: string]: ITag;
+	[tagId: ITag["id"]]: ITag;
 }
 
 const initialState: TagsSliceState = {};
