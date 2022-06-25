@@ -1,35 +1,27 @@
-import todosSlice, { todoSliceReducer, todosSliceActions } from "./slice";
-
-const deepClone = obj => JSON.parse(JSON.stringify(obj));
+import type { ITodo } from "../../models/todo";
+import todosSlice, { ITodoHash, todoSliceReducer, todosSliceActions, TodosSliceState } from "./slice";
 
 describe("todoSlice", () => {
-	// TODO change this to type with mongoose Model once created
-	const expectedState = {
-		completedTotal : expect.any(Number),
-		todos          : {
-			todoId : expect.objectContaining({
-				completed : expect.any(Boolean),
-				id        : expect.any(String),
-				title     : expect.any(String)
-			})
-		}
-	};
-
-	let initialState;
+	let initialState: TodosSliceState;
 	beforeEach(() => {
-		initialState = deepClone(todosSlice.getInitialState());
-	});
-
-	it("should contain these initialState", () => {
-		expect(initialState).toEqual(expectedState);
+		initialState = {
+			completedTotal : 0,
+			todos          : {
+				todoId : {
+					completed : false,
+					_id       : "todoIdFromMongoose",
+					title     : "todoTitle"
+				}
+			},
+		};
 	});
 
 	describe("reducers", () => {
 		it("adds a todo", () => {
-			const newTodo = {
+			const newTodo: ITodo = {
 				completed : false,
-				id        : "todoId2",
-				title     : "todo2"
+				_id       : "todoId2",
+				title     : "todo2",
 			};
 
 			const newState = todosSlice.reducer(
@@ -37,7 +29,7 @@ describe("todoSlice", () => {
 				todosSlice.actions.addTodo(newTodo)
 			);
 
-			expect(newState.todos).toHaveProperty(newTodo.id, newTodo);
+			expect(newState.todos).toHaveProperty(newTodo._id, newTodo);
 		});
 
 		it("deletes a todo", () => {
@@ -52,15 +44,15 @@ describe("todoSlice", () => {
 		});
 
 		it("replaces the todos property", () => {
-			const newTodos = {
+			const newTodos: ITodoHash = {
 				todoId1 : {
 					completed : false,
-					id        : "todoId1",
+					_id       : "todoId1",
 					title     : "todo1"
 				},
 				todoId2 : {
 					completed : false,
-					id        : "todoId2",
+					_id       : "todoId2",
 					title     : "todo2"
 				}
 			};
@@ -77,22 +69,22 @@ describe("todoSlice", () => {
 			initialState.todos = {
 				1 : {
 					completed : false,
-					id        : "1",
+					_id       : "1",
 					title     : "todo1"
 				},
 				2 : {
 					completed : false,
-					id        : "2",
+					_id       : "2",
 					title     : "todo2"
 				},
 				3 : {
 					completed : false,
-					id        : "3",
+					_id       : "3",
 					title     : "todo3"
 				},
 				4 : {
 					completed : false,
-					id        : "4",
+					_id       : "4",
 					title     : "todo4"
 				}
 			};
@@ -112,15 +104,16 @@ describe("todoSlice", () => {
 		});
 
 		it("doesn't increment completedTotal if it completes an already completed todo", () => {
+			const todoId = "1";
+
 			initialState.todos = {
-				1 : {
+				[todoId] : {
 					completed : true,
-					id        : "1",
+					_id       : "1",
 					title     : "todo1"
 				}
 			};
 
-			const todoId = 1;
 
 			const newState = todoSliceReducer(
 				initialState,
@@ -130,21 +123,20 @@ describe("todoSlice", () => {
 			expect(newState.completedTotal).toBe(initialState.completedTotal);
 		});
 
-		it("updates a todo", () => {
-			const initialState = {
-				todos : {
-					"1" : {
-						completed : false,
-						id        : "1",
-						title     : "todo1"
-					}
+		it("updates a todo selectively without changing other props", () => {
+			const todoId = "1";
+
+			initialState.todos = {
+				[todoId] : {
+					completed : false,
+					_id       : todoId,
+					title     : "todo1"
 				}
 			};
 
-			const todoId = "1";
-			const newTodoData = {
+			const newTodoData: ITodo = {
 				completed : true,
-				id        : todoId,
+				_id       : todoId,
 				title     : "todo1 updated",
 			};
 
@@ -153,13 +145,16 @@ describe("todoSlice", () => {
 				todosSliceActions.updateTodo(newTodoData)
 			);
 
+			const oldTodo = initialState.todos[todoId];
+			const newTodo = newState.todos[todoId];
+
 			// Update the todo object, not replace it
 			expect(newState.todos).toHaveProperty(todoId);
-			expect(newState.todos[todoId]).not.toBe(newTodoData);
+			expect(newTodo).not.toBe(newTodoData);
 
-			expect(newState.todos[todoId]).not.toEqual(
-				initialState.todos[todoId]
-			);
+			expect(newTodo._id).toEqual(oldTodo._id);
+			expect(newTodo.completed).not.toEqual(oldTodo.completed);
+			expect(newTodo.title).not.toEqual(oldTodo.title);
 		});
 	});
 });
