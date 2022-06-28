@@ -1,6 +1,7 @@
-import { Error, HydratedDocument, Model, model, Schema, Types } from "mongoose";
+import { HydratedDocument, Model, model, Schema, Types } from "mongoose";
 import replaceO1 from "../../utils/replaceO1";
 import NoTagFoundError from "../errors/no-tag-found-error";
+import NoTodoFoundError from "../errors/no-todo-found-error";
 import type Tag from "../tag";
 import type Todo from "../todo";
 import type CUser from "../user";
@@ -20,26 +21,12 @@ export interface UserInstanceMethods {
 
 	addTodo(todo: Omit<Todo | ITodo, "_id">): Promise<ITodo>;
 	deleteTodo(todoId: Todo["_id"] | ITodo["_id"]): Promise<ITodo>;
-	updateTodo(newTodo: Todo | ITodo): Promise<ITodo>;
+	updateTodo(newTodoData: Todo | ITodo): Promise<ITodo>;
 }
 
-export interface UserVirtuals {}
+type UserModel = Model<IUser, Record<string, never>, UserInstanceMethods>;
 
-export interface UserStaticMethods {}
-
-type UserModel = Model<
-	IUser,
-	Record<string, never>,
-	UserInstanceMethods,
-	UserVirtuals
-> &
-	UserStaticMethods;
-
-export type UserDoc = HydratedDocument<
-	IUser,
-	UserInstanceMethods,
-	UserVirtuals
->;
+export type UserDoc = HydratedDocument<IUser, UserInstanceMethods>;
 
 const UserSchema = new Schema<IUser, UserModel, UserInstanceMethods>(
 	{
@@ -67,8 +54,7 @@ const UserSchema = new Schema<IUser, UserModel, UserInstanceMethods>(
 
 const stringifyId = (id: string | Types.ObjectId) => typeof id === "string" ? id : id.toString();
 
-class UserSchemaMethods
-implements UserInstanceMethods, UserVirtuals, Partial<UserStaticMethods> {
+class UserSchemaMethods implements UserInstanceMethods {
 	public async addTag(
 		this: UserDoc,
 		tag: Omit<ITag | Tag, "_id">
@@ -89,7 +75,6 @@ implements UserInstanceMethods, UserVirtuals, Partial<UserStaticMethods> {
 		this: UserDoc,
 		tagId: string | Types.ObjectId
 	): Promise<ITag> {
-		// TODO since map => hash table in mongo i think i could use $unset
 		const id = stringifyId(tagId);
 
 		const toBeDeletedTag = this.tags.get(id);
@@ -122,16 +107,56 @@ implements UserInstanceMethods, UserVirtuals, Partial<UserStaticMethods> {
 		return toBeUpdatedTag;
 	}
 
-	public async addTodo(todo: Omit<ITodo | Todo, "_id">): Promise<ITodo> {
-		throw new Error("Method not implemented.");
+	public async addTodo(
+		this: UserDoc,
+		todo: Omit<ITodo | Todo, "_id">
+	): Promise<ITodo> {
+		const newTodo: ITodo = {
+			...todo,
+			_id : new Types.ObjectId()
+		};
+
+		this.todos.set(newTodo._id.toString(), newTodo);
+
+		await this.save();
+
+		return newTodo;
 	}
 
-	public async deleteTodo(todoId: string | Types.ObjectId): Promise<ITodo> {
-		throw new Error("Method not implemented.");
+	public async deleteTodo(
+		this: UserDoc,
+		todoId: string | Types.ObjectId
+	): Promise<ITodo> {
+		const id = stringifyId(todoId);
+
+		const toBeDeletedTodo = this.todos.get(id);
+		if (!toBeDeletedTodo) {
+			throw new NoTodoFoundError();
+		}
+
+		this.todos.delete(id);
+
+		await this.save();
+
+		return toBeDeletedTodo;
 	}
 
-	public async updateTodo(newTodo: ITodo | Todo): Promise<ITodo> {
-		throw new Error("Method not implemented.");
+	public async updateTodo(
+		this: UserDoc,
+		newTodoData: ITodo | Todo
+	): Promise<ITodo> {
+		const id = stringifyId(newTodoData._id);
+
+		const toBeUpdatedTodo = this.todos.get(id);
+		if (!toBeUpdatedTodo) {
+			throw new NoTodoFoundError();
+		}
+
+		replaceO1(toBeUpdatedTodo, newTodoData, "_id");
+
+		await this.save();
+
+		return toBeUpdatedTodo;
 	}
 }
 
