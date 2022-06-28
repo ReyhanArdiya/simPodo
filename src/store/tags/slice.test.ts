@@ -1,4 +1,4 @@
-import type Tag from "../../models/interfaces/tag.interface";
+import Tag from "../../models/interfaces/tag.interface";
 import tagsSlice, { TagsSliceState } from "./slice";
 
 const { actions, reducer } = tagsSlice;
@@ -20,11 +20,11 @@ describe("Tags slice", () => {
 	describe("reducers", () => {
 		it("adds a new tag", () => {
 			const _id = initialId;
-			const newTag: Tag = {
-				color : "red",
+			const newTag: Tag = new Tag(
+				"tag1",
+				"red",
 				_id,
-				name  : "tag1"
-			};
+			);
 
 			const newState = reducer(initialState, actions.addTag(newTag));
 

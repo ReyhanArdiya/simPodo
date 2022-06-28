@@ -1,7 +1,7 @@
 import { Schema, Types } from "mongoose";
-import type IsomorphicTag from "./interfaces/tag.interface";
+import type Tag from "./interfaces/tag.interface";
 
-export interface ITag extends Omit<IsomorphicTag, "_id"> {
+export interface ITag extends Omit<Tag, "_id"> {
 	readonly _id: Types.ObjectId;
 }
 
