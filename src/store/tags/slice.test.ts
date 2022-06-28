@@ -1,4 +1,4 @@
-import type { Tag } from "../../models/interfaces/tag.interface";
+import type Tag from "../../models/interfaces/tag.interface";
 import tagsSlice, { TagsSliceState } from "./slice";
 
 const { actions, reducer } = tagsSlice;

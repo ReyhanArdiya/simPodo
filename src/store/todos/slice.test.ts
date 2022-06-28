@@ -1,4 +1,4 @@
-import type { Todo } from "../../models/interfaces/todo.interface";
+import type Todo from "../../models/interfaces/todo.interface";
 import todosSlice, { ITodoHash, todoSliceReducer, todosSliceActions, TodosSliceState } from "./slice";
 
 describe("todoSlice", () => {
