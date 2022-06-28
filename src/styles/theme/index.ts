@@ -1,22 +1,21 @@
+import type { DefaultTheme } from "styled-components";
 import breakpoints from "./breakpoints";
 import colors from "./colors";
 import effects from "./effects";
 
-interface Theme {
-	breakpoints: typeof breakpoints;
-	colors: typeof colors;
-	effects: typeof effects;
-}
-
 declare module "styled-components" {
-	// eslint-disable-next-line @typescript-eslint/no-empty-interface
-	export interface DefaultTheme extends Theme {}
+	export interface DefaultTheme {
+		breakpoints: typeof breakpoints;
+		colors: typeof colors;
+		effects: typeof effects;
+	}
 }
 
-const theme: Theme = {
+const theme: DefaultTheme = {
 	breakpoints,
 	colors,
 	effects
 };
+
 
 export default theme;
