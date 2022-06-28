@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
-import type { ITodo } from "../../models/todo";
+import type { Todo } from "../../models/interfaces/todo.interface";
 
-export type ITodoHash = { [todoId: ITodo["_id"]]: ITodo };
+export type ITodoHash = { [todoId: Todo["_id"]]: Todo };
 
 export interface TodosSliceState {
 	completedTotal: number;
@@ -24,27 +24,27 @@ const todosSlice = createSlice({
 	initialState : {} as TodosSliceState,
 	name         : "todos",
 	reducers     : {
-		addTodo(state, { payload: todo }: PayloadAction<ITodo>) {
+		addTodo(state, { payload: todo }: PayloadAction<Todo>) {
 			state.todos[todo._id] = todo;
 		},
-		completeTodo(state, { payload: _id }: PayloadAction<ITodo["_id"]>) {
+		completeTodo(state, { payload: _id }: PayloadAction<Todo["_id"]>) {
 			if (!state.todos[_id].completed) {
 				state.todos[_id].completed = true;
 				state.completedTotal++;
 			}
 		},
-		deleteTodo(state, { payload: _id }: PayloadAction<ITodo["_id"]>) {
+		deleteTodo(state, { payload: _id }: PayloadAction<Todo["_id"]>) {
 			delete state.todos[_id];
 		},
 		replaceTodos(state, { payload: newTodos }: PayloadAction<ITodoHash>) {
 			state.todos = newTodos;
 		},
 		// CMT Partial here because we can selectively pick which prop to update
-		updateTodo(state, { payload }: PayloadAction<Partial<ITodo>>) {
+		updateTodo(state, { payload }: PayloadAction<Partial<Todo>>) {
 			const { _id } = payload;
 
 			for (const key in payload) {
-				type K = Omit<ITodo, "_id">;
+				type K = Omit<Todo, "_id">;
 
 				if (key !== "_id") {
 					/*

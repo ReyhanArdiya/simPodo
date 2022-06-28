@@ -1,4 +1,4 @@
-import type { ITodo } from "../../models/todo";
+import type { Todo } from "../../models/interfaces/todo.interface";
 import todosSlice, { ITodoHash, todoSliceReducer, todosSliceActions, TodosSliceState } from "./slice";
 
 describe("todoSlice", () => {
@@ -18,7 +18,7 @@ describe("todoSlice", () => {
 
 	describe("reducers", () => {
 		it("adds a todo", () => {
-			const newTodo: ITodo = {
+			const newTodo: Todo = {
 				completed : false,
 				_id       : "todoId2",
 				title     : "todo2",
@@ -134,7 +134,7 @@ describe("todoSlice", () => {
 				}
 			};
 
-			const newTodoData: ITodo = {
+			const newTodoData: Todo = {
 				completed : true,
 				_id       : todoId,
 				title     : "todo1 updated",

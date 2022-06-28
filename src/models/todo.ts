@@ -1,12 +1,7 @@
 import mongoose from "mongoose";
+import type { Todo } from "./interfaces/todo.interface";
 
-export interface ITodo {
-	completed: boolean;
-	_id: string;
-	title: string;
-}
-
-const ModelSchema = new mongoose.Schema<ITodo>({
+const ModelSchema = new mongoose.Schema<Todo>({
 	completed : {
 		type    : Boolean,
 		default : false
