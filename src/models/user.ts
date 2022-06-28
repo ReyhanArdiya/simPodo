@@ -1,50 +1,20 @@
-import mongoose from "mongoose";
-import Tag, { ITag } from "./tag";
-import type { ITodo } from "./todo";
+import type Tag from "./tag";
+import type Todo from "./todo";
 
-export interface IUser {
-    username: string;
-    email: string;
-    token: string;
-    _id: string;
-	tags: {
-		[tagId: ITag["id"]] : ITag;
-	};
-	todos: {
-		[todoId: ITodo["_id"]] : ITodo;
-	};
-}
-
-const UserSchema = new mongoose.Schema<IUser>({
-	username : {
-		type     : String,
-		required : true
-	},
-	email : {
-		type     : String,
-		required : true
-	},
-	token : {
-		type     : String,
-		required : true
-	},
-	tags : {
-		required : true,
-		type     : Map,
-		of       : Tag
-	},
-	todos : {
-		type : Map,
-		of   : {
-			type : "ObjectId",
-			ref  : "Todo"
-		}
+export default class User {
+	constructor(
+		public username: string,
+		public email: string,
+		public token: string = "",
+		public tags: Map<Tag["_id"], Tag> = new Map(),
+		public todos: Map<Todo["_id"], Todo> = new Map(),
+		public readonly _id: string = "",
+	) {
+		this.username = username;
+		this.email = email;
+		this.token = token;
+		this.tags = tags;
+		this.todos = todos;
+		this._id = _id;
 	}
-}, { strict : "throw" });
-
-class UserSchemaMethods {}
-UserSchema.loadClass(UserSchemaMethods);
-
-const User = mongoose.model("User", UserSchema);
-
-export default User;
+}

@@ -1,19 +1,11 @@
-import { v4 as uuidv4 } from "uuid";
-
-export interface ITag {
-	color: string;
-	id: string;
-	name: string;
-}
-
-export default class Tag implements ITag {
+export default class Tag {
 	constructor(
-		public color: ITag["color"],
-		public name: ITag["name"],
-		public id : ITag["id"] = uuidv4()
+		public name: string,
+		public color: string,
+		public readonly _id: string = "",
 	) {
 		this.color = color;
 		this.name = name;
-		this.id = id;
+		this._id = _id;
 	}
 }

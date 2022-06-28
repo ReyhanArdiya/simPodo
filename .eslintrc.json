@@ -46,6 +46,7 @@
 		"comma-style": "warn",
 		"curly": "warn",
 		"dot-location": ["warn", "property"],
+		"eol-last": "warn",
 		"eqeqeq": "warn",
 		"for-direction": "off",
 		"func-call-spacing": "warn",
@@ -266,7 +267,8 @@
 			{ "maximum": 1, "when": "multiline" }
 		],
 		"react/jsx-sort-props": "warn",
-		"semi": "error",
+		"@typescript-eslint/semi": "error",
+		"@typescript-eslint/no-extra-semi": "error",
 		"semi-spacing": "error",
 		"semi-style": "error",
 		"sort-imports": [
