@@ -1,19 +1,11 @@
-import { Schema, Types } from "mongoose";
-import type Todo from "./interfaces/todo.interface";
-
-export interface ITodo extends Omit<Todo, "_id"> {
-	readonly _id: Types.ObjectId;
+export default class Todo {
+	constructor(
+		public title: string,
+		public completed: boolean = false,
+		public readonly _id: string = "",
+	) {
+		this.title = title;
+		this.completed = completed;
+		this._id = _id;
+	}
 }
-
-const TodoSchema = new Schema<ITodo>({
-	title : {
-		type     : String,
-		required : true
-	},
-	completed : {
-		type    : Boolean,
-		default : false
-	},
-}, { strict : "throw" });
-
-export default TodoSchema;
