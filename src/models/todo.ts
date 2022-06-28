@@ -1,7 +1,7 @@
 import { Schema, Types } from "mongoose";
-import type IsomorphicTodo from "./interfaces/todo.interface";
+import type Todo from "./interfaces/todo.interface";
 
-export interface ITodo extends Omit<IsomorphicTodo, "_id"> {
+export interface ITodo extends Omit<Todo, "_id"> {
 	readonly _id: Types.ObjectId;
 }
 
