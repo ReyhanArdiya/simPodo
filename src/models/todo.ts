@@ -1,16 +1,19 @@
-import mongoose from "mongoose";
-import type { Todo } from "./interfaces/todo.interface";
+import { Schema, Types } from "mongoose";
+import type { Todo as IsomorphicTodo } from "./interfaces/todo.interface";
 
-const ModelSchema = new mongoose.Schema<Todo>({
+export interface ITodo extends Omit<IsomorphicTodo, "_id"> {
+	readonly _id: Types.ObjectId;
+}
+
+const TodoSchema = new Schema<ITodo>({
+	title : {
+		type     : String,
+		required : true
+	},
 	completed : {
 		type    : Boolean,
 		default : false
 	},
 }, { strict : "throw" });
 
-class ModelSchemaMethods {}
-ModelSchema.loadClass(ModelSchemaMethods);
-
-const Model = mongoose.model("Model", ModelSchema);
-
-export default Model;
+export default TodoSchema;
