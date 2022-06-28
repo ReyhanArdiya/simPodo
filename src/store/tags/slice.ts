@@ -19,17 +19,20 @@ const tagsSlice = createSlice({
 		},
 		updateTag(
 			state,
-			// CMT Partial here because we can selectively pick which prop to update
-			{ payload }: PayloadAction<Partial<Tag>>
+			{ payload: newTagData }: PayloadAction<Partial<Omit<Tag, "_id">> & Pick<Tag, "_id">>
 		) {
-			const { _id } = payload;
+			const { _id } = newTagData;
 
-			for (const key in payload) {
+			// CMT I cant use replaceO1 here since state will be a Proxy and
+			// I can't check that :(
+			// replaceO1(state[_id], newTagData);
+
+			for (const key in newTagData) {
 				type K = Omit<Tag, "_id">;
 
 				if (key !== "_id") {
-					state[_id!][key as keyof K] =
-						payload[key as keyof K]!;
+					state[_id][key as keyof K] =
+						newTagData[key as keyof K]!;
 				}
 			}
 		}

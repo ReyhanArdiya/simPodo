@@ -40,10 +40,15 @@ const todosSlice = createSlice({
 			state.todos = newTodos;
 		},
 		// CMT Partial here because we can selectively pick which prop to update
-		updateTodo(state, { payload }: PayloadAction<Partial<Todo>>) {
-			const { _id } = payload;
+		updateTodo(
+			state,
+			{
+				payload: newTodoData
+			}: PayloadAction<Partial<Omit<Todo, "_id">> & Pick<Todo, "_id">>
+		) {
+			const { _id } = newTodoData;
 
-			for (const key in payload) {
+			for (const key in newTodoData) {
 				type K = Omit<Todo, "_id">;
 
 				if (key !== "_id") {
@@ -53,8 +58,8 @@ const todosSlice = createSlice({
 					and vice versa. How to tell TS that will never happen?
 					*/
 					// @ts-expect-error : see above REFAC
-					state.todos[_id!][key as keyof K] =
-						payload[key as keyof K]!;
+					state.todos[_id][key as keyof K] =
+						newTodoData[key as keyof K]!;
 				}
 			}
 		}
