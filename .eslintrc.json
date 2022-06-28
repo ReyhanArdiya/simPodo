@@ -46,6 +46,7 @@
 		"comma-style": "warn",
 		"curly": "warn",
 		"dot-location": ["warn", "property"],
+		"eol-last": "warn",
 		"eqeqeq": "warn",
 		"for-direction": "off",
 		"func-call-spacing": "warn",
