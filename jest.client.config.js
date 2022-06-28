@@ -1,4 +1,4 @@
-const nextJest = require("next/jest");
+import nextJest from "next/jest.js";
 const createJestConfig = nextJest({ dir : "./", });
 
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
@@ -10,4 +10,4 @@ const customJestConfig = {
 	testPathIgnorePatterns   : [ "./src/models" ],
 	preset                   : "ts-jest",
 };
-module.exports = createJestConfig(customJestConfig);
+export default createJestConfig(customJestConfig);
