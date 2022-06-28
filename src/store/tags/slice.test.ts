@@ -1,4 +1,4 @@
-import Tag from "../../models/interfaces/tag.interface";
+import Tag from "../../models/tag";
 import tagsSlice, { TagsSliceState } from "./slice";
 
 const { actions, reducer } = tagsSlice;

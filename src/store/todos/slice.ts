@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
-import type Todo from "../../models/interfaces/todo.interface";
+import type Todo from "../../models/todo";
 
 export type ITodoHash = { [todoId: Todo["_id"]]: Todo };
 

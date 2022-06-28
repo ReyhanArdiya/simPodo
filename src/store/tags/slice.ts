@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type Tag from "../../models/interfaces/tag.interface";
+import type Tag from "../../models/tag";
 
 export interface TagsSliceState {
 	[tagId: Tag["_id"]]: Tag;
