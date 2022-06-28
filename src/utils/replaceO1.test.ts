@@ -44,7 +44,7 @@ describe("replaceO1", () => {
 		expect(o1._id).not.toBe(o2._id);
 	});
 
-	it("handles nested objects", () => {
+	it.skip("handles nested objects", () => {
 		// CMT IF i ever need to implement this remember that I cannot memoize
 		// using key because they might be the same nor values since they could
 		// be primitives
