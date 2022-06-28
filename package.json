@@ -8,9 +8,17 @@
 		"start": "next start",
 		"lint": "next lint",
 		"test": "jest --watch",
+		"test:client": "jest --watch --projects jest.client.config.js",
+		"test:server": "jest --watch --projects jest.server.config.js",
 		"test:generate-output": "jest --json --outputFile=.jest-test-results.json",
 		"storybook": "start-storybook -p 6006",
 		"build-storybook": "build-storybook"
+	},
+	"jest": {
+		"projects": [
+			"./jest.client.config.js",
+			"./jest.server.config.js"
+		]
 	},
 	"dependencies": {
 		"@fortawesome/fontawesome-svg-core": "^6.1.1",
