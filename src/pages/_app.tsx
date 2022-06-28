@@ -17,7 +17,6 @@ const MyApp = ({
 	const getLayout = Component.getLayout || ((page: ReactNode) => page);
 
 	return (
-		// @ts-expect-error : SC ts 4.0.3 doesn't include children prop for some reason??
 		<ThemeProvider theme={theme}>
 			<GlobalStyle />
 			<Head>
