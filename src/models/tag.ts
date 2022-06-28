@@ -1,14 +1,19 @@
-import { v4 as uuidv4 } from "uuid";
-import type { Tag as ITag } from "./interfaces/tag.interface";
+import { Schema, Types } from "mongoose";
+import type { Tag as IsomorphicTag } from "./interfaces/tag.interface";
 
-export default class Tag implements ITag {
-	constructor(
-		public color: Tag["color"],
-		public name: Tag["name"],
-		public _id : Tag["_id"] = uuidv4()
-	) {
-		this.color = color;
-		this.name = name;
-		this._id = _id;
-	}
+export interface ITag extends Omit<IsomorphicTag, "_id"> {
+	readonly _id: Types.ObjectId;
 }
+
+const TagSchema = new Schema<ITag>({
+	color : {
+		type     : String,
+		required : true
+	},
+	name : {
+		type     : String,
+		required : true
+	},
+}, { strict : "throw" });
+
+export default TagSchema;
