@@ -5,7 +5,7 @@ import Draggable, {
 } from "react-draggable";
 import { CSSTransition } from "react-transition-group";
 import styled from "styled-components";
-import nodeExceedsParentsWidth from "../../../helpers/node-exceeds-parents-width";
+import nodeExceedsParentsWidth from "../../../utils/node-exceeds-parents-width";
 import Card from "../Cards/Card";
 import Delete from "./TodoMini/DragBg/Delete";
 import Done from "./TodoMini/DragBg/Done";
