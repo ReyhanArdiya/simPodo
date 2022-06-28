@@ -11,7 +11,7 @@ describe("Tags slice", () => {
 		initialState = {
 			[initialId] : {
 				color : expect.any(String),
-				id    : expect.any(String),
+				_id   : expect.any(String),
 				name  : expect.any(String)
 			}
 		};
@@ -19,74 +19,74 @@ describe("Tags slice", () => {
 
 	describe("reducers", () => {
 		it("adds a new tag", () => {
-			const id = initialId;
+			const _id = initialId;
 			const newTag: ITag = {
 				color : "red",
-				id,
+				_id,
 				name  : "tag1"
 			};
 
 			const newState = reducer(initialState, actions.addTag(newTag));
 
-			expect(newState).toHaveProperty(id);
-			expect(newState[id]).toEqual(newTag);
+			expect(newState).toHaveProperty(_id);
+			expect(newState[_id]).toEqual(newTag);
 		});
 
 		it("updates a tag name", () => {
-			const id = initialId;
+			const _id = initialId;
 
 			const newState = reducer(
 				initialState,
 				actions.updateTag({
-					id,
+					_id  : _id,
 					name : "tag2"
 				})
 			);
 
-			expect(newState[id].name).toEqual("tag2");
+			expect(newState[_id].name).toEqual("tag2");
 		});
 
 		it("updates a tag color", () => {
-			const id = initialId;
+			const _id = initialId;
 
 			const newState = reducer(
 				initialState,
 				actions.updateTag({
 					color : "blue",
-					id
+					_id
 				})
 			);
 
-			expect(newState[id].color).toEqual("blue");
+			expect(newState[_id].color).toEqual("blue");
 		});
 
 		const changeK = "name";
 		it(`updates a property (e.g.: ${changeK}) without changing the others`, () => {
-			const id = initialId;
+			const _id = initialId;
 
-			const { [id]: oldTag } = initialState;
-			const { [id]: newTag } = reducer(
+			const { [_id]: oldTag } = initialState;
+			const { [_id]: newTag } = reducer(
 				initialState,
 				actions.updateTag({
 					[changeK] : "newVal",
-					id
+					_id       : _id
 				})
 			);
 
 			expect(newTag[changeK]).not.toBe(oldTag[changeK]);
 
-			for (const key in Object.keys(newTag).filter(k => k !== "name")) {
+			for (const key in Object.keys(newTag).filter(k => k !== changeK)) {
 				expect(newTag[key as keyof typeof newTag])
 					.toBe(oldTag[key as keyof typeof oldTag]);
 			}
 		});
 
 		it("deletes a tag", () => {
-			const id = initialId;
+			const _id = initialId;
 
-			const newState = reducer(initialState, actions.deleteTag(id));
+			const newState = reducer(initialState, actions.deleteTag(_id));
 
-			expect(newState).not.toHaveProperty(id);
+			expect(newState).not.toHaveProperty(_id);
 		});
 	});
 });

@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { ITag } from "../../models/tag";
 
 export interface TagsSliceState {
-	[tagId: ITag["id"]]: ITag;
+	[tagId: ITag["_id"]]: ITag;
 }
 
 const initialState: TagsSliceState = {};
@@ -12,23 +12,23 @@ const tagsSlice = createSlice({
 	name     : "tags",
 	reducers : {
 		addTag(state, { payload: newTag }: PayloadAction<ITag>) {
-			state[newTag.id] = newTag;
+			state[newTag._id] = newTag;
 		},
-		deleteTag(state, { payload: id }: PayloadAction<ITag["id"]>) {
-			delete state[id];
+		deleteTag(state, { payload: _id }: PayloadAction<ITag["_id"]>) {
+			delete state[_id];
 		},
 		updateTag(
 			state,
 			// CMT Partial here because we can selectively pick which prop to update
 			{ payload }: PayloadAction<Partial<ITag>>
 		) {
-			const { id } = payload;
+			const { _id } = payload;
 
 			for (const key in payload) {
-				type K = Omit<ITag, "id">;
+				type K = Omit<ITag, "_id">;
 
-				if (key !== "id") {
-					state[id!][key as keyof K] =
+				if (key !== "_id") {
+					state[_id!][key as keyof K] =
 						payload[key as keyof K]!;
 				}
 			}
