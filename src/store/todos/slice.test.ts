@@ -1,11 +1,10 @@
 import Todo from "../../models/todo";
-import todosSlice, { ITodoHash, todoSliceReducer, todosSliceActions, TodosSliceState } from "./slice";
+import todosSlice, { ITodoHash, todoSliceReducer, todoSliceSelectors, todosSliceActions, TodosSliceState } from "./slice";
 
 let initialState: TodosSliceState;
 beforeEach(() => {
 	initialState = {
-		completedTotal : 0,
-		todos          : {
+		todos : {
 			todoId : {
 				completed : false,
 				_id       : "todoIdFromMongoose",
@@ -97,29 +96,6 @@ describe("todoSlice actions", () => {
 
 
 		expect(newState.todos[todoId].completed).toBe(true);
-		expect(newState.completedTotal).toBe(
-			initialState.completedTotal + 1
-		);
-	});
-
-	it("doesn't increment completedTotal if it completes an already completed todo", () => {
-		const todoId = "1";
-
-		initialState.todos = {
-			[todoId] : {
-				completed : true,
-				_id       : "1",
-				title     : "todo1"
-			}
-		};
-
-
-		const newState = todoSliceReducer(
-			initialState,
-			todosSliceActions.todoCompleted(todoId)
-		);
-
-		expect(newState.completedTotal).toBe(initialState.completedTotal);
 	});
 
 	it("updates a todo selectively without changing other props", () => {
@@ -157,3 +133,38 @@ describe("todoSlice actions", () => {
 	});
 });
 
+describe("todoSlice selectors", () => {
+	it("derives total of completed todos", () => {
+		const initialState: TodosSliceState = {
+			todos : {
+				1 : {
+					_id       : "1",
+					title     : "1",
+					completed : false
+				},
+				2 : {
+					_id       : "2",
+					title     : "2",
+					completed : false
+				},
+				3 : {
+					_id       : "3",
+					title     : "3",
+					completed : true
+				},
+				4 : {
+					_id       : "4",
+					title     : "4",
+					completed : true
+				},
+				5 : {
+					_id       : "5",
+					title     : "5",
+					completed : false
+				},
+			}
+		};
+
+		expect(todoSliceSelectors.selectCompletedTotal(initialState)).toBe(2);
+	});
+});
