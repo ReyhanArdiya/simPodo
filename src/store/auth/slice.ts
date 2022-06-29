@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import UserAlreadyLoggedInError from "../../models/errors/user-already-logged-in-error";
 import UserNotLoggedInError from "../../models/errors/user-not-logged-in-error";
 import type User from "../../models/user";
@@ -58,4 +58,12 @@ const authSlice = createSlice({
 });
 
 export const { actions: authSliceActions, name: authSliceName } = authSlice;
+
+export const authSliceSelectors = {
+	selectCurrentUser : createSelector(
+		[ (state: AuthSliceState) => state.user ],
+		user => user
+	)
+};
+
 export default authSlice;
