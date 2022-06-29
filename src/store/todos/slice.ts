@@ -72,7 +72,11 @@ export const {
 export const todoSliceSelectors = {
 	selectCompletedTotal : createSelector(
 		[ (state: TodosSliceState) => state.todos ],
-		todos => Object.values(todos).filter(t => t.completed).length
+		todos => Object.values(todos).filter(t => t!.completed).length
+	),
+	selectTodoById : createSelector(
+		[ (state: TodosSliceState, id: Todo["_id"]) => state.todos[id] ],
+		todo => todo
 	)
 };
 

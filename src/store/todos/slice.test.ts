@@ -161,10 +161,32 @@ describe("todoSlice selectors", () => {
 					_id       : "5",
 					title     : "5",
 					completed : false
-				},
+				}
 			}
 		};
 
 		expect(todoSliceSelectors.selectCompletedTotal(initialState)).toBe(2);
+	});
+
+	it("selects a Todo by id", () => {
+		const availableTodoId = "1";
+
+		const initialState: TodosSliceState = {
+			todos : {
+				[availableTodoId] : {
+					_id       : "1",
+					title     : "1",
+					completed : false
+				}
+			}
+		};
+
+		expect(
+			todoSliceSelectors.selectTodoById(initialState, availableTodoId)
+		).toEqual(initialState.todos[availableTodoId]);
+
+		expect(
+			todoSliceSelectors.selectTodoById(initialState, "notAvailable")
+		).toBeUndefined();
 	});
 });
