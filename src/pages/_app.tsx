@@ -1,5 +1,3 @@
-import { config } from "@fortawesome/fontawesome-svg-core";
-import "@fortawesome/fontawesome-svg-core/styles.css"; // import Font Awesome CSS
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import type { ReactNode } from "react";
@@ -8,6 +6,8 @@ import wrapper from "../store";
 import GlobalStyle from "../styles/global";
 import theme from "../styles/theme";
 
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css"; // import Font Awesome CSS
 config.autoAddCss = false; // Tell Font Awesome to skip adding the CSS automatically since it's being imported above
 
 const MyApp = ({
