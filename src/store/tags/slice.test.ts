@@ -10,10 +10,12 @@ describe("Tags slice", () => {
 	let initialState: TagsSliceState;
 	beforeEach(() => {
 		initialState = {
-			[initialId] : {
-				color : expect.any(String),
-				_id   : expect.any(String),
-				name  : expect.any(String)
+			tags : {
+				[initialId] : {
+					color : expect.any(String),
+					_id   : expect.any(String),
+					name  : expect.any(String)
+				}
 			}
 		};
 	});
@@ -29,8 +31,8 @@ describe("Tags slice", () => {
 
 			const newState = reducer(initialState, actions.tagAdded(newTag));
 
-			expect(newState).toHaveProperty(_id);
-			expect(newState[_id]).toEqual(newTag);
+			expect(newState.tags).toHaveProperty(_id);
+			expect(newState.tags[_id]).toEqual(newTag);
 		});
 
 		it("throws an error when updating a nonexistent tag", () => {
@@ -56,7 +58,7 @@ describe("Tags slice", () => {
 				})
 			);
 
-			expect(newState[_id]!.name).toEqual("tag2");
+			expect(newState.tags[_id]!.name).toEqual("tag2");
 		});
 
 		it("updates a tag color", () => {
@@ -70,15 +72,15 @@ describe("Tags slice", () => {
 				})
 			);
 
-			expect(newState[_id]!.color).toEqual("blue");
+			expect(newState.tags[_id]!.color).toEqual("blue");
 		});
 
 		const changeK = "name";
 		it(`updates a property (e.g.: ${changeK}) without changing the others`, () => {
 			const _id = initialId;
 
-			const { [_id]: oldTag } = initialState;
-			const { [_id]: newTag } = reducer(
+			const { tags: { [_id]: oldTag } } = initialState;
+			const { tags: { [_id]: newTag } } = reducer(
 				initialState,
 				actions.tagUpdated({
 					[changeK] : "newVal",

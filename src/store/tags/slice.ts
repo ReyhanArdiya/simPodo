@@ -2,21 +2,23 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import NoTagFoundError from "../../models/errors/no-tag-found-error";
 import type Tag from "../../models/tag";
 
-export interface TagsSliceState {
+export type ITagsHash = {
 	[tagId: Tag["_id"]]: Tag | undefined;
+};
+
+export interface TagsSliceState {
+	tags: ITagsHash;
 }
 
-const initialState: TagsSliceState = {};
-
 const tagsSlice = createSlice({
-	initialState,
-	name     : "tags",
-	reducers : {
+	initialState : {} as TagsSliceState,
+	name         : "tags",
+	reducers     : {
 		tagAdded(state, { payload: newTag }: PayloadAction<Tag>) {
-			state[newTag._id] = newTag;
+			state.tags[newTag._id] = newTag;
 		},
 		tagDeleted(state, { payload: _id }: PayloadAction<Tag["_id"]>) {
-			delete state[_id];
+			delete state.tags[_id];
 		},
 		tagUpdated(
 			state,
@@ -26,7 +28,7 @@ const tagsSlice = createSlice({
 		) {
 			const { _id } = newTagData;
 
-			const toBeUpdatedTag = state[_id];
+			const toBeUpdatedTag = state.tags[_id];
 			if (!toBeUpdatedTag) {
 				throw new NoTagFoundError();
 			}
