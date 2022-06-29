@@ -16,6 +16,7 @@ const authSlice = createSlice(
 		initialState,
 		name     : "auth",
 		reducers : {
+			// TODO change this to userUpdated
 			changeUsername(state, { payload: username }: PayloadAction<User["username"]>) {
 				if (!state.user) {
 					throw new UserNotLoggedInError();
@@ -23,21 +24,22 @@ const authSlice = createSlice(
 
 				state.user.username = username;
 			},
-			login(state, { payload: user }: PayloadAction<StoreUser>) {
+
+			userLoggedIn(state, { payload: user }: PayloadAction<StoreUser>) {
 				if (state.user) {
 					throw new UserAlreadyLoggedInError();
 				}
 
 				state.user = user;
 			},
-			logout(state) {
+			userLoggedOut(state) {
 				if (!state.user) {
 					throw new UserNotLoggedInError();
 				}
 
 				delete state.user;
 			},
-			refreshToken(state, { payload: token }) {
+			tokenRefreshed(state, { payload: token }) {
 				if (!state.user) {
 					throw new UserNotLoggedInError();
 				}

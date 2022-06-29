@@ -16,13 +16,15 @@ const calendarSlice = createSlice({
 	initialState : {} as CalendarSliceState,
 	name         : "calendar",
 	reducers     : {
-		selectDate : (
+		dateSelected : (
 			state,
 			{ payload: newSelectedDate }: PayloadAction<number>
 		) => {
 			state.selectedDate.date = newSelectedDate;
 		},
-		selectMonth(
+
+		// TODO all of these reducers can be combined into dateSelected i think?
+		monthSelected(
 			state,
 			{ payload: newSelectedMonth }: PayloadAction<number>
 		) {

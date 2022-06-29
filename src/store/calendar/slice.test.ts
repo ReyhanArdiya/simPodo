@@ -39,7 +39,7 @@ describe("Calendar slice", () => {
 			it("should set the date", () => {
 				const newState = reducer(
 					initialState,
-					actions.selectDate(2)
+					actions.dateSelected(2)
 				);
 
 				expect(newState.selectedDate.date)
@@ -49,7 +49,7 @@ describe("Calendar slice", () => {
 			it("should set the monthIndex", () => {
 				const newState = reducer(
 					initialState,
-					actions.selectMonth(2)
+					actions.monthSelected(2)
 				);
 
 				expect(newState.selectedDate.monthIndex)

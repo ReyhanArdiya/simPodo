@@ -26,7 +26,7 @@ describe("todoSlice", () => {
 
 			const newState = todosSlice.reducer(
 				initialState,
-				todosSlice.actions.addTodo(newTodo)
+				todosSlice.actions.todoAdded(newTodo)
 			);
 
 			expect(newState.todos).toHaveProperty(newTodo._id, newTodo);
@@ -37,7 +37,7 @@ describe("todoSlice", () => {
 
 			const newState = todosSlice.reducer(
 				initialState,
-				todosSlice.actions.deleteTodo(todoId)
+				todosSlice.actions.todoDeleted(todoId)
 			);
 
 			expect(newState.todos).not.toHaveProperty(todoId);
@@ -59,7 +59,7 @@ describe("todoSlice", () => {
 
 			const newState = todosSlice.reducer(
 				initialState,
-				todosSliceActions.replaceTodos(newTodos)
+				todosSliceActions.todosReplaced(newTodos)
 			);
 
 			expect(newState.todos).toEqual(newTodos);
@@ -93,7 +93,7 @@ describe("todoSlice", () => {
 
 			const newState = todoSliceReducer(
 				initialState,
-				todosSliceActions.completeTodo(todoId)
+				todosSliceActions.todoCompleted(todoId)
 			);
 
 
@@ -117,7 +117,7 @@ describe("todoSlice", () => {
 
 			const newState = todoSliceReducer(
 				initialState,
-				todosSliceActions.completeTodo(todoId)
+				todosSliceActions.todoCompleted(todoId)
 			);
 
 			expect(newState.completedTotal).toBe(initialState.completedTotal);
@@ -142,7 +142,7 @@ describe("todoSlice", () => {
 
 			const newState = todoSliceReducer(
 				initialState,
-				todosSliceActions.updateTodo(newTodoData)
+				todosSliceActions.todoUpdated(newTodoData)
 			);
 
 			const oldTodo = initialState.todos[todoId];

@@ -29,45 +29,51 @@ beforeEach(() => {
 	};
 });
 
-describe("authSlice reducers for user's login state", () => {
+describe("authSlice actions for user's login state", () => {
 	it("logs the user in WHEN the user is not logged in", () => {
-		const newState = reducer({ user : undefined }, actions.login(mockUser));
+		const newState = reducer(
+			{ user : undefined },
+			actions.userLoggedIn(mockUser)
+		);
 
 		expect(newState.user).toBeInstanceOf(User);
 	});
 	it("throws an error when logging in a logged in user", () => {
-		expect(() => reducer(loggedInState, actions.login(mockUser))).toThrow(
-			UserAlreadyLoggedInError
-		);
+		expect(() => reducer(
+			loggedInState,
+			actions.userLoggedIn(mockUser)
+		)).toThrow(UserAlreadyLoggedInError);
 	});
 
 	it("throws an error when logging out a not logged in user", () => {
-		expect(() => reducer({ user : undefined }, actions.logout())).toThrow(
-			UserNotLoggedInError
-		);
+		expect(() => reducer(
+			{ user : undefined },
+			actions.userLoggedOut()
+		)).toThrow(UserNotLoggedInError);
 	});
 	it("logs the user out WHEN the user is logged in", () => {
-		const newState = reducer(loggedInState, actions.logout());
+		const newState = reducer(loggedInState, actions.userLoggedOut());
 
 		expect(newState.user).toBeUndefined();
 	});
 
-	it(
-		"throws an error when refreshing a not logged in user's token",
-		() => {
-			const errFn = () => reducer(
-				{ user : undefined },
-				actions.refreshToken("newToken")
-			);
+	it("throws an error when refreshing a not logged in user's token", () => {
+		const errFn = () => reducer({ user : undefined }, actions.tokenRefreshed("newToken"));
 
-			expect(errFn).toThrow(UserNotLoggedInError);
-		}
-	);
+		expect(errFn).toThrow(UserNotLoggedInError);
+	});
 	it("refreshes the token WHEN the user is logged in", () => {
 		const newToken = "newToken";
 
-		const { user } = reducer(loggedInState, actions.refreshToken(newToken));
+		const { user } = reducer(
+			loggedInState,
+			actions.tokenRefreshed(newToken)
+		);
 
 		expect(user?.token).toBe(newToken);
 	});
+});
+
+describe("authSlice actions for user's data", () => {
+	it.todo("updates the user data selectively");
 });

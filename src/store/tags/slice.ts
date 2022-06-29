@@ -11,13 +11,13 @@ const tagsSlice = createSlice({
 	initialState,
 	name     : "tags",
 	reducers : {
-		addTag(state, { payload: newTag }: PayloadAction<Tag>) {
+		tagAdded(state, { payload: newTag }: PayloadAction<Tag>) {
 			state[newTag._id] = newTag;
 		},
-		deleteTag(state, { payload: _id }: PayloadAction<Tag["_id"]>) {
+		tagDeleted(state, { payload: _id }: PayloadAction<Tag["_id"]>) {
 			delete state[_id];
 		},
-		updateTag(
+		tagUpdated(
 			state,
 			{ payload: newTagData }: PayloadAction<Partial<Omit<Tag, "_id">> & Pick<Tag, "_id">>
 		) {

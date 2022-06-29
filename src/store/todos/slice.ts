@@ -24,23 +24,23 @@ const todosSlice = createSlice({
 	initialState : {} as TodosSliceState,
 	name         : "todos",
 	reducers     : {
-		addTodo(state, { payload: todo }: PayloadAction<Todo>) {
+		todoAdded(state, { payload: todo }: PayloadAction<Todo>) {
 			state.todos[todo._id] = todo;
 		},
-		completeTodo(state, { payload: _id }: PayloadAction<Todo["_id"]>) {
+		todoCompleted(state, { payload: _id }: PayloadAction<Todo["_id"]>) {
 			if (!state.todos[_id].completed) {
 				state.todos[_id].completed = true;
 				state.completedTotal++;
 			}
 		},
-		deleteTodo(state, { payload: _id }: PayloadAction<Todo["_id"]>) {
+		todoDeleted(state, { payload: _id }: PayloadAction<Todo["_id"]>) {
 			delete state.todos[_id];
 		},
-		replaceTodos(state, { payload: newTodos }: PayloadAction<ITodoHash>) {
+		todosReplaced(state, { payload: newTodos }: PayloadAction<ITodoHash>) {
 			state.todos = newTodos;
 		},
 		// CMT Partial here because we can selectively pick which prop to update
-		updateTodo(
+		todoUpdated(
 			state,
 			{
 				payload: newTodoData

@@ -26,7 +26,7 @@ describe("Tags slice", () => {
 				_id,
 			);
 
-			const newState = reducer(initialState, actions.addTag(newTag));
+			const newState = reducer(initialState, actions.tagAdded(newTag));
 
 			expect(newState).toHaveProperty(_id);
 			expect(newState[_id]).toEqual(newTag);
@@ -37,7 +37,7 @@ describe("Tags slice", () => {
 
 			const newState = reducer(
 				initialState,
-				actions.updateTag({
+				actions.tagUpdated({
 					_id  : _id,
 					name : "tag2"
 				})
@@ -51,7 +51,7 @@ describe("Tags slice", () => {
 
 			const newState = reducer(
 				initialState,
-				actions.updateTag({
+				actions.tagUpdated({
 					color : "blue",
 					_id
 				})
@@ -67,7 +67,7 @@ describe("Tags slice", () => {
 			const { [_id]: oldTag } = initialState;
 			const { [_id]: newTag } = reducer(
 				initialState,
-				actions.updateTag({
+				actions.tagUpdated({
 					[changeK] : "newVal",
 					_id       : _id
 				})
@@ -84,7 +84,7 @@ describe("Tags slice", () => {
 		it("deletes a tag", () => {
 			const _id = initialId;
 
-			const newState = reducer(initialState, actions.deleteTag(_id));
+			const newState = reducer(initialState, actions.tagDeleted(_id));
 
 			expect(newState).not.toHaveProperty(_id);
 		});
