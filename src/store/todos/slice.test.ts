@@ -1,5 +1,11 @@
 import Todo from "../../models/todo";
-import todosSlice, { ITodoHash, todoSliceReducer, todoSliceSelectors, todosSliceActions, TodosSliceState } from "./slice";
+import todosSlice, {
+	ITodoHash,
+	todoSliceReducer,
+	todoSliceSelectors,
+	todosSliceActions,
+	TodosSliceState
+} from "./slice";
 
 let initialState: TodosSliceState;
 beforeEach(() => {
@@ -10,17 +16,13 @@ beforeEach(() => {
 				_id       : "todoIdFromMongoose",
 				title     : "todoTitle"
 			}
-		},
+		}
 	};
 });
 
 describe("todoSlice actions", () => {
 	it("adds a todo", () => {
-		const newTodo = new Todo(
-			"todo2",
-			false,
-			"todoId2",
-		);
+		const newTodo = new Todo("todo2", false, "todoId2");
 
 		const newState = todosSlice.reducer(
 			initialState,
@@ -94,8 +96,7 @@ describe("todoSlice actions", () => {
 			todosSliceActions.todoCompleted(todoId)
 		);
 
-
-		expect(newState.todos[todoId].completed).toBe(true);
+		expect(newState.todos[todoId]?.completed).toBe(true);
 	});
 
 	it("updates a todo selectively without changing other props", () => {
@@ -109,11 +110,7 @@ describe("todoSlice actions", () => {
 			}
 		};
 
-		const newTodoData = new Todo(
-			"todo1 updated",
-			true,
-			todoId,
-		);
+		const newTodoData = new Todo("todo1 updated", true, todoId);
 
 		const newState = todoSliceReducer(
 			initialState,
@@ -127,9 +124,9 @@ describe("todoSlice actions", () => {
 		expect(newState.todos).toHaveProperty(todoId);
 		expect(newTodo).not.toBe(newTodoData);
 
-		expect(newTodo._id).toEqual(oldTodo._id);
-		expect(newTodo.completed).not.toEqual(oldTodo.completed);
-		expect(newTodo.title).not.toEqual(oldTodo.title);
+		expect(newTodo?._id).toEqual(oldTodo?._id);
+		expect(newTodo?.completed).not.toEqual(oldTodo?.completed);
+		expect(newTodo?.title).not.toEqual(oldTodo?.title);
 	});
 });
 

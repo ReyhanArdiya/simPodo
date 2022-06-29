@@ -2,10 +2,9 @@ import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
 import type Todo from "../../models/todo";
 
-export type ITodoHash = { [todoId: Todo["_id"]]: Todo };
+export type ITodoHash = { [todoId: Todo["_id"]]: Todo | undefined };
 
 export interface TodosSliceState {
-	// completedTotal: number;
 	todos: ITodoHash;
 }
 
@@ -28,7 +27,11 @@ const todosSlice = createSlice({
 			state.todos[todo._id] = todo;
 		},
 		todoCompleted(state, { payload: _id }: PayloadAction<Todo["_id"]>) {
-			state.todos[_id].completed = true;
+			const toBeCompletedTodo = state.todos[_id];
+
+			if (toBeCompletedTodo) {
+				toBeCompletedTodo.completed = true;
+			}
 		},
 		todoDeleted(state, { payload: _id }: PayloadAction<Todo["_id"]>) {
 			delete state.todos[_id];
