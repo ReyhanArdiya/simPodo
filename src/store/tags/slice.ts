@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import NoTagFoundError from "../../models/errors/no-tag-found-error";
 import type Tag from "../../models/tag";
 
 export interface TagsSliceState {
-	[tagId: Tag["_id"]]: Tag;
+	[tagId: Tag["_id"]]: Tag | undefined;
 }
 
 const initialState: TagsSliceState = {};
@@ -19,9 +20,16 @@ const tagsSlice = createSlice({
 		},
 		tagUpdated(
 			state,
-			{ payload: newTagData }: PayloadAction<Partial<Omit<Tag, "_id">> & Pick<Tag, "_id">>
+			{
+				payload: newTagData
+			}: PayloadAction<Partial<Omit<Tag, "_id">> & Pick<Tag, "_id">>
 		) {
 			const { _id } = newTagData;
+
+			const toBeUpdatedTag = state[_id];
+			if (!toBeUpdatedTag) {
+				throw new NoTagFoundError();
+			}
 
 			// CMT I cant use replaceO1 here since state will be a Proxy and
 			// I can't check that :(
@@ -31,7 +39,7 @@ const tagsSlice = createSlice({
 				type K = Omit<Tag, "_id">;
 
 				if (key !== "_id") {
-					state[_id][key as keyof K] =
+					toBeUpdatedTag[key as keyof K] =
 						newTagData[key as keyof K]!;
 				}
 			}
@@ -40,4 +48,7 @@ const tagsSlice = createSlice({
 });
 
 export const { actions: tagsSliceActions, name: tagsSliceName } = tagsSlice;
+
+export const tagsSliceSelectors = {};
+
 export default tagsSlice;

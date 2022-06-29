@@ -1,3 +1,4 @@
+import NoTagFoundError from "../../models/errors/no-tag-found-error";
 import Tag from "../../models/tag";
 import tagsSlice, { TagsSliceState } from "./slice";
 
@@ -32,6 +33,18 @@ describe("Tags slice", () => {
 			expect(newState[_id]).toEqual(newTag);
 		});
 
+		it("throws an error when updating a nonexistent tag", () => {
+			const errorFn = () => reducer(
+				initialState,
+				actions.tagUpdated({
+					_id  : "iDontExistBishhhh",
+					name : "tag2"
+				})
+			);
+
+			expect(errorFn).toThrow(NoTagFoundError);
+		});
+
 		it("updates a tag name", () => {
 			const _id = initialId;
 
@@ -43,7 +56,7 @@ describe("Tags slice", () => {
 				})
 			);
 
-			expect(newState[_id].name).toEqual("tag2");
+			expect(newState[_id]!.name).toEqual("tag2");
 		});
 
 		it("updates a tag color", () => {
@@ -57,7 +70,7 @@ describe("Tags slice", () => {
 				})
 			);
 
-			expect(newState[_id].color).toEqual("blue");
+			expect(newState[_id]!.color).toEqual("blue");
 		});
 
 		const changeK = "name";
@@ -73,11 +86,11 @@ describe("Tags slice", () => {
 				})
 			);
 
-			expect(newTag[changeK]).not.toBe(oldTag[changeK]);
+			expect(newTag![changeK]).not.toBe(oldTag![changeK]);
 
-			for (const key in Object.keys(newTag).filter(k => k !== changeK)) {
-				expect(newTag[key as keyof typeof newTag])
-					.toBe(oldTag[key as keyof typeof oldTag]);
+			for (const key in Object.keys(newTag!).filter(k => k !== changeK)) {
+				expect(newTag![key as keyof typeof newTag])
+					.toBe(oldTag![key as keyof typeof oldTag]);
 			}
 		});
 
