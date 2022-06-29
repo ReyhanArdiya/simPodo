@@ -1,6 +1,4 @@
-import { Error } from "mongoose";
-
-export default class NoTodoFoundError extends Error.DocumentNotFoundError {
+export default class NoTodoFoundError extends Error {
 	constructor() {
 		super("Todo not found!");
 	}
