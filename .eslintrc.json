@@ -15,7 +15,7 @@
 	],
 	"root": true,
 	"parserOptions": {
-		"ecmaVersion": 6,
+		"ecmaVersion": "latest",
 		"sourceType": "module",
 		"ecmaFeatures": {
 			"modules": true
