@@ -75,5 +75,50 @@ describe("authSlice actions for user's login state", () => {
 });
 
 describe("authSlice actions for user's data", () => {
-	it.todo("updates the user data selectively");
+	it("throws an error when updating a not logged in user", () => {
+		const errorFn = () => reducer(
+			{ user : undefined },
+			actions.userDataUpdated({} as User)
+		);
+
+		expect(errorFn).toThrow(UserNotLoggedInError);
+	});
+
+	it("updates the user data selectively", () => {
+		const user = new User(
+			"username",
+			"email",
+			"token",
+			new Map(),
+			new Map(),
+			"_id"
+		);
+
+		const loggedInState = reducer(
+			{ user : undefined },
+			actions.userLoggedIn(user)
+		);
+
+		const newUserData: User = {
+			...user,
+			username : "updatedUsername"
+		};
+
+		const updatedState = reducer(
+			loggedInState,
+			actions.userDataUpdated(newUserData)
+		);
+
+		const { user: updatedUser } = updatedState;
+
+		expect(updatedUser?.username).toEqual(newUserData.username);
+
+		for (const key in Object.keys(updatedUser!).filter(
+			k => k !== "username"
+		)) {
+			expect(updatedUser![key as keyof typeof updatedUser]).toBe(
+				user[key as keyof typeof user]
+			);
+		}
+	});
 });
