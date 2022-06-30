@@ -13,15 +13,16 @@ export interface CalendarSliceState {
 	};
 }
 
+type DateSelectedPayload = PayloadAction<Partial<CalendarSliceState["selectedDate"]>>;
 const calendarSlice = createSlice({
 	initialState : {} as CalendarSliceState,
 	name         : "calendar",
 	reducers     : {
 		dateSelected : (
 			state,
-			{ payload: newSelectedDate }: PayloadAction<number>
+			{ payload: newSelectedDate }: DateSelectedPayload
 		) => {
-			state.selectedDate.date = newSelectedDate;
+			replaceO1Proxies(state.selectedDate, newSelectedDate);
 		},
 
 		// TODO all of these reducers can be combined into dateSelected i think?
