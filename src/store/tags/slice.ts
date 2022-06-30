@@ -1,6 +1,7 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import NoTagFoundError from "../../models/errors/no-tag-found-error";
 import type Tag from "../../models/tag";
+import replaceO1Proxies from "../../utils/replaceO1-proxies";
 
 export type ITagsHash = {
 	[tagId: Tag["_id"]]: Tag | undefined;
@@ -33,18 +34,7 @@ const tagsSlice = createSlice({
 				throw new NoTagFoundError();
 			}
 
-			// CMT I cant use replaceO1 here since state will be a Proxy and
-			// I can't check that :(
-			// replaceO1(state[_id], newTagData);
-
-			for (const key in newTagData) {
-				type K = Omit<Tag, "_id">;
-
-				if (key !== "_id") {
-					toBeUpdatedTag[key as keyof K] =
-						newTagData[key as keyof K]!;
-				}
-			}
+			replaceO1Proxies(toBeUpdatedTag, newTagData);
 		}
 	}
 });
