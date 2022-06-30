@@ -1,10 +1,11 @@
+import { withTests } from "@storybook/addon-jest";
+import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
-import theme from "../src/styles/theme";
+import results from "../.jest-test-results.json";
 import { makeStore } from "../src/store";
 import GlobalStyle from "../src/styles/global";
-import { Provider } from "react-redux";
-import { withTests } from "@storybook/addon-jest";
-import results from "../.jest-test-results.json";
+import theme from "../src/styles/theme";
+import "../src/utils/set-dayjs-tz-to-user";
 
 export const parameters = {
 	actions: { argTypesRegex: "^on[A-Z].*" },

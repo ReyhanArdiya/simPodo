@@ -1,11 +1,9 @@
 import Document, {
 	DocumentContext,
-	DocumentInitialProps,
-	Html,
-	Head,
-	Main,
+	DocumentInitialProps, Head, Html, Main,
 	NextScript
 } from "next/document";
+import "../utils/set-dayjs-tz-to-user";
 
 export default class MyDocument extends Document {
 	static async getInitialProps(
