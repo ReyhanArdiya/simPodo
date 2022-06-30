@@ -1,3 +1,4 @@
+import NoTodoFoundError from "../../models/errors/no-todo-found-error";
 import Todo from "../../models/todo";
 import todosSlice, {
 	ITodoHash,
@@ -97,6 +98,17 @@ describe("todoSlice actions", () => {
 		);
 
 		expect(newState.todos[todoId]?.completed).toBe(true);
+	});
+
+	it("throws an error when updating a nonexistent tag", () => {
+		const errorFn = () => todoSliceReducer(
+			initialState,
+			todosSliceActions.todoUpdated({
+				_id : "idontexitsbishhh",
+			})
+		);
+
+		expect(errorFn).toThrow(NoTodoFoundError);
 	});
 
 	it("updates a todo selectively without changing other props", () => {

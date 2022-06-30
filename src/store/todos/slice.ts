@@ -1,6 +1,8 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
+import NoTodoFoundError from "../../models/errors/no-todo-found-error";
 import type Todo from "../../models/todo";
+import replaceO1Proxies from "../../utils/replaceO1-proxies";
 
 export type ITodoHash = { [todoId: Todo["_id"]]: Todo | undefined };
 
@@ -39,29 +41,20 @@ const todosSlice = createSlice({
 		todosReplaced(state, { payload: newTodos }: PayloadAction<ITodoHash>) {
 			state.todos = newTodos;
 		},
-		// CMT Partial here because we can selectively pick which prop to update
 		todoUpdated(
 			state,
 			{
 				payload: newTodoData
-			}: PayloadAction<Partial<Omit<Todo, "_id">> & Pick<Todo, "_id">>
+			}: PayloadAction<Partial<Omit<Todo, "_id">> & Pick<Todo, "_id">> // CMT Partial here because we can selectively pick which prop to update
 		) {
 			const { _id } = newTodoData;
 
-			for (const key in newTodoData) {
-				type K = Omit<Todo, "_id">;
-
-				if (key !== "_id") {
-					/*
-					REFAC The problem here is ITodo key could be boolean | string
-					and TS worries what happens if we set a string to a boolean
-					and vice versa. How to tell TS that will never happen?
-					*/
-					// @ts-expect-error : see above REFAC
-					state.todos[_id][key as keyof K] =
-						newTodoData[key as keyof K]!;
-				}
+			const toBeUpdatedTodo = state.todos[_id];
+			if (!toBeUpdatedTodo) {
+				throw new NoTodoFoundError();
 			}
+
+			replaceO1Proxies(toBeUpdatedTodo, newTodoData);
 		}
 	}
 });
