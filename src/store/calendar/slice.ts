@@ -4,11 +4,12 @@ export interface CalendarSliceState {
 	selectedDate: {
 		date: number;
 		monthIndex: number;
+		year: number;
 	};
-	viewDate: {
-		daysInMonth: number;
+	viewedDate: {
+		date: number;
 		monthIndex: number;
-		startingDayOfWeek: number;
+		year: number;
 	};
 }
 
