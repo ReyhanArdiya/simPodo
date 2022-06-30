@@ -2,6 +2,7 @@ import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import UserAlreadyLoggedInError from "../../models/errors/user-already-logged-in-error";
 import UserNotLoggedInError from "../../models/errors/user-not-logged-in-error";
 import type User from "../../models/user";
+import replaceO1Proxies from "../../utils/replaceO1-proxies";
 
 type StoreUser = Omit<User, "tags" | "todos">;
 
@@ -24,14 +25,7 @@ const authSlice = createSlice({
 				throw new UserNotLoggedInError();
 			}
 
-			for (const key in newUserData) {
-				type K = Omit<StoreUser, "_id">;
-
-				if (key !== "_id") {
-					toBeUpdatedUser[key as keyof K] =
-						newUserData[key as keyof K];
-				}
-			}
+			replaceO1Proxies(toBeUpdatedUser, newUserData);
 		},
 		userLoggedIn(state, { payload: user }: PayloadAction<StoreUser>) {
 			if (state.user) {
