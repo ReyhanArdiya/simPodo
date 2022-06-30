@@ -111,7 +111,7 @@ describe("todoSlice actions", () => {
 		const errorFn = () => todoSliceReducer(
 			initialState,
 			todosSliceActions.todoUpdated({
-				_id : "idontexitsbishhh",
+				_id : "idontexitsbishhh"
 			})
 		);
 
@@ -211,5 +211,46 @@ describe("todoSlice selectors", () => {
 		expect(
 			todoSliceSelectors.selectTodoById(initialState, "notAvailable")
 		).toBeUndefined();
+	});
+
+	it("filters Todo by tagId", () => {
+		const filterTagId = "selecThis";
+
+		initialState.todos = {
+			1 : {
+				completed : false,
+				_id       : "1",
+				title     : "todo1",
+				tagId     : filterTagId
+			},
+			2 : {
+				completed : false,
+				_id       : "2",
+				title     : "todo2",
+				tagId     : "tagId"
+			},
+			3 : {
+				completed : false,
+				_id       : "3",
+				title     : "todo3",
+				tagId     : filterTagId
+			},
+			4 : {
+				completed : false,
+				_id       : "4",
+				title     : "todo4",
+				tagId     : "tagId"
+			}
+		};
+
+		const filteredTodos = todoSliceSelectors.filterByTagId(
+			initialState,
+			filterTagId
+		);
+
+		expect(filteredTodos).toHaveLength(2);
+		expect(filteredTodos[0]).toEqual(initialState.todos[1]);
+		expect(filteredTodos[1]).toEqual(initialState.todos[3]);
+
 	});
 });

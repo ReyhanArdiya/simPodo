@@ -1,6 +1,7 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
 import NoTodoFoundError from "../../models/errors/no-todo-found-error";
+import type Tag from "../../models/tag";
 import type Todo from "../../models/todo";
 import replaceO1Proxies from "../../utils/replaceO1-proxies";
 
@@ -73,6 +74,13 @@ export const todoSliceSelectors = {
 	selectTodoById : createSelector(
 		[ (state: TodosSliceState, id: Todo["_id"]) => state.todos[id] ],
 		todo => todo
+	),
+	filterByTagId : createSelector(
+		[
+			(state: TodosSliceState) => state.todos,
+			(_state: TodosSliceState, tagId: Tag["_id"]) => tagId,
+		],
+		(todos, tagId) => Object.values(todos).filter(t => t?.tagId === tagId)
 	)
 };
 
