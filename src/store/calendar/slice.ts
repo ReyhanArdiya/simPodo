@@ -55,4 +55,29 @@ const calendarSlice = createSlice({
 
 export const { actions: calendarSliceActions, name: calendarSliceName } =
 	calendarSlice;
+
+export const calendarSliceSelectors = {
+	selectSelectedDateDate : createSelector(
+		[ (state: CalendarSliceState) => state.selectedDate.date ],
+		selectedDateDate => selectedDateDate
+	),
+	selectSelectedDateMonthIndex : createSelector(
+		[ (state: CalendarSliceState) => state.selectedDate.monthIndex ],
+		selectedDateMonthIndex => selectedDateMonthIndex
+	),
+	selectSelectedDateYear : createSelector(
+		[ (state: CalendarSliceState) => state.selectedDate.year ],
+		selectedDateYear => selectedDateYear
+	),
+	selectSelectedDateFullDate : createSelector(
+		[
+			(state: CalendarSliceState) => state.selectedDate.date,
+			(state: CalendarSliceState) => state.selectedDate.monthIndex,
+			(state: CalendarSliceState) => state.selectedDate.year,
+		],
+		(date, monthI, year) => dayjs.tz(`${year}-${monthI + 1}-${date}`).toString()
+	)
+
+};
+
 export default calendarSlice;

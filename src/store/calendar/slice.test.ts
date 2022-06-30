@@ -83,10 +83,23 @@ describe("Calendar slice selected date field", () => {
 				calendarSliceSelectors.selectSelectedDateYear(initialState)
 			).toBe(initialState.selectedDate.year);
 		});
-		it("selects the full date in ISO 8601", () => {
+		it("selects the full date string in local format", () => {
+			const selectedDate: CalendarSliceState["selectedDate"] = {
+				date       : dayjs(new Date()).date(),
+				monthIndex : dayjs(new Date()).month(),
+				year       : dayjs(new Date()).year()
+			};
+
+			const { date, monthIndex, year } = selectedDate;
+
+			const fullDate = dayjs.tz(`${year}-${monthIndex + 1}-${date}`).toString();
+
 			expect(
-				calendarSliceSelectors.selectSelectedDateFullDate(initialState)
-			).toBe(initialState.selectedDate.year);
+				calendarSliceSelectors.selectSelectedDateFullDate({
+					...initialState,
+					selectedDate
+				})
+			).toBe(fullDate);
 		});
 	});
 });
@@ -178,7 +191,9 @@ describe("Calendar slice viewed date field", () => {
 				)
 			).toBe(
 				dayjs(
-					`${initialState.viewedDate.year}-${initialState.viewedDate.monthIndex + 1}-1`
+					`${initialState.viewedDate.year}-${
+						initialState.viewedDate.monthIndex + 1
+					}-1`
 				).day() // 6 => saturday
 			);
 		});
