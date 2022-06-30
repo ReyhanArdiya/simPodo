@@ -134,7 +134,7 @@ describe("todo path manipulation", () => {
 	let newTodo: Todo;
 
 	beforeEach(async () => {
-		newTodo = new Todo("todo1", false, "_id");
+		newTodo = new Todo("todo1", false, "tagId", "_id");
 
 		await user.save();
 	});
@@ -185,7 +185,7 @@ describe("todo path manipulation", () => {
 
 	it("throws a NoTodoFoundError when updating a nonexistent tag", async () => {
 		await expect(
-			user.updateTodo(new Todo("", false, "helwlofjeiowf"))
+			user.updateTodo(new Todo("", false, "tagId", "helwlofjeiowf"))
 		).rejects.toBeInstanceOf(NoTodoFoundError);
 	});
 
@@ -206,15 +206,16 @@ describe("todo path manipulation", () => {
 		const newTodoData = new Todo(
 			"updatedTodo1",
 			oldTodo.completed,
+			"tagId",
 			oldTodo._id.toString()
 		);
 		const updatedTodo = await user.updateTodo(newTodoData);
 		const userWUTodo = await User.findById(user._id);
 		const todoInStore = userWUTodo?.todos.get(updatedTodo._id.toString());
 
-		expect(todoInStore?.name).toBe(updatedTodo.name);
+		expect(todoInStore?.title).toBe(updatedTodo.title);
 
-		for (const key in Object.keys(updatedTodo).filter(k => k !== "name")) {
+		for (const key in Object.keys(updatedTodo).filter(k => k !== "title")) {
 			expect(todoInStore?.[key as keyof typeof todoInStore]).toBe(
 				oldTodo[key as keyof typeof oldTodo]
 			);

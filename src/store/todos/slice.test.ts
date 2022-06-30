@@ -15,7 +15,8 @@ beforeEach(() => {
 			todoId : {
 				completed : false,
 				_id       : "todoIdFromMongoose",
-				title     : "todoTitle"
+				title     : "todoTitle",
+				tagId     : "tagId"
 			}
 		}
 	};
@@ -23,7 +24,7 @@ beforeEach(() => {
 
 describe("todoSlice actions", () => {
 	it("adds a todo", () => {
-		const newTodo = new Todo("todo2", false, "todoId2");
+		const newTodo = new Todo("todo2", false, "tagId", "todoId2");
 
 		const newState = todosSlice.reducer(
 			initialState,
@@ -49,12 +50,14 @@ describe("todoSlice actions", () => {
 			todoId1 : {
 				completed : false,
 				_id       : "todoId1",
-				title     : "todo1"
+				title     : "todo1",
+				tagId     : "tagId"
 			},
 			todoId2 : {
 				completed : false,
 				_id       : "todoId2",
-				title     : "todo2"
+				title     : "todo2",
+				tagId     : "tagId"
 			}
 		};
 
@@ -71,22 +74,26 @@ describe("todoSlice actions", () => {
 			1 : {
 				completed : false,
 				_id       : "1",
-				title     : "todo1"
+				title     : "todo1",
+				tagId     : "tagId"
 			},
 			2 : {
 				completed : false,
 				_id       : "2",
-				title     : "todo2"
+				title     : "todo2",
+				tagId     : "tagId"
 			},
 			3 : {
 				completed : false,
 				_id       : "3",
-				title     : "todo3"
+				title     : "todo3",
+				tagId     : "tagId"
 			},
 			4 : {
 				completed : false,
 				_id       : "4",
-				title     : "todo4"
+				title     : "todo4",
+				tagId     : "tagId"
 			}
 		};
 
@@ -118,11 +125,12 @@ describe("todoSlice actions", () => {
 			[todoId] : {
 				completed : false,
 				_id       : todoId,
-				title     : "todo1"
+				title     : "todo1",
+				tagId     : "tagId"
 			}
 		};
 
-		const newTodoData = new Todo("todo1 updated", true, todoId);
+		const newTodoData = new Todo("todo1 updated", true, "tagId", todoId);
 
 		const newState = todoSliceReducer(
 			initialState,
@@ -149,27 +157,32 @@ describe("todoSlice selectors", () => {
 				1 : {
 					_id       : "1",
 					title     : "1",
-					completed : false
+					completed : false,
+					tagId     : "tagId"
 				},
 				2 : {
 					_id       : "2",
 					title     : "2",
-					completed : false
+					completed : false,
+					tagId     : "tagId"
 				},
 				3 : {
 					_id       : "3",
 					title     : "3",
-					completed : true
+					completed : true,
+					tagId     : "tagId"
 				},
 				4 : {
 					_id       : "4",
 					title     : "4",
-					completed : true
+					completed : true,
+					tagId     : "tagId"
 				},
 				5 : {
 					_id       : "5",
 					title     : "5",
-					completed : false
+					completed : false,
+					tagId     : "tagId"
 				}
 			}
 		};
@@ -185,7 +198,8 @@ describe("todoSlice selectors", () => {
 				[availableTodoId] : {
 					_id       : "1",
 					title     : "1",
-					completed : false
+					completed : false,
+					tagId     : "tagId"
 				}
 			}
 		};
