@@ -14,6 +14,8 @@ export interface CalendarSliceState {
 }
 
 type DateSelectedPayload = PayloadAction<Partial<CalendarSliceState["selectedDate"]>>;
+type DateViewedPayload = PayloadAction<Partial<CalendarSliceState["viewedDate"]>>;
+
 const calendarSlice = createSlice({
 	initialState : {} as CalendarSliceState,
 	name         : "calendar",
@@ -25,31 +27,14 @@ const calendarSlice = createSlice({
 			replaceO1Proxies(state.selectedDate, newSelectedDate);
 		},
 
-		// TODO all of these reducers can be combined into dateSelected i think?
-		monthSelected(
+		dateViewed : (
 			state,
-			{ payload: newSelectedMonth }: PayloadAction<number>
-		) {
-			state.selectedDate.monthIndex = newSelectedMonth;
+			{ payload: newViewedDate }: DateViewedPayload
+		) => {
+			replaceO1Proxies(state.viewedDate, newViewedDate);
 		},
-		setDaysInMonth(
-			state,
-			{ payload: newDaysInMonth }: PayloadAction<number>
-		) {
-			state.viewDate.daysInMonth = newDaysInMonth;
-		},
-		setViewMonthIndex(
-			state,
-			{ payload: newMonthIndex }: PayloadAction<number>
-		) {
-			state.viewDate.monthIndex = newMonthIndex;
-		},
-		setViewStartingDayOfWeek(
-			state,
-			{ payload: newStartingDayOfWeek }: PayloadAction<number>
-		) {
-			state.viewDate.startingDayOfWeek = newStartingDayOfWeek;
-		}
+
+
 	}
 });
 
