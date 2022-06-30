@@ -83,7 +83,7 @@ describe("Calendar slice selected date field", () => {
 				calendarSliceSelectors.selectSelectedDateYear(initialState)
 			).toBe(initialState.selectedDate.year);
 		});
-		it("selects the full date string in local format", () => {
+		it("derives the full date string in local format", () => {
 			const selectedDate: CalendarSliceState["selectedDate"] = {
 				date       : dayjs(new Date()).date(),
 				monthIndex : dayjs(new Date()).month(),
@@ -160,35 +160,81 @@ describe("Calendar slice viewed date field", () => {
 				calendarSliceSelectors.selectViewedDateYear(initialState)
 			).toBe(initialState.viewedDate.year);
 		});
-		it("selects the full date in ISO 8601", () => {
-			expect(
-				calendarSliceSelectors.selectViewedDateFullDate(initialState)
-			).toBe(initialState.viewedDate.year);
-		});
-		it("derives daysInMonth", () => {
-			expect(
-				calendarSliceSelectors.selectViewedDateDaysInMonth(initialState)
-			).toBe(
-				dayjs(
-					`${initialState.viewedDate.year}-${
-						initialState.viewedDate.monthIndex + 1
-					}-${initialState.viewedDate.date}`
-				).daysInMonth() // 31
-			);
-		});
-		it("derives firstDayOfMonthIndex", () => {
-			const initialState = {
-				viewedDate : {
-					date       : 25,
-					monthIndex : 0,
-					year       : 2022
-				}
+		it("derives the full date string in local format", () => {
+			const viewedDate: CalendarSliceState["viewedDate"] = {
+				date       : dayjs(new Date()).date(),
+				monthIndex : dayjs(new Date()).month(),
+				year       : dayjs(new Date()).year()
 			};
 
+			const { date, monthIndex, year } = viewedDate;
+
+			const fullDate = dayjs
+				.tz(`${year}-${monthIndex + 1}-${date}`)
+				.toString();
+
 			expect(
-				calendarSliceSelectors.selectViewedDatefirstDayOfMonthIndex(
-					initialState
-				)
+				calendarSliceSelectors.selectViewedDateFullDate({
+					...initialState,
+					viewedDate
+				})
+			).toBe(fullDate);
+		});
+		it("derives daysInMonth", () => {
+			for (let i = 0; i < 12; i++) {
+				const viewedDate: CalendarSliceState["viewedDate"] = {
+					date       : 1,
+					monthIndex : i,
+					year       : 2022
+				};
+
+				expect(
+					calendarSliceSelectors.selectViewedDateDaysInMonth({
+						...initialState,
+						viewedDate : viewedDate
+					})
+				).toBe(
+					dayjs()
+						.date(viewedDate.date)
+						.month(viewedDate.monthIndex)
+						.year(viewedDate.year)
+						.daysInMonth()
+				);
+			}
+		});
+		it("derives firstDayOfMonthIndex", () => {
+			for (let i = 0; i < 12; i++) {
+				const viewedDate: CalendarSliceState["viewedDate"] = {
+					date       : 25,
+					monthIndex : i,
+					year       : 2022
+				};
+
+				expect(
+					calendarSliceSelectors.selectViewedDatefirstDayOfMonthIndex(
+						{
+							...initialState,
+							viewedDate
+						}
+					)
+				).toBe(
+					dayjs()
+						.date(1)
+						.month(viewedDate.monthIndex)
+						.year(viewedDate.year)
+						.day()
+				);
+			}
+
+			expect(
+				calendarSliceSelectors.selectViewedDatefirstDayOfMonthIndex({
+					...initialState,
+					viewedDate : {
+						date       : 25,
+						monthIndex : 0,
+						year       : 2022
+					}
+				})
 			).toBe(
 				dayjs(
 					`${initialState.viewedDate.year}-${
