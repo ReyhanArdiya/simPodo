@@ -2,6 +2,7 @@ import styled from "styled-components";
 import ButtonSm from "./ButtonSm";
 import React from "react";
 
+// TODO should i refactor sm and lg into one and just use breakpoints?
 const ButtonLg = styled(ButtonSm)`
 	& {
 		width: 8em;
