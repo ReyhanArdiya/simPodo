@@ -19,7 +19,7 @@ export class StoreTodo implements IStoreTodo {
 		public timeStart: Dayjs,
 		public completed: boolean = false,
 		public readonly tagId: Tag["_id"],
-		public readonly _id: string = "",
+		public readonly _id: string = ""
 	) {
 		// Todo.call(this, title, details, timeStart, completed, tagId, _id);
 		this.title = title;
@@ -56,7 +56,10 @@ const todosSlice = createSlice({
 		todoAdded(state, { payload: todo }: PayloadAction<IStoreTodo>) {
 			state.todos[todo._id] = todo;
 		},
-		todoCompleted(state, { payload: _id }: PayloadAction<IStoreTodo["_id"]>) {
+		todoCompleted(
+			state,
+			{ payload: _id }: PayloadAction<IStoreTodo["_id"]>
+		) {
 			const toBeCompletedTodo = state.todos[_id];
 
 			if (toBeCompletedTodo) {
@@ -73,7 +76,9 @@ const todosSlice = createSlice({
 			state,
 			{
 				payload: newTodoData
-			}: PayloadAction<Partial<Omit<IStoreTodo, "_id">> & Pick<IStoreTodo, "_id">> // CMT Partial here because we can selectively pick which prop to update
+			}: PayloadAction<
+				Partial<Omit<IStoreTodo, "_id">> & Pick<IStoreTodo, "_id">
+			> // CMT Partial here because we can selectively pick which prop to update
 		) {
 			const { _id } = newTodoData;
 
@@ -105,9 +110,23 @@ export const todoSliceSelectors = {
 	filterByTagId : createSelector(
 		[
 			(state: TodosSliceState) => state.todos,
-			(_state: TodosSliceState, tagId: Tag["_id"]) => tagId,
+			(_state: TodosSliceState, tagId: Tag["_id"]) => tagId
 		],
-		(todos, tagId) => Object.values(todos).filter(t => t?.tagId === tagId)
+		(todos, tagId) => Object.values(todos).filter(t => t!.tagId === tagId)
+	),
+	filterByTimeRange : createSelector(
+		[
+			(state: TodosSliceState) => state.todos,
+			(
+				_state: TodosSliceState,
+				filterRange: { start: Dayjs; end: Dayjs }
+			) => filterRange
+		],
+		(todos, { start, end }) => Object.values(todos).filter(t => {
+			const todoTime = t!.timeStart;
+
+			return todoTime.diff(start) >= 0 && todoTime.diff(end) <= 0;
+		})
 	)
 };
 
