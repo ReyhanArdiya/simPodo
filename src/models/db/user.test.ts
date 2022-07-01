@@ -134,7 +134,14 @@ describe("todo path manipulation", () => {
 	let newTodo: Todo;
 
 	beforeEach(async () => {
-		newTodo = new Todo("todo1", false, "tagId", "_id");
+		newTodo = new Todo(
+			"todo1",
+			"details",
+			new Date(),
+			false,
+			"tagId",
+			"_id"
+		);
 
 		await user.save();
 	});
@@ -185,7 +192,16 @@ describe("todo path manipulation", () => {
 
 	it("throws a NoTodoFoundError when updating a nonexistent tag", async () => {
 		await expect(
-			user.updateTodo(new Todo("", false, "tagId", "helwlofjeiowf"))
+			user.updateTodo(
+				new Todo(
+					"",
+					"details",
+					new Date(),
+					false,
+					"tagId",
+					"helwlofjeiowf"
+				)
+			)
 		).rejects.toBeInstanceOf(NoTodoFoundError);
 	});
 
@@ -205,6 +221,8 @@ describe("todo path manipulation", () => {
 
 		const newTodoData = new Todo(
 			"updatedTodo1",
+			"details",
+			new Date(),
 			oldTodo.completed,
 			"tagId",
 			oldTodo._id.toString()

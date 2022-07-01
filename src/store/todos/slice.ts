@@ -1,11 +1,37 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import type { Dayjs } from "dayjs";
 import { HYDRATE } from "next-redux-wrapper";
 import NoTodoFoundError from "../../models/errors/no-todo-found-error";
 import type Tag from "../../models/tag";
 import type Todo from "../../models/todo";
 import replaceO1Proxies from "../../utils/replaceO1-proxies";
 
-export type ITodoHash = { [todoId: Todo["_id"]]: Todo | undefined };
+export interface IStoreTodo extends Omit<Todo, "timeStart"> {
+	timeStart: Dayjs;
+}
+
+// CMT I can't extend Todo since timeStart must be of different type and bcz off
+// Liskov substituion sumn2 I can't just do that easily, so I need to make a new one.
+export class StoreTodo implements IStoreTodo {
+	constructor(
+		public title: string,
+		public details: string,
+		public timeStart: Dayjs,
+		public completed: boolean = false,
+		public readonly tagId: Tag["_id"],
+		public readonly _id: string = ""
+	) {
+		// Todo.call(this, title, details, timeStart, completed, tagId, _id);
+		this.title = title;
+		this.details = details;
+		this.timeStart = timeStart;
+		this.completed = completed;
+		this.tagId = tagId;
+		this._id = _id;
+	}
+}
+
+export type ITodoHash = { [todoId: IStoreTodo["_id"]]: IStoreTodo | undefined };
 
 export interface TodosSliceState {
 	todos: ITodoHash;
@@ -13,6 +39,7 @@ export interface TodosSliceState {
 
 const todosSlice = createSlice({
 	extraReducers : {
+		// TODO how to add action type here? Using PayloadAction leaeds to errors
 		[HYDRATE] : (state, action) => {
 			return {
 				...state,
@@ -26,17 +53,20 @@ const todosSlice = createSlice({
 	initialState : {} as TodosSliceState,
 	name         : "todos",
 	reducers     : {
-		todoAdded(state, { payload: todo }: PayloadAction<Todo>) {
+		todoAdded(state, { payload: todo }: PayloadAction<IStoreTodo>) {
 			state.todos[todo._id] = todo;
 		},
-		todoCompleted(state, { payload: _id }: PayloadAction<Todo["_id"]>) {
+		todoCompleted(
+			state,
+			{ payload: _id }: PayloadAction<IStoreTodo["_id"]>
+		) {
 			const toBeCompletedTodo = state.todos[_id];
 
 			if (toBeCompletedTodo) {
 				toBeCompletedTodo.completed = true;
 			}
 		},
-		todoDeleted(state, { payload: _id }: PayloadAction<Todo["_id"]>) {
+		todoDeleted(state, { payload: _id }: PayloadAction<IStoreTodo["_id"]>) {
 			delete state.todos[_id];
 		},
 		todosReplaced(state, { payload: newTodos }: PayloadAction<ITodoHash>) {
@@ -46,7 +76,9 @@ const todosSlice = createSlice({
 			state,
 			{
 				payload: newTodoData
-			}: PayloadAction<Partial<Omit<Todo, "_id">> & Pick<Todo, "_id">> // CMT Partial here because we can selectively pick which prop to update
+			}: PayloadAction<
+				Partial<Omit<IStoreTodo, "_id">> & Pick<IStoreTodo, "_id">
+			> // CMT Partial here because we can selectively pick which prop to update
 		) {
 			const { _id } = newTodoData;
 
@@ -72,15 +104,29 @@ export const todoSliceSelectors = {
 		todos => Object.values(todos).filter(t => t!.completed).length
 	),
 	selectTodoById : createSelector(
-		[ (state: TodosSliceState, id: Todo["_id"]) => state.todos[id] ],
+		[ (state: TodosSliceState, id: IStoreTodo["_id"]) => state.todos[id] ],
 		todo => todo
 	),
 	filterByTagId : createSelector(
 		[
 			(state: TodosSliceState) => state.todos,
-			(_state: TodosSliceState, tagId: Tag["_id"]) => tagId,
+			(_state: TodosSliceState, tagId: Tag["_id"]) => tagId
 		],
-		(todos, tagId) => Object.values(todos).filter(t => t?.tagId === tagId)
+		(todos, tagId) => Object.values(todos).filter(t => t!.tagId === tagId)
+	),
+	filterByTimeRange : createSelector(
+		[
+			(state: TodosSliceState) => state.todos,
+			(
+				_state: TodosSliceState,
+				filterRange: { start: Dayjs; end: Dayjs }
+			) => filterRange
+		],
+		(todos, { start, end }) => Object.values(todos).filter(t => {
+			const todoTime = t!.timeStart;
+
+			return todoTime.diff(start) >= 0 && todoTime.diff(end) <= 0;
+		})
 	)
 };
 
