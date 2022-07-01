@@ -44,11 +44,7 @@ describe("replaceO1", () => {
 		expect(o1._id).not.toBe(o2._id);
 	});
 
-	it.skip("handles nested objects", () => {
-		// CMT IF i ever need to implement this remember that I cannot memoize
-		// using key because they might be the same nor values since they could
-		// be primitives
-
+	it("handles nested objects", () => {
 		const shopDayQty1 = {
 			person : "me",
 			fruits : {
@@ -60,7 +56,8 @@ describe("replaceO1", () => {
 				chicken : 2,
 				beef    : 1,
 				meat    : 3
-			}
+			},
+			date : new Date()
 		};
 
 		const shopDayQty2 = {
@@ -74,11 +71,12 @@ describe("replaceO1", () => {
 				chicken : 6,
 				beef    : 9,
 				meat    : 15
-			}
+			},
+			date : new Date()
 		};
 
 		replaceO1(shopDayQty1, shopDayQty2);
 
-		expect(o1).toEqual(o2);
+		expect(shopDayQty1).toEqual(shopDayQty2);
 	});
 });
