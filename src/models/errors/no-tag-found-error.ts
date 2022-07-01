@@ -1,6 +1,4 @@
-import { Error } from "mongoose";
-
-export default class NoTagFoundError extends Error.DocumentNotFoundError {
+export default class NoTagFoundError extends Error {
 	constructor() {
 		super("Tag not found!");
 	}

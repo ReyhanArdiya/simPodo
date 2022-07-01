@@ -1,11 +1,13 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
+import NoTodoFoundError from "../../models/errors/no-todo-found-error";
+import type Tag from "../../models/tag";
 import type Todo from "../../models/todo";
+import replaceO1Proxies from "../../utils/replaceO1-proxies";
 
-export type ITodoHash = { [todoId: Todo["_id"]]: Todo };
+export type ITodoHash = { [todoId: Todo["_id"]]: Todo | undefined };
 
 export interface TodosSliceState {
-	completedTotal: number;
 	todos: ITodoHash;
 }
 
@@ -24,39 +26,36 @@ const todosSlice = createSlice({
 	initialState : {} as TodosSliceState,
 	name         : "todos",
 	reducers     : {
-		addTodo(state, { payload: todo }: PayloadAction<Todo>) {
+		todoAdded(state, { payload: todo }: PayloadAction<Todo>) {
 			state.todos[todo._id] = todo;
 		},
-		completeTodo(state, { payload: _id }: PayloadAction<Todo["_id"]>) {
-			if (!state.todos[_id].completed) {
-				state.todos[_id].completed = true;
-				state.completedTotal++;
+		todoCompleted(state, { payload: _id }: PayloadAction<Todo["_id"]>) {
+			const toBeCompletedTodo = state.todos[_id];
+
+			if (toBeCompletedTodo) {
+				toBeCompletedTodo.completed = true;
 			}
 		},
-		deleteTodo(state, { payload: _id }: PayloadAction<Todo["_id"]>) {
+		todoDeleted(state, { payload: _id }: PayloadAction<Todo["_id"]>) {
 			delete state.todos[_id];
 		},
-		replaceTodos(state, { payload: newTodos }: PayloadAction<ITodoHash>) {
+		todosReplaced(state, { payload: newTodos }: PayloadAction<ITodoHash>) {
 			state.todos = newTodos;
 		},
-		// CMT Partial here because we can selectively pick which prop to update
-		updateTodo(state, { payload }: PayloadAction<Partial<Todo>>) {
-			const { _id } = payload;
+		todoUpdated(
+			state,
+			{
+				payload: newTodoData
+			}: PayloadAction<Partial<Omit<Todo, "_id">> & Pick<Todo, "_id">> // CMT Partial here because we can selectively pick which prop to update
+		) {
+			const { _id } = newTodoData;
 
-			for (const key in payload) {
-				type K = Omit<Todo, "_id">;
-
-				if (key !== "_id") {
-					/*
-					REFAC The problem here is ITodo key could be boolean | string
-					and TS worries what happens if we set a string to a boolean
-					and vice versa. How to tell TS that will never happen?
-					*/
-					// @ts-expect-error : see above REFAC
-					state.todos[_id!][key as keyof K] =
-						payload[key as keyof K]!;
-				}
+			const toBeUpdatedTodo = state.todos[_id];
+			if (!toBeUpdatedTodo) {
+				throw new NoTodoFoundError();
 			}
+
+			replaceO1Proxies(toBeUpdatedTodo, newTodoData);
 		}
 	}
 });
@@ -66,5 +65,23 @@ export const {
 	name: todosSliceName,
 	reducer: todoSliceReducer
 } = todosSlice;
+
+export const todoSliceSelectors = {
+	selectCompletedTotal : createSelector(
+		[ (state: TodosSliceState) => state.todos ],
+		todos => Object.values(todos).filter(t => t!.completed).length
+	),
+	selectTodoById : createSelector(
+		[ (state: TodosSliceState, id: Todo["_id"]) => state.todos[id] ],
+		todo => todo
+	),
+	filterByTagId : createSelector(
+		[
+			(state: TodosSliceState) => state.todos,
+			(_state: TodosSliceState, tagId: Tag["_id"]) => tagId,
+		],
+		(todos, tagId) => Object.values(todos).filter(t => t?.tagId === tagId)
+	)
+};
 
 export default todosSlice;

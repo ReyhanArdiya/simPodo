@@ -1,40 +1,51 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import NoTagFoundError from "../../models/errors/no-tag-found-error";
 import type Tag from "../../models/tag";
+import replaceO1Proxies from "../../utils/replaceO1-proxies";
+
+export type ITagsHash = {
+	[tagId: Tag["_id"]]: Tag | undefined;
+};
 
 export interface TagsSliceState {
-	[tagId: Tag["_id"]]: Tag;
+	tags: ITagsHash;
 }
 
-const initialState: TagsSliceState = {};
-
 const tagsSlice = createSlice({
-	initialState,
-	name     : "tags",
-	reducers : {
-		addTag(state, { payload: newTag }: PayloadAction<Tag>) {
-			state[newTag._id] = newTag;
+	initialState : {} as TagsSliceState,
+	name         : "tags",
+	reducers     : {
+		tagAdded(state, { payload: newTag }: PayloadAction<Tag>) {
+			state.tags[newTag._id] = newTag;
 		},
-		deleteTag(state, { payload: _id }: PayloadAction<Tag["_id"]>) {
-			delete state[_id];
+		tagDeleted(state, { payload: _id }: PayloadAction<Tag["_id"]>) {
+			delete state.tags[_id];
 		},
-		updateTag(
+		tagUpdated(
 			state,
-			// CMT Partial here because we can selectively pick which prop to update
-			{ payload }: PayloadAction<Partial<Tag>>
+			{
+				payload: newTagData
+			}: PayloadAction<Partial<Omit<Tag, "_id">> & Pick<Tag, "_id">>
 		) {
-			const { _id } = payload;
+			const { _id } = newTagData;
 
-			for (const key in payload) {
-				type K = Omit<Tag, "_id">;
-
-				if (key !== "_id") {
-					state[_id!][key as keyof K] =
-						payload[key as keyof K]!;
-				}
+			const toBeUpdatedTag = state.tags[_id];
+			if (!toBeUpdatedTag) {
+				throw new NoTagFoundError();
 			}
+
+			replaceO1Proxies(toBeUpdatedTag, newTagData);
 		}
 	}
 });
 
 export const { actions: tagsSliceActions, name: tagsSliceName } = tagsSlice;
+
+export const tagsSliceSelectors = {
+	selectTagById : createSelector(
+		[ (state: TagsSliceState, _id: Tag["_id"]) => state.tags[_id] ],
+		tag => tag
+	)
+};
+
 export default tagsSlice;

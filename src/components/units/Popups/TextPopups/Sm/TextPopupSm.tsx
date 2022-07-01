@@ -4,7 +4,7 @@ import TextSelectionSm from "./TextSelectionSm";
 import { v4 as uuidv4 } from "uuid";
 import type { MouseEventHandler } from "react";
 
-// REFAC I could refactor how i make the lg and sm version by making a base one first but whatevs
+// TODO should i combine textpopup into one and use breakpoints instead?
 const Container = styled(Card)`
 	flex-direction: column;
     ${({ dark, theme }) => !dark && theme.effects.boxShadows[1]}
