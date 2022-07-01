@@ -1,81 +1,117 @@
-import tagsSlice from "./slice";
+import NoTagFoundError from "../../models/errors/no-tag-found-error";
+import Tag from "../../models/tag";
+import tagsSlice, { tagsSliceSelectors, TagsSliceState } from "./slice";
 
-const { getInitialState, actions, reducer } = tagsSlice;
+const { actions, reducer } = tagsSlice;
 
-const deepClone = obj => JSON.parse(JSON.stringify(obj));
+const initialId = "1";
 
-describe("Tags slice", () => {
-	const initialId = "1";
-	const expectedState = {
-		[initialId] : {
-			color : expect.any(String),
-			id    : expect.any(String),
-			name  : expect.any(String),
+let initialState: TagsSliceState;
+beforeEach(() => {
+	initialState = {
+		tags : {
+			[initialId] : {
+				color : expect.any(String),
+				_id   : expect.any(String),
+				name  : expect.any(String)
+			}
 		}
 	};
+});
 
-	let initialState;
-	beforeEach(() => {
-		initialState = deepClone(getInitialState());
+describe("Tags slice actions", () => {
+
+
+	it("adds a new tag", () => {
+		const _id = initialId;
+		const newTag: Tag = new Tag(
+			"tag1",
+			"red",
+			_id,
+		);
+
+		const newState = reducer(initialState, actions.tagAdded(newTag));
+
+		expect(newState.tags).toHaveProperty(_id);
+		expect(newState.tags[_id]).toEqual(newTag);
 	});
 
-	it("should contain these initialStates", () => {
-		expect(initialState).toEqual(expectedState);
+	it("throws an error when updating a nonexistent tag", () => {
+		const errorFn = () => reducer(
+			initialState,
+			actions.tagUpdated({
+				_id  : "iDontExistBishhhh",
+				name : "tag2"
+			})
+		);
+
+		expect(errorFn).toThrow(NoTagFoundError);
 	});
 
-	describe("reducers", () => {
-		it("adds a new tag", () => {
-			const id = initialId;
+	it("updates a tag name", () => {
+		const _id = initialId;
 
-			const newState = reducer(
-				initialState,
-				actions.addTag({
-					color : "red",
-					id,
-					name  : "tag1"
-				})
-			);
+		const newState = reducer(
+			initialState,
+			actions.tagUpdated({
+				_id  : _id,
+				name : "tag2"
+			})
+		);
 
-			expect(newState).toHaveProperty(id);
-		});
+		expect(newState.tags[_id]!.name).toEqual("tag2");
+	});
 
-		it("updates a tag name", () => {
-			const id = initialId;
+	it("updates a tag color", () => {
+		const _id = initialId;
 
-			const newState = reducer(
-				initialState,
-				actions.updateTag({
-					id,
-					name : "tag2"
-				})
-			);
+		const newState = reducer(
+			initialState,
+			actions.tagUpdated({
+				color : "blue",
+				_id
+			})
+		);
 
-			expect(newState[id].name).toEqual("tag2");
-		});
+		expect(newState.tags[_id]!.color).toEqual("blue");
+	});
 
-		it("updates a tag color", () => {
-			const id = initialId;
+	const changeK = "name";
+	it(`updates a property (e.g.: ${changeK}) without changing the others`, () => {
+		const _id = initialId;
 
-			const newState = reducer(
-				initialState,
-				actions.updateTag({
-					color : "blue",
-					id,
-				})
-			);
+		const { tags: { [_id]: oldTag } } = initialState;
+		const { tags: { [_id]: newTag } } = reducer(
+			initialState,
+			actions.tagUpdated({
+				[changeK] : "newVal",
+				_id       : _id
+			})
+		);
 
-			expect(newState[id].color).toEqual("blue");
-		});
+		expect(newTag![changeK]).not.toBe(oldTag![changeK]);
 
-		it("deletes a tag", () => {
-			const id = initialId;
+		for (const key in Object.keys(newTag!).filter(k => k !== changeK)) {
+			expect(newTag![key as keyof typeof newTag])
+				.toBe(oldTag![key as keyof typeof oldTag]);
+		}
+	});
 
-			const newState = reducer(
-				initialState,
-				actions.deleteTag(id)
-			);
+	it("deletes a tag", () => {
+		const _id = initialId;
 
-			expect(newState).not.toHaveProperty(id);
-		});
+		const newState = reducer(initialState, actions.tagDeleted(_id));
+
+		expect(newState).not.toHaveProperty(_id);
+	});
+
+});
+
+describe("Tags slice selectors", () => {
+	it("selects a tag by id", () => {
+		expect(tagsSliceSelectors.selectTagById(
+			initialState,
+			initialId
+		)).toEqual(initialState.tags[initialId]);
 	});
 });

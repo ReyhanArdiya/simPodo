@@ -1,50 +1,95 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import type { Dayjs } from "dayjs";
 import { HYDRATE } from "next-redux-wrapper";
+import NoTodoFoundError from "../../models/errors/no-todo-found-error";
+import type Tag from "../../models/tag";
+import type Todo from "../../models/todo";
+import replaceO1Proxies from "../../utils/replaceO1-proxies";
+
+export interface IStoreTodo extends Omit<Todo, "timeStart"> {
+	timeStart: Dayjs;
+}
+
+// CMT I can't extend Todo since timeStart must be of different type and bcz off
+// Liskov substituion sumn2 I can't just do that easily, so I need to make a new one.
+export class StoreTodo implements IStoreTodo {
+	constructor(
+		public title: string,
+		public details: string,
+		public timeStart: Dayjs,
+		public completed: boolean = false,
+		public readonly tagId: Tag["_id"],
+		public readonly _id: string = ""
+	) {
+		// Todo.call(this, title, details, timeStart, completed, tagId, _id);
+		this.title = title;
+		this.details = details;
+		this.timeStart = timeStart;
+		this.completed = completed;
+		this.tagId = tagId;
+		this._id = _id;
+	}
+}
+
+export type ITodoHash = { [todoId: IStoreTodo["_id"]]: IStoreTodo | undefined };
+
+export interface TodosSliceState {
+	todos: ITodoHash;
+}
 
 const todosSlice = createSlice({
 	extraReducers : {
+		// TODO how to add action type here? Using PayloadAction leaeds to errors
 		[HYDRATE] : (state, action) => {
 			return {
 				...state,
 				todos : {
 					...state.todos,
 					...action.payload.todos.todos
-				},
+				}
 			};
 		}
 	},
-	initialState : {
-		completedTotal : 0,
-		todos          : {
-			todoId : {
-				completed : false,
-				id        : "todoId",
-				title     : "todoTitle"
+	initialState : {} as TodosSliceState,
+	name         : "todos",
+	reducers     : {
+		todoAdded(state, { payload: todo }: PayloadAction<IStoreTodo>) {
+			state.todos[todo._id] = todo;
+		},
+		todoCompleted(
+			state,
+			{ payload: _id }: PayloadAction<IStoreTodo["_id"]>
+		) {
+			const toBeCompletedTodo = state.todos[_id];
+
+			if (toBeCompletedTodo) {
+				toBeCompletedTodo.completed = true;
 			}
 		},
-	},
-	name     : "todos",
-	reducers : {
-		addTodo(state, { payload: todo }) {
-			state.todos[todo.id] = todo;
+		todoDeleted(state, { payload: _id }: PayloadAction<IStoreTodo["_id"]>) {
+			delete state.todos[_id];
 		},
-		completeTodo(state, { payload: id }) {
-			if (!state.todos[id].completed) {
-				state.todos[id].completed = true;
-				state.completedTotal++;
-			}
-		},
-		deleteTodo(state, { payload: id }) {
-			delete state.todos[id];
-		},
-		replaceTodos(state, { payload: newTodos }) {
+		todosReplaced(state, { payload: newTodos }: PayloadAction<ITodoHash>) {
 			state.todos = newTodos;
 		},
-		updateTodo(state, { payload: { title, completed, id } }) {
-			state.todos[id].title = title;
-			state.todos[id].completed = completed;
+		todoUpdated(
+			state,
+			{
+				payload: newTodoData
+			}: PayloadAction<
+				Partial<Omit<IStoreTodo, "_id">> & Pick<IStoreTodo, "_id">
+			> // CMT Partial here because we can selectively pick which prop to update
+		) {
+			const { _id } = newTodoData;
+
+			const toBeUpdatedTodo = state.todos[_id];
+			if (!toBeUpdatedTodo) {
+				throw new NoTodoFoundError();
+			}
+
+			replaceO1Proxies(toBeUpdatedTodo, newTodoData);
 		}
-	},
+	}
 });
 
 export const {
@@ -52,5 +97,37 @@ export const {
 	name: todosSliceName,
 	reducer: todoSliceReducer
 } = todosSlice;
+
+export const todoSliceSelectors = {
+	selectCompletedTotal : createSelector(
+		[ (state: TodosSliceState) => state.todos ],
+		todos => Object.values(todos).filter(t => t!.completed).length
+	),
+	selectTodoById : createSelector(
+		[ (state: TodosSliceState, id: IStoreTodo["_id"]) => state.todos[id] ],
+		todo => todo
+	),
+	filterByTagId : createSelector(
+		[
+			(state: TodosSliceState) => state.todos,
+			(_state: TodosSliceState, tagId: Tag["_id"]) => tagId
+		],
+		(todos, tagId) => Object.values(todos).filter(t => t!.tagId === tagId)
+	),
+	filterByTimeRange : createSelector(
+		[
+			(state: TodosSliceState) => state.todos,
+			(
+				_state: TodosSliceState,
+				filterRange: { start: Dayjs; end: Dayjs }
+			) => filterRange
+		],
+		(todos, { start, end }) => Object.values(todos).filter(t => {
+			const todoTime = t!.timeStart;
+
+			return todoTime.diff(start) >= 0 && todoTime.diff(end) <= 0;
+		})
+	)
+};
 
 export default todosSlice;
