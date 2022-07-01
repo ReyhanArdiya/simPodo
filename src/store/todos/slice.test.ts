@@ -1,7 +1,8 @@
+import dayjs from "dayjs";
 import NoTodoFoundError from "../../models/errors/no-todo-found-error";
-import Todo from "../../models/todo";
 import todosSlice, {
 	ITodoHash,
+	StoreTodo,
 	todoSliceReducer,
 	todoSliceSelectors,
 	todosSliceActions,
@@ -16,7 +17,9 @@ beforeEach(() => {
 				completed : false,
 				_id       : "todoIdFromMongoose",
 				title     : "todoTitle",
-				tagId     : "tagId"
+				tagId     : "tagId",
+				details   : "details",
+				timeStart : dayjs()
 			}
 		}
 	};
@@ -24,7 +27,7 @@ beforeEach(() => {
 
 describe("todoSlice actions", () => {
 	it("adds a todo", () => {
-		const newTodo = new Todo("todo2", false, "tagId", "todoId2");
+		const newTodo = new StoreTodo("todo2", "details", dayjs(), false, "tagId", "todoId2");
 
 		const newState = todosSlice.reducer(
 			initialState,
@@ -51,13 +54,17 @@ describe("todoSlice actions", () => {
 				completed : false,
 				_id       : "todoId1",
 				title     : "todo1",
-				tagId     : "tagId"
+				tagId     : "tagId",
+				details   : "details",
+				timeStart : dayjs()
 			},
 			todoId2 : {
 				completed : false,
 				_id       : "todoId2",
 				title     : "todo2",
-				tagId     : "tagId"
+				tagId     : "tagId",
+				details   : "details",
+				timeStart : dayjs()
 			}
 		};
 
@@ -75,25 +82,33 @@ describe("todoSlice actions", () => {
 				completed : false,
 				_id       : "1",
 				title     : "todo1",
-				tagId     : "tagId"
+				tagId     : "tagId",
+				details   : "details",
+				timeStart : dayjs()
 			},
 			2 : {
 				completed : false,
 				_id       : "2",
 				title     : "todo2",
-				tagId     : "tagId"
+				tagId     : "tagId",
+				details   : "details",
+				timeStart : dayjs()
 			},
 			3 : {
 				completed : false,
 				_id       : "3",
 				title     : "todo3",
-				tagId     : "tagId"
+				tagId     : "tagId",
+				details   : "details",
+				timeStart : dayjs()
 			},
 			4 : {
 				completed : false,
 				_id       : "4",
 				title     : "todo4",
-				tagId     : "tagId"
+				tagId     : "tagId",
+				details   : "details",
+				timeStart : dayjs()
 			}
 		};
 
@@ -126,11 +141,13 @@ describe("todoSlice actions", () => {
 				completed : false,
 				_id       : todoId,
 				title     : "todo1",
-				tagId     : "tagId"
+				tagId     : "tagId",
+				details   : "details",
+				timeStart : dayjs()
 			}
 		};
 
-		const newTodoData = new Todo("todo1 updated", true, "tagId", todoId);
+		const newTodoData = new StoreTodo("todo1 updated", "details", dayjs(), true, "tagId", todoId);
 
 		const newState = todoSliceReducer(
 			initialState,
@@ -158,31 +175,41 @@ describe("todoSlice selectors", () => {
 					_id       : "1",
 					title     : "1",
 					completed : false,
-					tagId     : "tagId"
+					tagId     : "tagId",
+					details   : "details",
+					timeStart : dayjs()
 				},
 				2 : {
 					_id       : "2",
 					title     : "2",
 					completed : false,
-					tagId     : "tagId"
+					tagId     : "tagId",
+					details   : "details",
+					timeStart : dayjs()
 				},
 				3 : {
 					_id       : "3",
 					title     : "3",
 					completed : true,
-					tagId     : "tagId"
+					tagId     : "tagId",
+					details   : "details",
+					timeStart : dayjs()
 				},
 				4 : {
 					_id       : "4",
 					title     : "4",
 					completed : true,
-					tagId     : "tagId"
+					tagId     : "tagId",
+					details   : "details",
+					timeStart : dayjs()
 				},
 				5 : {
 					_id       : "5",
 					title     : "5",
 					completed : false,
-					tagId     : "tagId"
+					tagId     : "tagId",
+					details   : "details",
+					timeStart : dayjs()
 				}
 			}
 		};
@@ -199,7 +226,9 @@ describe("todoSlice selectors", () => {
 					_id       : "1",
 					title     : "1",
 					completed : false,
-					tagId     : "tagId"
+					tagId     : "tagId",
+					details   : "details",
+					timeStart : dayjs()
 				}
 			}
 		};
@@ -221,25 +250,33 @@ describe("todoSlice selectors", () => {
 				completed : false,
 				_id       : "1",
 				title     : "todo1",
-				tagId     : filterTagId
+				tagId     : filterTagId,
+				details   : "details",
+				timeStart : dayjs()
 			},
 			2 : {
 				completed : false,
 				_id       : "2",
 				title     : "todo2",
-				tagId     : "tagId"
+				tagId     : "tagId",
+				details   : "details",
+				timeStart : dayjs()
 			},
 			3 : {
 				completed : false,
 				_id       : "3",
 				title     : "todo3",
-				tagId     : filterTagId
+				tagId     : filterTagId,
+				details   : "details",
+				timeStart : dayjs()
 			},
 			4 : {
 				completed : false,
 				_id       : "4",
 				title     : "todo4",
-				tagId     : "tagId"
+				tagId     : "tagId",
+				details   : "details",
+				timeStart : dayjs()
 			}
 		};
 
