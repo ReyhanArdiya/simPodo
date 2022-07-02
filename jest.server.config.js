@@ -1,4 +1,4 @@
-import nextJest from "next/jest.js";
+const nextJest = require("next/jest");
 const createJestConfig = nextJest({ dir : "./" });
 
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
@@ -10,4 +10,4 @@ const customJestConfig = {
 	testMatch                : [ "**/src/models/**/*.test.ts" ],
 	preset                   : "ts-jest"
 };
-export default createJestConfig(customJestConfig);
+module.exports = createJestConfig(customJestConfig);
