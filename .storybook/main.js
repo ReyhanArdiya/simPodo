@@ -17,4 +17,8 @@ module.exports = {
   staticDirs: [
     "../public"
   ],
+  babel: async (options) => ({
+    ...options,
+    "plugins": ["@babel/plugin-transform-reserved-words"]
+  }),
 }
