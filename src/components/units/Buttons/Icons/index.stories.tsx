@@ -1,4 +1,4 @@
-import type { Meta as Met } from "@storybook/react";
+import type { Meta } from "@storybook/react";
 import type { MouseEventHandler } from "react";
 import Cbx from "./Checkbox";
 import Pn from "./Pen";
@@ -11,7 +11,7 @@ interface Args {
 	edit: boolean;
 }
 
-const Meta: Met<Args> = {
+const meta: Meta<Args> = {
 	argTypes : {
 		dark : {
 			defaultValue : false,
@@ -23,6 +23,6 @@ const Meta: Met<Args> = {
 
 export const Checkbox = (args: Args) => <Cbx {...args} />;
 export const Pen = (args: Args) => <Pn {...args} />;
-export const Trash = (args: Args) => <Trsh {...args} fixedWidth={false} />;
+export const Trash = (args: Args) => <Trsh {...args} />;
 
-export default Meta;
+export default meta;
