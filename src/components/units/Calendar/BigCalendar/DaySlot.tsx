@@ -20,7 +20,7 @@ const Container = styled.li<{
 	${({ active, dark, theme }) => {
 		if (active) {
 			return css`
-				color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[4] : theme.colors.light.UI[6]};
+				color: ${dark ? theme.colors.dark.UI[4] : theme.colors.light.UI[6]};
 			`;
 		}
 
