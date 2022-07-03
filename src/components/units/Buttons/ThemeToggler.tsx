@@ -47,7 +47,7 @@ const ThemeToggler = ({ onClick, dark = false }: {
 	return (
 		<Container>
 			<BouncyGrow
-				transitionKey={showDark as never}
+				transitionKey={showDark}
 			>
 				{showDark ?
 					<Moon
