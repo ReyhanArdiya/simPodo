@@ -1,4 +1,4 @@
-import type { InputHTMLAttributes } from "react";
+import { forwardRef, InputHTMLAttributes } from "react";
 import { CSSTransition } from "react-transition-group";
 import styled, { css, keyframes } from "styled-components";
 import { v4 as uuidv4 } from "uuid";
@@ -60,15 +60,27 @@ const BorderedInput = styled(Input)<BorderedInputProps>`
 	${({ colors, hasError, dark, theme, valid }) => {
 		if (valid) {
 			return css`
-					outline: ${outlineWidth}px solid ${dark ? theme.colors.dark.semantic.good : theme.colors.light.semantic.good};
-                    ${colors?.valid && css`outline-color: ${colors.valid};`}
+				outline: ${outlineWidth}px solid
+					${dark ?
+		theme.colors.dark.semantic.good :
+		theme.colors.light.semantic.good};
+				${colors?.valid &&
+				css`
+					outline-color: ${colors.valid};
+				`}
 			`;
 		}
 
 		if (hasError) {
 			return css`
-				outline: ${outlineWidth}px solid ${dark ? theme.colors.dark.semantic.bad : theme.colors.light.semantic.bad};
-                ${colors?.error && css`outline-color: ${colors.error};`}
+				outline: ${outlineWidth}px solid
+					${dark ?
+		theme.colors.dark.semantic.bad :
+		theme.colors.light.semantic.bad};
+				${colors?.error &&
+				css`
+					outline-color: ${colors.error};
+				`}
 			`;
 		}
 	}}
@@ -76,7 +88,7 @@ const BorderedInput = styled(Input)<BorderedInputProps>`
 	outline-offset: -${outlineWidth}px;
 `;
 
-const ErrorMsg = styled.label<{dark?: boolean}>`
+const ErrorMsg = styled.label<{ dark?: boolean }>`
 	font: 500 1.6em "Inter", sans-serif;
 	text-align: left;
 
@@ -100,40 +112,43 @@ export interface SemanticInputProps
 		error?: string;
 		valid?: string;
 	};
-	ref?: never;
 }
 
-const SemanticInput = (props: SemanticInputProps) => {
-	const { valid, id = uuidv4(), ...borderedInputProps } = props;
+const SemanticInput = forwardRef<HTMLInputElement, SemanticInputProps>(
+	(props, ref) => {
+		const { valid, id = uuidv4(), ...borderedInputProps } = props;
 
-	return (
-		<CSSTransition
-			classNames="has-error"
-			in={!!props.errorMsg}
-			timeout={animationMs}
-		>
-			<Container>
-				<BorderedInput
-					as="input"
-					{...borderedInputProps}
-					colors={props.colors}
-					dark={props.dark}
-					hasError={!!props.errorMsg}
-					id={id}
-					valid={valid}
-				/>
-				{!valid && props.errorMsg &&
-				<ErrorMsg
-					color={props.colors?.error}
-					dark={props.dark}
-					htmlFor={id}
-				>
-					{props.errorMsg}
-				</ErrorMsg>
-				}
-			</Container>
-		</CSSTransition>
-	);
-};
+		return (
+			<CSSTransition
+				classNames="has-error"
+				in={!!props.errorMsg}
+				timeout={animationMs}
+			>
+				<Container>
+					<BorderedInput
+						as="input"
+						{...borderedInputProps}
+						colors={props.colors}
+						dark={props.dark}
+						hasError={!!props.errorMsg}
+						id={id}
+						ref={ref}
+						valid={valid}
+					/>
+					{!valid && props.errorMsg && (
+						<ErrorMsg
+							color={props.colors?.error}
+							dark={props.dark}
+							htmlFor={id}
+						>
+							{props.errorMsg}
+						</ErrorMsg>
+					)}
+				</Container>
+			</CSSTransition>
+		);
+	}
+);
+SemanticInput.displayName = "SemanticInput";
 
 export default SemanticInput;

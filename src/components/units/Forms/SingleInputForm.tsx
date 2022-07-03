@@ -1,4 +1,4 @@
-import React, { FormEvent, FormEventHandler } from "react";
+import { FormEvent, FormEventHandler, forwardRef } from "react";
 import styled, { css } from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import ButtonLg from "../Buttons/ButtonLg";
@@ -35,7 +35,7 @@ export interface SingleInputFormProps {
 	dark?: boolean;
 }
 
-const SingleInputForm = React.forwardRef<HTMLFormElement, SingleInputFormProps>(
+const SingleInputForm = forwardRef<HTMLInputElement, SingleInputFormProps>(
 	({ title, onSubmit, buttonText, inputOpts, dark = false }, ref) => {
 		const onSubmitHandler = (e: FormEvent) => {
 			e.preventDefault();
@@ -57,7 +57,7 @@ const SingleInputForm = React.forwardRef<HTMLFormElement, SingleInputFormProps>(
 					{title}
 				</Label>
 				<SemanticInput
-					ref={ref as never}
+					ref={ref}
 					type="text"
 					{...inputOpts}
 					colors={{ error : "#c50a5a" }}
@@ -72,7 +72,6 @@ const SingleInputForm = React.forwardRef<HTMLFormElement, SingleInputFormProps>(
 		);
 	}
 );
-
-SingleInputForm.displayName = "TextInputModal";
+SingleInputForm.displayName = "SingleInputForm";
 
 export default SingleInputForm;
