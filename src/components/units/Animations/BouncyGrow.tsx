@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { Key, ReactNode } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import baseTransitionMs from "../../../styles/global/base-transition-ms";
 
@@ -11,20 +11,18 @@ const BouncyGrow = ({
 	transitionKey
 }: {
 	children: ReactNode;
-	transitionKey: never;
-}) => {
-	return (
-		<TransitionGroup component={null}>
-			<CSSTransition
-				appear
-				classNames="bouncy-grow"
-				key={transitionKey}
-				timeout={baseTransitionMs}
-			>
-				{children}
-			</CSSTransition>
-		</TransitionGroup>
-	);
-};
+	transitionKey: unknown;
+}) => (
+	<TransitionGroup component={null}>
+		<CSSTransition
+			appear
+			classNames="bouncy-grow"
+			key={transitionKey as Key}
+			timeout={baseTransitionMs}
+		>
+			{children}
+		</CSSTransition>
+	</TransitionGroup>
+);
 
 export default BouncyGrow;

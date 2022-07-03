@@ -15,11 +15,11 @@ const Container = styled(Card)<{ active?: boolean; dark?: boolean }>`
 	min-width: 5.5em;
 	height: 7.5em;
 
-	${({ active }) => {
+	${({ active, dark, theme }) => {
 		if (active) {
 			return css`
-				background-color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[6] : theme.colors.light.UI[2]};
-				color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[2] : theme.colors.light.UI[1]};
+				background-color: ${dark ? theme.colors.dark.UI[6] : theme.colors.light.UI[2]};
+				color: ${dark ? theme.colors.dark.UI[2] : theme.colors.light.UI[1]};
 
 				::before,
 				::after {
@@ -44,7 +44,7 @@ const Container = styled(Card)<{ active?: boolean; dark?: boolean }>`
 		}
 
 		return css`
-			background-color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[3] : theme.colors.light.UI[1]};
+			background-color: ${dark ? theme.colors.dark.UI[3] : theme.colors.light.UI[1]};
 		`;
 	}}
 

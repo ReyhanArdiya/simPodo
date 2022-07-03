@@ -32,7 +32,7 @@ export const BouncyGrow: StoryFn = (args: Args) => {
 			<p>Click me!</p>
 			<BGrow
 				{...args}
-				transitionKey={animate as never}
+				transitionKey={animate}
 			>
 				<RedBlock
 					onClick={() => setAnimate((prev: unknown) => !prev)}

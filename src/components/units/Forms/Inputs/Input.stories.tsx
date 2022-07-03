@@ -18,12 +18,6 @@ const meta: Meta<Args> = {
 	component : InputComponent
 };
 
-export const Input: StoryFn<Args & typeof InputComponent> = args => {
-	return (
-		<InputComponent
-			as="input"
-			{...args}
-		/>
-	);
-};
+export const Input: StoryFn<Args> = args => <InputComponent as="input" {...args} />;
+
 export default meta;
