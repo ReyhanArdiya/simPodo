@@ -343,4 +343,46 @@ describe("todoSlice selectors", () => {
 		expect(filteredTodos[0]).toEqual(initialState.todos[1]);
 		expect(filteredTodos[1]).toEqual(initialState.todos[3]);
 	});
+
+	it("filters today's todos", () => {
+		initialState.todos = {
+			1 : {
+				completed : false,
+				_id       : "1",
+				title     : "todo1",
+				tagId     : "1",
+				details   : "details",
+				timeStart : dayjs().hour(17)
+			},
+			2 : {
+				completed : false,
+				_id       : "2",
+				title     : "todo2",
+				tagId     : "tagId",
+				details   : "details",
+				timeStart : dayjs().day(dayjs().day() + 1)
+			},
+			3 : {
+				completed : false,
+				_id       : "3",
+				title     : "todo3",
+				tagId     : "3",
+				details   : "details",
+				timeStart : dayjs().hour(7).minute(37)
+			},
+			4 : {
+				completed : false,
+				_id       : "4",
+				title     : "todo4",
+				tagId     : "tagId",
+				details   : "details",
+				timeStart : dayjs().day(dayjs().day() + 1)
+			}
+		};
+
+		const todaysTodos = todoSliceSelectors.filterTodaysTodos(initialState);
+		expect(todaysTodos).toHaveLength(2);
+		expect(todaysTodos[0]).toEqual(initialState.todos[1]);
+		expect(todaysTodos[1]).toEqual(initialState.todos[3]);
+	});
 });

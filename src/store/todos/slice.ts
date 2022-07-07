@@ -1,5 +1,5 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { HYDRATE } from "next-redux-wrapper";
 import NoTodoFoundError from "../../models/errors/no-todo-found-error";
 import type Tag from "../../models/tag";
@@ -127,7 +127,15 @@ export const todoSliceSelectors = {
 
 			return todoTime.diff(start) >= 0 && todoTime.diff(end) <= 0;
 		})
-	)
+	),
+	filterTodaysTodos(state: TodosSliceState) {
+		const today = dayjs().hour(0).minute(59).second(59);
+
+		return this.filterByTimeRange(state, {
+			start : today,
+			end   : dayjs(today).hour(23).minute(59).second(59)
+		});
+	}
 };
 
 export default todosSlice;
