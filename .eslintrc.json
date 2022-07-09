@@ -123,14 +123,11 @@
 		"jsdoc/valid-types": "off",
 		"key-spacing": ["warn", { "beforeColon": true, "align": "colon" }],
 		"keyword-spacing": ["warn", { "before": true, "after": true }],
-		"lines-around-comment": [
-			"warn",
-			{ "beforeLineComment": false, "allowBlockStart": true }
-		],
+		"lines-around-comment": ["warn", { "beforeLineComment": false, "allowBlockStart": true }],
 		"max-len": [
 			"warn",
 			{
-				"code": 80,
+				"code": 120,
 				"tabWidth": 4,
 				"ignoreUrls": true,
 				"ignoreStrings": true,
@@ -152,11 +149,7 @@
 		"newline-per-chained-call": ["off", { "ignoreChainWithDepth": 1 }],
 		"no-duplicate-imports": "warn",
 		"no-empty-function": "warn",
-		"no-extra-parens": [
-			"warn",
-			"all",
-			{ "nestedBinaryExpressions": false, "ignoreJSX": "multi-line" }
-		],
+		"no-extra-parens": ["warn", "all", { "nestedBinaryExpressions": false, "ignoreJSX": "multi-line" }],
 		"no-fallthrough": "off",
 		"no-implicit-globals": "error",
 		"no-invalid-this": "warn",
@@ -262,19 +255,13 @@
 		"rest-spread-spacing": ["error", "never"],
 		"react/jsx-closing-bracket-location": ["warn", "line-aligned"],
 		"react/jsx-first-prop-new-line": "warn",
-		"react/jsx-max-props-per-line": [
-			"warn",
-			{ "maximum": 1, "when": "multiline" }
-		],
+		"react/jsx-max-props-per-line": ["warn", { "maximum": 1, "when": "multiline" }],
 		"react/jsx-sort-props": "warn",
 		"@typescript-eslint/semi": "error",
 		"@typescript-eslint/no-extra-semi": "error",
 		"semi-spacing": "error",
 		"semi-style": "error",
-		"sort-imports": [
-			"off",
-			{ "memberSyntaxSortOrder": ["none", "single", "multiple", "all"] }
-		],
+		"sort-imports": ["off", { "memberSyntaxSortOrder": ["none", "single", "multiple", "all"] }],
 		"space-before-blocks": "error",
 		"space-before-function-paren": [
 			"warn",
