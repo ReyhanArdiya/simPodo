@@ -129,7 +129,7 @@ const SemanticInput = forwardRef<HTMLInputElement, SemanticInputProps>(
 				in={!!props.errorMsg}
 				timeout={animationMs}
 			>
-				<Container>
+				<Container className="semantic-input">
 					<BorderedInput
 						as="input"
 						{...borderedInputProps}

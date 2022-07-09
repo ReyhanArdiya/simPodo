@@ -20,6 +20,10 @@ beforeEach(() => {
 });
 
 describe("AuthPage component", () => {
+	it("is rendered", () => {
+		expect(document.getElementById("credentials")).toBeInTheDocument();
+	});
+
 	it("changes mode when clicking sign up/login button", () => {
 		const signupRx = /sign up/i;
 		const loginRx = /login/i;
