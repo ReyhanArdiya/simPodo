@@ -1,7 +1,7 @@
 import { forwardRef, InputHTMLAttributes } from "react";
 import { CSSTransition } from "react-transition-group";
 import styled, { css, keyframes } from "styled-components";
-// import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 import Input from "./Input";
 
 const shakeEm = 1;
@@ -112,13 +112,14 @@ export interface SemanticInputProps
 		error?: string;
 		valid?: string;
 	};
+	id?: ReturnType<typeof uuidv4>;
 }
 
 const SemanticInput = forwardRef<HTMLInputElement, SemanticInputProps>(
 	(props, ref) => {
 		const {
 			valid,
-			id = Math.random() * 357894,
+			id = uuidv4(),
 			...borderedInputProps
 		} = props;
 

@@ -3,6 +3,11 @@ import MockTheme from "../../../tests/MockTheme";
 import CredentialsPage from "./CredentialsPage";
 
 let mockSubmitHandler: jest.Mock;
+jest.mock("uuid", () => ({
+	v4() {
+		return "eb7b7961-395d-4b4c-afc6-9ebcadaf0150";
+	}
+}));
 
 beforeEach(() => {
 	mockSubmitHandler = jest.fn();
@@ -39,7 +44,7 @@ describe("AuthPage component", () => {
 		const submitButton = screen.getByText(/login/i);
 
 		emailInput.value = "thisisacorrectemail@gmail.com";
-		passwordInput.value = "thisisavalidpassowrd";
+		passwordInput.value = "th1sISavalidPassword";
 
 		fireEvent.click(submitButton);
 		expect(mockSubmitHandler).toBeCalled();
@@ -60,5 +65,4 @@ describe("AuthPage component", () => {
 		fireEvent.click(submitButton);
 		expect(mockSubmitHandler).not.toBeCalled();
 	});
-
 });
