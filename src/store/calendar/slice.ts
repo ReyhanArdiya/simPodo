@@ -1,5 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import dayjs from "dayjs";
+import type { RootState } from "..";
 import replaceO1Proxies from "../../utils/replaceO1-proxies";
 
 export interface CalendarSliceState {
@@ -41,9 +42,9 @@ export const { actions: calendarSliceActions, name: calendarSliceName } =
 	calendarSlice;
 
 const extractCalendarDates = (k: keyof CalendarSliceState) => [
-	(state: CalendarSliceState) => state[k].date,
-	(state: CalendarSliceState) => state[k].monthIndex,
-	(state: CalendarSliceState) => state[k].year,
+	(state: RootState) => state.calendar[k].date,
+	(state: RootState) => state.calendar[k].monthIndex,
+	(state: RootState) => state.calendar[k].year,
 ];
 
 const selectedDateExtractor = extractCalendarDates("selectedDate");
@@ -51,15 +52,15 @@ const viewedDateExtractor = extractCalendarDates("viewedDate");
 
 export const calendarSliceSelectors = {
 	selectSelectedDateDate : createSelector(
-		[ (state: CalendarSliceState) => state.selectedDate.date ],
+		[ (state: RootState) => state.calendar.selectedDate.date ],
 		selectedDateDate => selectedDateDate
 	),
 	selectSelectedDateMonthIndex : createSelector(
-		[ (state: CalendarSliceState) => state.selectedDate.monthIndex ],
+		[ (state: RootState) => state.calendar.selectedDate.monthIndex ],
 		selectedDateMonthIndex => selectedDateMonthIndex
 	),
 	selectSelectedDateYear : createSelector(
-		[ (state: CalendarSliceState) => state.selectedDate.year ],
+		[ (state: RootState) => state.calendar.selectedDate.year ],
 		selectedDateYear => selectedDateYear
 	),
 	selectSelectedDateFullDate : createSelector(
@@ -68,15 +69,15 @@ export const calendarSliceSelectors = {
 	),
 
 	selectViewedDateDate : createSelector(
-		[ (state: CalendarSliceState) => state.viewedDate.date ],
+		[ (state: RootState) => state.calendar.viewedDate.date ],
 		viewedDateDate => viewedDateDate
 	),
 	selectViewedDateMonthIndex : createSelector(
-		[ (state: CalendarSliceState) => state.viewedDate.monthIndex ],
+		[ (state: RootState) => state.calendar.viewedDate.monthIndex ],
 		viewedDateMonthIndex => viewedDateMonthIndex
 	),
 	selectViewedDateYear : createSelector(
-		[ (state: CalendarSliceState) => state.viewedDate.year ],
+		[ (state: RootState) => state.calendar.viewedDate.year ],
 		viewedDateYear => viewedDateYear
 	),
 	selectViewedDateFullDate : createSelector(
@@ -85,11 +86,11 @@ export const calendarSliceSelectors = {
 	),
 	selectViewedDateDaysInMonth : createSelector(
 		viewedDateExtractor,
-		(date, monthI, year) => dayjs.tz(`${year}-${monthI + 1}-${date}`).daysInMonth()
+		(date, monthI, year) => dayjs().year(year).month(monthI).date(date).daysInMonth()
 	),
 	selectViewedDatefirstDayOfMonthIndex : createSelector(
 		viewedDateExtractor,
-		(_date, monthI, year) => dayjs.tz(`${year}-${monthI + 1}-1`).day()
+		(_date, monthI, year) => dayjs().year(year).month(monthI).date(1).day()
 	),
 };
 
