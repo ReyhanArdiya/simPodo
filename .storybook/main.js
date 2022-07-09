@@ -1,3 +1,5 @@
+const { mergeConfig } = require('vite');
+
 module.exports = {
   "stories": [
     // "../src/**/*.stories.mdx",
@@ -8,17 +10,22 @@ module.exports = {
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
-    "@storybook/addon-jest"
+    // "@storybook/addon-jest"
   ],
   "framework": "@storybook/react",
   "core": {
-    "builder": "@storybook/builder-webpack5"
+    "builder": "@storybook/builder-vite"
   },
   staticDirs: [
     "../public"
   ],
-  babel: async (options) => ({
-    ...options,
-    "plugins": ["@babel/plugin-transform-reserved-words"]
-  }),
+  // async viteFinal(config, { configType }) {
+  //   return mergeConfig(config, {
+  //     resolve: {
+  //       alias: {
+  //         path: "path-browserify"
+  //       }
+  //     }
+  //   })
+  // },
 }

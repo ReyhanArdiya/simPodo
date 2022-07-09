@@ -1,4 +1,3 @@
-import { withTests } from "@storybook/addon-jest";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
 import results from "../.jest-test-results.json";
@@ -51,8 +50,5 @@ export const decorators = [
 		<Provider store={makeStore()}>
 			<Story />
 		</Provider>
-	),
-	withTests({
-		results
-	})
+	)
 ];

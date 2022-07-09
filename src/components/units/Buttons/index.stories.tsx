@@ -26,10 +26,8 @@ const meta: Meta<Args> = {
 };
 
 export const Large: StoryFn<Args> = args => <ButtonLg {...args} />;
-Large.parameters = { jest : [ "ButtonLg.test.jsx" ] };
 
 export const Small: StoryFn<Args> = args => <ButtonSm {...args} />;
-Small.parameters = { jest : [ "ButtonSm.test.jsx" ] };
 
 export const LeftArrow: StoryFn<Args> = args => <LeftArrowButt {...args} />;
 export const Theme: StoryFn<Args> = args => <ThemeToggler {...args} />;

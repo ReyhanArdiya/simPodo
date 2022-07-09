@@ -34,8 +34,7 @@ const meta: Meta<Args> = {
 			defaultValue : 0
 		},
 		onClick : { action : "dayDate" }
-	},
-	parameters : { jest : [ "BigCalendar" ] }
+	}
 };
 
 const Template: StoryFn<Args> = args => {
@@ -50,7 +49,7 @@ const Template: StoryFn<Args> = args => {
 	return <BigCalendar
 		{...args}
 		dates={dates}
-	       />;
+	/>;
 };
 
 export const Default: StoryFn<Args> = Template.bind({});
