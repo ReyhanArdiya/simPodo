@@ -1,7 +1,7 @@
 import UserAlreadyLoggedInError from "../../models/errors/user-already-logged-in-error";
 import UserNotLoggedInError from "../../models/errors/user-not-logged-in-error";
 import User from "../../models/user";
-import authSlice, { authSliceSelectors, AuthSliceState } from "./slice";
+import authSlice, { AuthSliceState } from "./slice";
 
 const { actions, reducer } = authSlice;
 
@@ -124,10 +124,3 @@ describe("authSlice actions for user's data", () => {
 });
 
 
-describe("authSlice selectors", () => {
-	it("selects the current user", () => {
-		expect(authSliceSelectors.selectCurrentUser(loggedInState)).toEqual(
-			loggedInState.user
-		);
-	});
-});
