@@ -34,8 +34,7 @@ export const parameters = {
 				},
 				type: "desktop"
 			}
-		},
-		defaultViewport: "responsive"
+		}
 	}
 };
 
