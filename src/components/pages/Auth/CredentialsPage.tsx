@@ -1,6 +1,7 @@
-import { FormEventHandler, useRef, useState } from "react";
+import { FormEventHandler, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
+import useInputValidation from "../../../hooks/use-input-validation";
 import InvalidEmailError from "../../../models/errors/invalid-email-error";
 import InvalidPassError from "../../../models/errors/invalid-pass-error";
 import { themeSliceSelectors } from "../../../store/theme/slice";
@@ -86,51 +87,53 @@ const CredentialsPage = ({
 	const dark = useSelector(themeSliceSelectors.selectIsDark);
 
 	const [ mode, setMode ] = useState(loginMode);
-	const [ emailErrMsg, setEmailErrMsg ] = useState<string | null>();
-	const [ passErrMsg, setPassErrMsg ] = useState<string | null>();
 
-	const [ wasEmailTouched, setEmailTouched ] = useState(false);
-	const [ wasPassTouched, setPassTouched ] = useState(false);
+	const [ emailErrMsg, setEmailErrMsg ] = useState<string | null>(null);
+	const [ passErrMsg, setPassErrMsg ] = useState<string | null>(null);
 
-	const emailRef = useRef<HTMLInputElement>(null);
-	const passwordRef = useRef<HTMLInputElement>(null);
-
-	let isEmailValid = wasEmailTouched && emailErrMsg === "";
-	let isPassValid = wasPassTouched && passErrMsg === "";
-
-	const validateEmailInput = () => {
-		const { value: email } = emailRef.current!;
+	const {
+		inputRef: emailRef,
+		isValid: isEmailValid,
+		validateInput: validateEmailInput
+	} = useInputValidation(inputVal => {
 		try {
-			isEmailValid = validateEmail(email);
 			setEmailErrMsg("");
+			return validateEmail(inputVal);
 		} catch (err) {
 			if (err instanceof InvalidEmailError) {
 				setEmailErrMsg(err.message);
 			}
 		}
-	};
 
-	const validatePassInput = () => {
-		const { value: password } = passwordRef.current!;
+		return false;
+	});
+
+	const {
+		inputRef: passwordRef,
+		isValid: isPassValid,
+		validateInput: validatePassInput
+	} = useInputValidation(inputVal => {
 		try {
-			isPassValid = validatePass(password);
 			setPassErrMsg("");
+			return validatePass(inputVal);
 		} catch (err) {
 			if (err instanceof InvalidPassError) {
 				setPassErrMsg(err.message);
 			}
 		}
-	};
+
+		return false;
+	});
 
 	const onSubmitHandler: FormEventHandler = () => {
-		validateEmailInput();
-		validatePassInput();
+		// CMT I set force to true to handle when the user submits but they haven't touched.
+		validateEmailInput(!attemptedSubmit);
+		validatePassInput(!attemptedSubmit);
 
+		attemptedSubmit = true;
 		if (isEmailValid && isPassValid) {
 			onSubmit(emailRef.current!.value, passwordRef.current!.value);
 		}
-
-		attemptedSubmit = true;
 	};
 
 	return (
@@ -145,7 +148,7 @@ const CredentialsPage = ({
 					errorMsg={emailErrMsg}
 					formNoValidate
 					onChange={() => attemptedSubmit && validateEmailInput()}
-					onFocus={() => setEmailTouched(true)}
+					placeholder="email"
 					ref={emailRef}
 					type="email"
 					valid={isEmailValid}
@@ -155,7 +158,7 @@ const CredentialsPage = ({
 					errorMsg={passErrMsg}
 					formNoValidate
 					onChange={() => attemptedSubmit && validatePassInput()}
-					onFocus={() => setPassTouched(true)}
+					placeholder="password"
 					ref={passwordRef}
 					type="password"
 					valid={isPassValid}
