@@ -1,17 +1,10 @@
 import dayjs from "dayjs";
-import NoTodoFoundError from "../../models/errors/no-todo-found-error";
-import todosSlice, {
-	ITodoHash,
-	StoreTodo,
-	todoSliceReducer,
-	todoSliceSelectors,
-	todosSliceActions,
-	TodosSliceState
-} from "./slice";
+import mockRootState from "../../tests/mock-rootstate";
+import { todoSliceSelectors } from "./slice";
 
-let initialState: TodosSliceState;
+const initialState = mockRootState;
 beforeEach(() => {
-	initialState = {
+	initialState.todos = {
 		todos : {
 			todoId : {
 				completed : false,
@@ -25,151 +18,9 @@ beforeEach(() => {
 	};
 });
 
-describe("todoSlice actions", () => {
-	it("adds a todo", () => {
-		const newTodo = new StoreTodo("todo2", "details", dayjs(), false, "tagId", "todoId2");
-
-		const newState = todosSlice.reducer(
-			initialState,
-			todosSlice.actions.todoAdded(newTodo)
-		);
-
-		expect(newState.todos).toHaveProperty(newTodo._id, newTodo);
-	});
-
-	it("deletes a todo", () => {
-		const todoId = "todoId";
-
-		const newState = todosSlice.reducer(
-			initialState,
-			todosSlice.actions.todoDeleted(todoId)
-		);
-
-		expect(newState.todos).not.toHaveProperty(todoId);
-	});
-
-	it("replaces the todos property", () => {
-		const newTodos: ITodoHash = {
-			todoId1 : {
-				completed : false,
-				_id       : "todoId1",
-				title     : "todo1",
-				tagId     : "tagId",
-				details   : "details",
-				timeStart : dayjs()
-			},
-			todoId2 : {
-				completed : false,
-				_id       : "todoId2",
-				title     : "todo2",
-				tagId     : "tagId",
-				details   : "details",
-				timeStart : dayjs()
-			}
-		};
-
-		const newState = todosSlice.reducer(
-			initialState,
-			todosSliceActions.todosReplaced(newTodos)
-		);
-
-		expect(newState.todos).toEqual(newTodos);
-	});
-
-	it("completes a todo if it hasn't been completed", () => {
-		initialState.todos = {
-			1 : {
-				completed : false,
-				_id       : "1",
-				title     : "todo1",
-				tagId     : "tagId",
-				details   : "details",
-				timeStart : dayjs()
-			},
-			2 : {
-				completed : false,
-				_id       : "2",
-				title     : "todo2",
-				tagId     : "tagId",
-				details   : "details",
-				timeStart : dayjs()
-			},
-			3 : {
-				completed : false,
-				_id       : "3",
-				title     : "todo3",
-				tagId     : "tagId",
-				details   : "details",
-				timeStart : dayjs()
-			},
-			4 : {
-				completed : false,
-				_id       : "4",
-				title     : "todo4",
-				tagId     : "tagId",
-				details   : "details",
-				timeStart : dayjs()
-			}
-		};
-
-		const todoId = "3";
-
-		const newState = todoSliceReducer(
-			initialState,
-			todosSliceActions.todoCompleted(todoId)
-		);
-
-		expect(newState.todos[todoId]?.completed).toBe(true);
-	});
-
-	it("throws an error when updating a nonexistent tag", () => {
-		const errorFn = () => todoSliceReducer(
-			initialState,
-			todosSliceActions.todoUpdated({
-				_id : "idontexitsbishhh"
-			})
-		);
-
-		expect(errorFn).toThrow(NoTodoFoundError);
-	});
-
-	it("updates a todo selectively without changing other props", () => {
-		const todoId = "1";
-
-		initialState.todos = {
-			[todoId] : {
-				completed : false,
-				_id       : todoId,
-				title     : "todo1",
-				tagId     : "tagId",
-				details   : "details",
-				timeStart : dayjs()
-			}
-		};
-
-		const newTodoData = new StoreTodo("todo1 updated", "details", dayjs(), true, "tagId", todoId);
-
-		const newState = todoSliceReducer(
-			initialState,
-			todosSliceActions.todoUpdated(newTodoData)
-		);
-
-		const oldTodo = initialState.todos[todoId];
-		const newTodo = newState.todos[todoId];
-
-		// Update the todo object, not replace it
-		expect(newState.todos).toHaveProperty(todoId);
-		expect(newTodo).not.toBe(newTodoData);
-
-		expect(newTodo?._id).toEqual(oldTodo?._id);
-		expect(newTodo?.completed).not.toEqual(oldTodo?.completed);
-		expect(newTodo?.title).not.toEqual(oldTodo?.title);
-	});
-});
-
 describe("todoSlice selectors", () => {
 	it("derives total of completed todos", () => {
-		const initialState: TodosSliceState = {
+		initialState.todos = {
 			todos : {
 				1 : {
 					_id       : "1",
@@ -220,7 +71,7 @@ describe("todoSlice selectors", () => {
 	it("selects a todo by id", () => {
 		const availableTodoId = "1";
 
-		const initialState: TodosSliceState = {
+		initialState.todos = {
 			todos : {
 				[availableTodoId] : {
 					_id       : "1",
@@ -235,7 +86,7 @@ describe("todoSlice selectors", () => {
 
 		expect(
 			todoSliceSelectors.selectTodoById(initialState, availableTodoId)
-		).toEqual(initialState.todos[availableTodoId]);
+		).toEqual(initialState.todos.todos[availableTodoId]);
 
 		expect(
 			todoSliceSelectors.selectTodoById(initialState, "notAvailable")
@@ -245,7 +96,7 @@ describe("todoSlice selectors", () => {
 	it("filters todos by tagId", () => {
 		const filterTagId = "selecThis";
 
-		initialState.todos = {
+		initialState.todos.todos = {
 			1 : {
 				completed : false,
 				_id       : "1",
@@ -286,8 +137,8 @@ describe("todoSlice selectors", () => {
 		);
 
 		expect(filteredTodos).toHaveLength(2);
-		expect(filteredTodos[0]).toEqual(initialState.todos[1]);
-		expect(filteredTodos[1]).toEqual(initialState.todos[3]);
+		expect(filteredTodos[0]).toEqual(initialState.todos.todos[1]);
+		expect(filteredTodos[1]).toEqual(initialState.todos.todos[3]);
 
 	});
 
@@ -299,7 +150,7 @@ describe("todoSlice selectors", () => {
 
 		const timeStart = dayjs().date(15).month(1).year(2022);
 
-		initialState.todos = {
+		initialState.todos.todos = {
 			1 : {
 				completed : false,
 				_id       : "1",
@@ -340,12 +191,12 @@ describe("todoSlice selectors", () => {
 		);
 
 		expect(filteredTodos).toHaveLength(2);
-		expect(filteredTodos[0]).toEqual(initialState.todos[1]);
-		expect(filteredTodos[1]).toEqual(initialState.todos[3]);
+		expect(filteredTodos[0]).toEqual(initialState.todos.todos[1]);
+		expect(filteredTodos[1]).toEqual(initialState.todos.todos[3]);
 	});
 
 	it("filters today's todos", () => {
-		initialState.todos = {
+		initialState.todos.todos = {
 			1 : {
 				completed : false,
 				_id       : "1",
@@ -382,7 +233,7 @@ describe("todoSlice selectors", () => {
 
 		const todaysTodos = todoSliceSelectors.filterTodaysTodos(initialState);
 		expect(todaysTodos).toHaveLength(2);
-		expect(todaysTodos[0]).toEqual(initialState.todos[1]);
-		expect(todaysTodos[1]).toEqual(initialState.todos[3]);
+		expect(todaysTodos[0]).toEqual(initialState.todos.todos[1]);
+		expect(todaysTodos[1]).toEqual(initialState.todos.todos[3]);
 	});
 });
