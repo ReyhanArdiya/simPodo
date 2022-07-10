@@ -1,5 +1,5 @@
 import InvalidEmailError from "../../models/errors/invalid-email-error";
-import InvalidPassError from "../../models/errors/invalid-pass-error";
+import InvalidPassError, { PassErrors } from "../../models/errors/invalid-pass-error";
 import validateEmail from "./validateEmail";
 import validatePass from "./validatePass";
 
@@ -29,9 +29,11 @@ describe("validatePass", () => {
 		expect(validatePass("helloWORLDDDDD3")).toBe(true);
 	});
 	it("throws when pass is not at least 8 chars", () => {
-		expect(() => validatePass("1")).toThrow(InvalidPassError);
-		expect(() => validatePass("shoD2t")).toThrow(InvalidPassError);
-		expect(() => validatePass("stDF3a")).toThrow(InvalidPassError);
+		const tooShortError = new InvalidPassError(PassErrors.TOO_SHORT);
+
+		expect(() => validatePass("1")).toThrow(tooShortError);
+		expect(() => validatePass("shoD2t")).toThrow(tooShortError);
+		expect(() => validatePass("stDF3a")).toThrow(tooShortError);
 	});
 
 	it("passes when pass is alphanumeric", () => {
@@ -40,9 +42,11 @@ describe("validatePass", () => {
 		expect(validatePass("amajingdwEdjwi1")).toBe(true);
 	});
 	it("throws when pass is not alphanumeric", () => {
-		expect(() => validatePass("12345678910")).toThrow(InvalidPassError);
-		expect(() => validatePass("thisisWRONGtoo")).toThrow(InvalidPassError);
-		expect(() => validatePass("???whatareyouTALKINGABOUT")).toThrow(InvalidPassError);
+		const notAlphanumericError = new InvalidPassError(PassErrors.NOT_ALPHANUMERIC);
+
+		expect(() => validatePass("12345678910")).toThrow(notAlphanumericError);
+		expect(() => validatePass("thisisWRONGtoo")).toThrow(notAlphanumericError);
+		expect(() => validatePass("???whatareyouTALKINGABOUT")).toThrow(notAlphanumericError);
 	});
 
 	it("passes when pass has at least 1 capital letter", () => {
@@ -51,8 +55,10 @@ describe("validatePass", () => {
 		expect(validatePass("harHAR1223442")).toBe(true);
 	});
 	it("throws when pass doesn't have at least 1 capital letter", () => {
-		expect(() => validatePass("nopenopenope3")).toThrow(InvalidPassError);
-		expect(() => validatePass("shortsuperdupershor1t")).toThrow(InvalidPassError);
-		expect(() => validatePass("stackhellowrodlsmeo1")).toThrow(InvalidPassError);
+		const noCapitalError = new InvalidPassError(PassErrors.NO_CAPITAL);
+
+		expect(() => validatePass("nopenopenope3")).toThrow(noCapitalError);
+		expect(() => validatePass("shortsuperdupershor1t")).toThrow(noCapitalError);
+		expect(() => validatePass("stackhellowrodlsmeo1")).toThrow(noCapitalError);
 	});
 });
