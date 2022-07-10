@@ -1,4 +1,5 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
+import type { RootState } from "..";
 
 export interface ThemeSliceState {
 	dark: boolean;
@@ -24,7 +25,7 @@ export const { actions: themeSliceActions, name: themeSliceName } = themeSlice;
 
 export const themeSliceSelectors = {
 	selectIsDark : createSelector(
-		[ (state: ThemeSliceState) => state.dark ],
+		[ (state: RootState) => state.theme.dark ],
 		dark => dark
 	)
 };
