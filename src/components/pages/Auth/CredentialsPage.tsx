@@ -125,12 +125,13 @@ const CredentialsPage = ({
 		return false;
 	});
 
-	const onSubmitHandler: FormEventHandler = () => {
+	const onSubmitHandler: FormEventHandler = async () => {
 		// CMT I set force to true to handle when the user submits but they haven't touched.
 		validateEmailInput(!attemptedSubmit);
 		validatePassInput(!attemptedSubmit);
 
 		attemptedSubmit = true;
+
 		if (isEmailValid && isPassValid) {
 			onSubmit(emailRef.current!.value, passwordRef.current!.value);
 		}
