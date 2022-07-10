@@ -53,7 +53,7 @@ interface BorderedInputProps {
 	};
 	dark?: boolean;
 	hasError?: boolean;
-	valid?: boolean;
+	valid?: boolean | null;
 }
 
 const BorderedInput = styled(Input)<BorderedInputProps>`
@@ -105,9 +105,9 @@ const ErrorMsg = styled.label<{ dark?: boolean }>`
 
 export interface SemanticInputProps
 	extends InputHTMLAttributes<HTMLInputElement> {
-	errorMsg?: string;
+	errorMsg?: string | null;
 	dark?: boolean;
-	valid?: boolean;
+	valid?: boolean | null;
 	colors?: {
 		error?: string;
 		valid?: string;
@@ -118,7 +118,7 @@ export interface SemanticInputProps
 const SemanticInput = forwardRef<HTMLInputElement, SemanticInputProps>(
 	(props, ref) => {
 		const {
-			valid,
+			valid = null,
 			id = uuidv4(),
 			...borderedInputProps
 		} = props;

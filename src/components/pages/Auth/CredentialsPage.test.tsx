@@ -1,4 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import "../../../tests/mock-matchMedia";
+import MockStore from "../../../tests/mock-store";
 import MockTheme from "../../../tests/MockTheme";
 import CredentialsPage from "./CredentialsPage";
 
@@ -13,9 +15,11 @@ beforeEach(() => {
 	mockSubmitHandler = jest.fn();
 
 	render(
-		<MockTheme>
-			<CredentialsPage onSubmit={mockSubmitHandler}/>
-		</MockTheme>
+		<MockStore>
+			<MockTheme>
+				<CredentialsPage onSubmit={mockSubmitHandler}/>
+			</MockTheme>
+		</MockStore>
 	);
 });
 

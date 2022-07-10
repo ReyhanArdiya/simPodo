@@ -1,5 +1,9 @@
 import { FormEventHandler, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
+import InvalidEmailError from "../../../models/errors/invalid-email-error";
+import InvalidPassError from "../../../models/errors/invalid-pass-error";
+import { themeSliceSelectors } from "../../../store/theme/slice";
 import validateEmail from "../../../utils/auth/validateEmail";
 import validatePass from "../../../utils/auth/validatePass";
 import ButtonLg from "../../units/Buttons/ButtonLg";
@@ -46,6 +50,7 @@ const ModeToggler = styled.button<{ dark?: boolean }>`
 	color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[5] : theme.colors.light.UI[5]};
 	text-align: center;
 	width: 100%;
+	-webkit-tap-highlight-color: transparent;
 `;
 
 const StyledGradientRect = styled(GradientRect)`
@@ -69,38 +74,103 @@ const SGR3 = styled(StyledGradientRect)`
 `;
 
 export interface CredentialsPageProps {
-	onSubmit: FormEventHandler;
+	onSubmit(email: string, password: string): void;
 	loginMode?: boolean;
 }
 
-const CredentialsPage = ({ onSubmit, loginMode = true }: CredentialsPageProps) => {
+let attemptedSubmit = false;
+const CredentialsPage = ({
+	onSubmit,
+	loginMode = true
+}: CredentialsPageProps) => {
+	const dark = useSelector(themeSliceSelectors.selectIsDark);
+
 	const [ mode, setMode ] = useState(loginMode);
+	const [ emailErrMsg, setEmailErrMsg ] = useState<string | null>();
+	const [ passErrMsg, setPassErrMsg ] = useState<string | null>();
+
+	const [ wasEmailTouched, setEmailTouched ] = useState(false);
+	const [ wasPassTouched, setPassTouched ] = useState(false);
+
 	const emailRef = useRef<HTMLInputElement>(null);
 	const passwordRef = useRef<HTMLInputElement>(null);
 
-	const onSubmitHandler: FormEventHandler = e => {
+	let isEmailValid = wasEmailTouched && emailErrMsg === "";
+	let isPassValid = wasPassTouched && passErrMsg === "";
+
+	const validateEmailInput = () => {
+		const { value: email } = emailRef.current!;
 		try {
-			if (validateEmail(emailRef.current!.value) && validatePass(passwordRef.current!.value)) {
-				onSubmit(e);
-			}
+			isEmailValid = validateEmail(email);
+			setEmailErrMsg("");
 		} catch (err) {
-			// TODO use this to change semanticinput
-			console.error(err);
+			if (err instanceof InvalidEmailError) {
+				setEmailErrMsg(err.message);
+			}
 		}
 	};
 
+	const validatePassInput = () => {
+		const { value: password } = passwordRef.current!;
+		try {
+			isPassValid = validatePass(password);
+			setPassErrMsg("");
+		} catch (err) {
+			if (err instanceof InvalidPassError) {
+				setPassErrMsg(err.message);
+			}
+		}
+	};
+
+	const onSubmitHandler: FormEventHandler = () => {
+		validateEmailInput();
+		validatePassInput();
+
+		if (isEmailValid && isPassValid) {
+			onSubmit(emailRef.current!.value, passwordRef.current!.value);
+		}
+
+		attemptedSubmit = true;
+	};
+
 	return (
-		<Container id="credentials">
+		<Container dark={dark} id="credentials">
 			<SGR1 />
 			<SGR2 />
 			<SGR3 />
-			<Title>simPodo</Title>
+			<Title dark={dark}>simPodo</Title>
 			<Form name="credentials">
-				<SemanticInput ref={emailRef} type="email" />
-				<SemanticInput ref={passwordRef} type="password" />
-				<ModeToggler onClick={() => setMode(p => !p)}>{mode ? "sign up" : "login"}</ModeToggler>
+				<SemanticInput
+					dark={dark}
+					errorMsg={emailErrMsg}
+					formNoValidate
+					onChange={() => attemptedSubmit && validateEmailInput()}
+					onFocus={() => setEmailTouched(true)}
+					ref={emailRef}
+					type="email"
+					valid={isEmailValid}
+				/>
+				<SemanticInput
+					dark={dark}
+					errorMsg={passErrMsg}
+					formNoValidate
+					onChange={() => attemptedSubmit && validatePassInput()}
+					onFocus={() => setPassTouched(true)}
+					ref={passwordRef}
+					type="password"
+					valid={isPassValid}
+				/>
+				<ModeToggler
+					dark={dark}
+					onClick={() => setMode(p => !p)}
+					type="button"
+				>
+					{mode ? "sign up" : "login"}
+				</ModeToggler>
 			</Form>
-			<ButtonLg onClick={onSubmitHandler}>{mode ? "login" : "sign up"}</ButtonLg>
+			<ButtonLg dark={dark} onClick={onSubmitHandler}>
+				{mode ? "login" : "sign up"}
+			</ButtonLg>
 		</Container>
 	);
 };
