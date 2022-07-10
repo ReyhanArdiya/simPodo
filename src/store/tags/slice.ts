@@ -1,4 +1,5 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import type { RootState } from "..";
 import NoTagFoundError from "../../models/errors/no-tag-found-error";
 import type Tag from "../../models/tag";
 import replaceO1Proxies from "../../utils/replaceO1-proxies";
@@ -43,7 +44,7 @@ export const { actions: tagsSliceActions, name: tagsSliceName } = tagsSlice;
 
 export const tagsSliceSelectors = {
 	selectTagById : createSelector(
-		[ (state: TagsSliceState, _id: Tag["_id"]) => state.tags[_id] ],
+		[ (state: RootState, _id: Tag["_id"]) => state.tags.tags[_id] ],
 		tag => tag
 	)
 };

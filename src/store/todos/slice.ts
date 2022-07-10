@@ -1,6 +1,7 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import dayjs, { Dayjs } from "dayjs";
 import { HYDRATE } from "next-redux-wrapper";
+import type { RootState } from "..";
 import NoTodoFoundError from "../../models/errors/no-todo-found-error";
 import type Tag from "../../models/tag";
 import type Todo from "../../models/todo";
@@ -100,25 +101,25 @@ export const {
 
 export const todoSliceSelectors = {
 	selectCompletedTotal : createSelector(
-		[ (state: TodosSliceState) => state.todos ],
+		[ (state: RootState) => state.todos.todos ],
 		todos => Object.values(todos).filter(t => t!.completed).length
 	),
 	selectTodoById : createSelector(
-		[ (state: TodosSliceState, id: IStoreTodo["_id"]) => state.todos[id] ],
+		[ (state: RootState, id: IStoreTodo["_id"]) => state.todos.todos[id] ],
 		todo => todo
 	),
 	filterByTagId : createSelector(
 		[
-			(state: TodosSliceState) => state.todos,
-			(_state: TodosSliceState, tagId: Tag["_id"]) => tagId
+			(state: RootState) => state.todos.todos,
+			(_state: RootState, tagId: Tag["_id"]) => tagId
 		],
 		(todos, tagId) => Object.values(todos).filter(t => t!.tagId === tagId)
 	),
 	filterByTimeRange : createSelector(
 		[
-			(state: TodosSliceState) => state.todos,
+			(state: RootState) => state.todos.todos,
 			(
-				_state: TodosSliceState,
+				_state: RootState,
 				filterRange: { start: Dayjs; end: Dayjs }
 			) => filterRange
 		],
@@ -128,7 +129,7 @@ export const todoSliceSelectors = {
 			return todoTime.diff(start) >= 0 && todoTime.diff(end) <= 0;
 		})
 	),
-	filterTodaysTodos(state: TodosSliceState) {
+	filterTodaysTodos(state: RootState) {
 		const today = dayjs().hour(0).minute(59).second(59);
 
 		return this.filterByTimeRange(state, {

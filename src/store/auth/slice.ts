@@ -1,4 +1,5 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import type { RootState } from "..";
 import UserAlreadyLoggedInError from "../../models/errors/user-already-logged-in-error";
 import UserNotLoggedInError from "../../models/errors/user-not-logged-in-error";
 import type User from "../../models/user";
@@ -55,7 +56,7 @@ export const { actions: authSliceActions, name: authSliceName } = authSlice;
 
 export const authSliceSelectors = {
 	selectCurrentUser : createSelector(
-		[ (state: AuthSliceState) => state.user ],
+		[ (state: RootState) => state.auth.user ],
 		user => user
 	)
 };

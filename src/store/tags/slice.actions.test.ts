@@ -1,6 +1,6 @@
 import NoTagFoundError from "../../models/errors/no-tag-found-error";
 import Tag from "../../models/tag";
-import tagsSlice, { tagsSliceSelectors, TagsSliceState } from "./slice";
+import tagsSlice, { TagsSliceState } from "./slice";
 
 const { actions, reducer } = tagsSlice;
 
@@ -20,8 +20,6 @@ beforeEach(() => {
 });
 
 describe("Tags slice actions", () => {
-
-
 	it("adds a new tag", () => {
 		const _id = initialId;
 		const newTag: Tag = new Tag(
@@ -107,11 +105,4 @@ describe("Tags slice actions", () => {
 
 });
 
-describe("Tags slice selectors", () => {
-	it("selects a tag by id", () => {
-		expect(tagsSliceSelectors.selectTagById(
-			initialState,
-			initialId
-		)).toEqual(initialState.tags[initialId]);
-	});
-});
+
