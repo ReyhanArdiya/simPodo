@@ -85,18 +85,22 @@ const SGR3 = styled(StyledGradientRect)`
 `;
 
 export interface CredentialsPageProps {
-	onSubmit(email: string, password: string): Promise<void>;
-	loginMode?: boolean;
+	onSubmit(
+		email: string,
+		password: string,
+		login: CredentialsPageProps["login"]
+	): Promise<void>;
+	login?: boolean;
 }
 
 let attemptedSubmit = false;
 const CredentialsPage = ({
 	onSubmit,
-	loginMode = true
+	login = true
 }: CredentialsPageProps) => {
 	const dark = useSelector(themeSliceSelectors.selectIsDark);
 
-	const [ mode, setMode ] = useState(loginMode);
+	const [ mode, setMode ] = useState(login);
 	const [ loading, setLoading ] = useState(false);
 	const [ flash, setFlash ] = useState({
 		show    : false,
@@ -159,7 +163,8 @@ const CredentialsPage = ({
 				setLoading(true);
 				await onSubmit(
 					emailRef.current!.value,
-					passwordRef.current!.value
+					passwordRef.current!.value,
+					login
 				);
 				resetEmailInput();
 				resetPassInput();
