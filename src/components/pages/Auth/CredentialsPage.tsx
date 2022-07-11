@@ -1,38 +1,18 @@
 import { FormEventHandler, useState } from "react";
+import { Spinner } from "react-loading-io";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import useInputValidation from "../../../hooks/use-input-validation";
 import InvalidEmailError from "../../../models/errors/invalid-email-error";
 import InvalidPassError from "../../../models/errors/invalid-pass-error";
 import { themeSliceSelectors } from "../../../store/theme/slice";
+import theme from "../../../styles/theme";
 import validateEmail from "../../../utils/auth/validateEmail";
 import validatePass from "../../../utils/auth/validatePass";
 import ButtonLg from "../../units/Buttons/ButtonLg";
-import BlueCard from "../../units/Cards/BlueCard";
 import SemanticInput from "../../units/Forms/Inputs/SemanticInput";
+import AuthPageLayout from "../../units/Layouts/AuthPageLayout";
 import Bad from "../../units/Popups/Flash/Bad";
-import GradientRect from "../../units/Shapes/GradientRect";
-import { Spinner } from "react-loading-io";
-import theme from "../../../styles/theme";
-
-const Container = styled(BlueCard)`
-	width: 100vw;
-	height: 100vh;
-	min-height: 76.8em;
-	align-items: center;
-	display: flex;
-	justify-content: flex-start;
-	flex-direction: column;
-	padding: 0 3.8em;
-	padding-top: 11em;
-	position: relative;
-	border-radius: 0;
-`;
-
-const Title = styled.h1<{ dark?: boolean }>`
-	font: 900 5.6em "Inter", sans-serif;
-	color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[2] : theme.colors.light.UI[1]};
-`;
 
 const Form = styled.form`
 	align-items: center;
@@ -64,26 +44,6 @@ const StatusContainer = styled.div`
 	flex-grow: 1;
 `;
 
-const StyledGradientRect = styled(GradientRect)`
-	width: 16em;
-	height: 22em;
-`;
-
-const SGR1 = styled(StyledGradientRect)`
-	top: 0;
-	right: 0;
-`;
-
-const SGR2 = styled(StyledGradientRect)`
-	top: 34.5%;
-	left: 0;
-`;
-
-const SGR3 = styled(StyledGradientRect)`
-	bottom: 0;
-	right: 0;
-`;
-
 export interface CredentialsPageProps {
 	onSubmit(
 		email: string,
@@ -94,10 +54,7 @@ export interface CredentialsPageProps {
 }
 
 let attemptedSubmit = false;
-const CredentialsPage = ({
-	onSubmit,
-	login = true
-}: CredentialsPageProps) => {
+const CredentialsPage = ({ onSubmit, login = true }: CredentialsPageProps) => {
 	const dark = useSelector(themeSliceSelectors.selectIsDark);
 
 	const [ mode, setMode ] = useState(login);
@@ -181,11 +138,7 @@ const CredentialsPage = ({
 	};
 
 	return (
-		<Container dark={dark} id="credentials">
-			<SGR1 />
-			<SGR2 />
-			<SGR3 />
-			<Title dark={dark}>simPodo</Title>
+		<AuthPageLayout id="credentials" title="simPodo">
 			<Form name="credentials">
 				<SemanticInput
 					dark={dark}
@@ -235,7 +188,7 @@ const CredentialsPage = ({
 					<Bad show={flash.show}>{flash.message}</Bad>
 				}
 			</StatusContainer>
-		</Container>
+		</AuthPageLayout>
 	);
 };
 
