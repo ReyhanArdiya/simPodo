@@ -10,7 +10,10 @@ import validatePass from "../../../utils/auth/validatePass";
 import ButtonLg from "../../units/Buttons/ButtonLg";
 import BlueCard from "../../units/Cards/BlueCard";
 import SemanticInput from "../../units/Forms/Inputs/SemanticInput";
+import Bad from "../../units/Popups/Flash/Bad";
 import GradientRect from "../../units/Shapes/GradientRect";
+import { Spinner } from "react-loading-io";
+import theme from "../../../styles/theme";
 
 const Container = styled(BlueCard)`
 	width: 100vw;
@@ -54,6 +57,13 @@ const ModeToggler = styled.button<{ dark?: boolean }>`
 	-webkit-tap-highlight-color: transparent;
 `;
 
+const StatusContainer = styled.div`
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	flex-grow: 1;
+`;
+
 const StyledGradientRect = styled(GradientRect)`
 	width: 16em;
 	height: 22em;
@@ -87,6 +97,11 @@ const CredentialsPage = ({
 	const dark = useSelector(themeSliceSelectors.selectIsDark);
 
 	const [ mode, setMode ] = useState(loginMode);
+	const [ loading, setLoading ] = useState(false);
+	const [ flash, setFlash ] = useState({
+		show    : false,
+		message : ""
+	});
 
 	const {
 		inputRef: emailRef,
@@ -127,6 +142,12 @@ const CredentialsPage = ({
 	});
 
 	const onSubmitHandler: FormEventHandler = async () => {
+		setLoading(false);
+		setFlash({
+			show    : false,
+			message : ""
+		});
+
 		// CMT I set force to true to handle when the user submits but they haven't touched.
 		validateEmailInput(!attemptedSubmit);
 		validatePassInput(!attemptedSubmit);
@@ -135,13 +156,22 @@ const CredentialsPage = ({
 
 		try {
 			if (isEmailValid && isPassValid) {
-				await onSubmit(emailRef.current!.value, passwordRef.current!.value);
+				setLoading(true);
+				await onSubmit(
+					emailRef.current!.value,
+					passwordRef.current!.value
+				);
 				resetEmailInput();
 				resetPassInput();
 			}
 		} catch (err) {
-			// TODO show modal here
-			alert(err);
+			if (err instanceof Error) {
+				setLoading(false);
+				setFlash({
+					show    : true,
+					message : err.message
+				});
+			}
 		}
 	};
 
@@ -180,9 +210,26 @@ const CredentialsPage = ({
 					{mode ? "sign up" : "login"}
 				</ModeToggler>
 			</Form>
-			<ButtonLg dark={dark} onClick={onSubmitHandler}>
-				{mode ? "login" : "sign up"}
-			</ButtonLg>
+			{!loading && (
+				<ButtonLg dark={dark} onClick={onSubmitHandler}>
+					{mode ? "login" : "sign up"}
+				</ButtonLg>
+			)}
+			<StatusContainer>
+				{loading ?
+					(
+						<Spinner
+							color={
+								dark ?
+									theme.colors.dark.UI[2] :
+									theme.colors.light.UI[1]
+							}
+							size={200}
+						/>
+					) :
+					<Bad show={flash.show}>{flash.message}</Bad>
+				}
+			</StatusContainer>
 		</Container>
 	);
 };
