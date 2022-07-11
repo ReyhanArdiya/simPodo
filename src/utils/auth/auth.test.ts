@@ -61,4 +61,10 @@ describe("validatePass", () => {
 		expect(() => validatePass("shortsuperdupershor1t")).toThrow(noCapitalError);
 		expect(() => validatePass("stackhellowrodlsmeo1")).toThrow(noCapitalError);
 	});
+
+	it("handles special characters", () => {
+		expect(validatePass("IwillbeBACKfj3ei!fejf")).toBe(true);
+		expect(validatePass("Thisisright12233#442")).toBe(true);
+		expect(validatePass("harHAR12234@42")).toBe(true);
+	});
 });

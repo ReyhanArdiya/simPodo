@@ -2,7 +2,7 @@ import InvalidPassError, { PassErrors, PassReqs } from "../../models/errors/inva
 
 const validatePass = (p: string): boolean | never => {
 	const isTooShort = p.length < PassReqs.MIN_LENGTH;
-	const isNotAlphanumeric = !/^(?=.*?[a-z])(?=.*?\d)[a-z\d]+$/i.test(p);
+	const isNotAlphanumeric = !/^(?=.*?[a-z])(?=.*?\d)[a-z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+$/i.test(p);
 	const noCapital = !/[A-Z]+/.test(p);
 
 	if (isTooShort) {
