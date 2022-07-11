@@ -1,17 +1,16 @@
 import { FormEventHandler, useState } from "react";
-import { Spinner } from "react-loading-io";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import useInputValidation from "../../../hooks/use-input-validation";
 import InvalidEmailError from "../../../models/errors/invalid-email-error";
 import InvalidPassError from "../../../models/errors/invalid-pass-error";
 import { themeSliceSelectors } from "../../../store/theme/slice";
-import theme from "../../../styles/theme";
 import validateEmail from "../../../utils/auth/validateEmail";
 import validatePass from "../../../utils/auth/validatePass";
 import ButtonLg from "../../units/Buttons/ButtonLg";
 import SemanticInput from "../../units/Forms/Inputs/SemanticInput";
 import AuthPageLayout from "../../units/Layouts/AuthPageLayout";
+import Spinner from "../../units/Loading/Spinner";
 import Bad from "../../units/Popups/Flash/Bad";
 
 const Form = styled.form`
@@ -53,7 +52,6 @@ export interface CredentialsPageProps {
 	login?: boolean;
 }
 
-let attemptedSubmit = false;
 const CredentialsPage = ({ onSubmit, login = true }: CredentialsPageProps) => {
 	const dark = useSelector(themeSliceSelectors.selectIsDark);
 
@@ -110,10 +108,8 @@ const CredentialsPage = ({ onSubmit, login = true }: CredentialsPageProps) => {
 		});
 
 		// CMT I set force to true to handle when the user submits but they haven't touched.
-		validateEmailInput(!attemptedSubmit);
-		validatePassInput(!attemptedSubmit);
-
-		attemptedSubmit = true;
+		validateEmailInput(true);
+		validatePassInput(true);
 
 		try {
 			if (isEmailValid && isPassValid) {
@@ -144,7 +140,7 @@ const CredentialsPage = ({ onSubmit, login = true }: CredentialsPageProps) => {
 					dark={dark}
 					errorMsg={emailErrMsg}
 					formNoValidate
-					onChange={() => attemptedSubmit && validateEmailInput()}
+					onChange={() => validateEmailInput()}
 					placeholder="email"
 					ref={emailRef}
 					type="email"
@@ -154,7 +150,7 @@ const CredentialsPage = ({ onSubmit, login = true }: CredentialsPageProps) => {
 					dark={dark}
 					errorMsg={passErrMsg}
 					formNoValidate
-					onChange={() => attemptedSubmit && validatePassInput()}
+					onChange={() => validatePassInput()}
 					placeholder="password"
 					ref={passwordRef}
 					type="password"
@@ -175,16 +171,7 @@ const CredentialsPage = ({ onSubmit, login = true }: CredentialsPageProps) => {
 			)}
 			<StatusContainer>
 				{loading ?
-					(
-						<Spinner
-							color={
-								dark ?
-									theme.colors.dark.UI[2] :
-									theme.colors.light.UI[1]
-							}
-							size={200}
-						/>
-					) :
+					<Spinner />				:
 					<Bad show={flash.show}>{flash.message}</Bad>
 				}
 			</StatusContainer>
