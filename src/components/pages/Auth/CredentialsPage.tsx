@@ -114,6 +114,9 @@ const CredentialsPage = ({ onSubmit, login = true }: CredentialsPageProps) => {
 		try {
 			if (isEmailValid && isPassValid) {
 				setLoading(true);
+
+				// We'll post from onSubmit and if it is rejected, it will be caught
+				// and displayed
 				await onSubmit(
 					emailRef.current!.value,
 					passwordRef.current!.value,

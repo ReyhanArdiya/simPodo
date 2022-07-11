@@ -19,6 +19,12 @@ const Container = styled(BlueCard)`
 	padding-top: 11em;
 `;
 
+const Title = styled.h1<{ dark?: boolean }>`
+	font: 900 5.6em "Inter", sans-serif;
+	color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[2] : theme.colors.light.UI[1]};
+	text-align: center;
+`;
+
 const StyledGradientRect = styled(GradientRect)`
 	width: 16em;
 	height: 22em;
@@ -36,12 +42,6 @@ const GR2 = styled(StyledGradientRect)`
 const GR3 = styled(StyledGradientRect)`
 	bottom: 0;
 	right: 0;
-`;
-
-
-const Title = styled.h1<{ dark?: boolean }>`
-	font: 900 5.6em "Inter", sans-serif;
-	color: ${({ dark, theme }) => dark ? theme.colors.dark.UI[2] : theme.colors.light.UI[1]};
 `;
 
 export interface AuthPageLayoutProps extends DarkMode {
