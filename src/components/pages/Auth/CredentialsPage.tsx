@@ -75,7 +75,7 @@ const SGR3 = styled(StyledGradientRect)`
 `;
 
 export interface CredentialsPageProps {
-	onSubmit(email: string, password: string): void;
+	onSubmit(email: string, password: string): Promise<void>;
 	loginMode?: boolean;
 }
 
@@ -88,14 +88,13 @@ const CredentialsPage = ({
 
 	const [ mode, setMode ] = useState(loginMode);
 
-	const [ emailErrMsg, setEmailErrMsg ] = useState<string | null>(null);
-	const [ passErrMsg, setPassErrMsg ] = useState<string | null>(null);
-
 	const {
 		inputRef: emailRef,
 		isValid: isEmailValid,
-		validateInput: validateEmailInput
-	} = useInputValidation(inputVal => {
+		validateInput: validateEmailInput,
+		errMsg: emailErrMsg,
+		resetInput: resetEmailInput
+	} = useInputValidation((inputVal, setEmailErrMsg) => {
 		try {
 			setEmailErrMsg("");
 			return validateEmail(inputVal);
@@ -111,8 +110,10 @@ const CredentialsPage = ({
 	const {
 		inputRef: passwordRef,
 		isValid: isPassValid,
-		validateInput: validatePassInput
-	} = useInputValidation(inputVal => {
+		validateInput: validatePassInput,
+		errMsg: passErrMsg,
+		resetInput: resetPassInput
+	} = useInputValidation((inputVal, setPassErrMsg) => {
 		try {
 			setPassErrMsg("");
 			return validatePass(inputVal);
@@ -132,8 +133,15 @@ const CredentialsPage = ({
 
 		attemptedSubmit = true;
 
-		if (isEmailValid && isPassValid) {
-			onSubmit(emailRef.current!.value, passwordRef.current!.value);
+		try {
+			if (isEmailValid && isPassValid) {
+				await onSubmit(emailRef.current!.value, passwordRef.current!.value);
+				resetEmailInput();
+				resetPassInput();
+			}
+		} catch (err) {
+			// TODO show modal here
+			alert(err);
 		}
 	};
 
