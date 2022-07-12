@@ -1,5 +1,5 @@
+import ClientTag from "../../models/client/tag";
 import NoTagFoundError from "../../models/errors/no-tag-found-error";
-import Tag from "../../models/base/tag";
 import tagsSlice, { TagsSliceState } from "./slice";
 
 const { actions, reducer } = tagsSlice;
@@ -22,7 +22,7 @@ beforeEach(() => {
 describe("Tags slice actions", () => {
 	it("adds a new tag", () => {
 		const _id = initialId;
-		const newTag: Tag = new Tag(
+		const newTag: ClientTag = new ClientTag(
 			"tag1",
 			"red",
 			_id,
