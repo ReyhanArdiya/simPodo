@@ -1,40 +1,36 @@
 import { HydratedDocument, Model, model, Schema, Types } from "mongoose";
 import replaceO1 from "../../utils/replaceO1";
-import NoTagFoundError from "../errors/no-tag-found-error";
-import NoTodoFoundError from "../errors/no-todo-found-error";
 import type Tag from "../base/tag";
 import type Todo from "../base/todo";
-import type CUser from "../base/user";
-import TagSchema, { ITag } from "./tag";
-import TodoSchema, { ITodo } from "./todo";
+import CUser from "../base/user";
+import NoTagFoundError from "../errors/no-tag-found-error";
+import NoTodoFoundError from "../errors/no-todo-found-error";
+import TagSchema, { DBTag } from "./tag";
+import TodoSchema, { DBTodo } from "./todo";
 
-export interface IUser extends Pick<CUser, "email" | "username"> {
-	readonly _id: Types.ObjectId;
-	tags: Types.Map<ITag>;
-	todos: Types.Map<ITodo>;
+export class DBUser extends CUser {
+	public tags: Types.Map<DBTag> = new Types.Map();
+	public todos: Types.Map<DBTodo> = new Types.Map();
+	public _id: Types.ObjectId = new Types.ObjectId();
 }
 
 export interface UserInstanceMethods {
-	addTag(tag: Omit<Tag | ITag, "_id">): Promise<ITag>;
-	deleteTag(tagId: Tag["_id"] | ITag["_id"]): Promise<ITag>;
-	updateTag(newTagData: Tag | ITag): Promise<ITag>;
+	addTag(tag: Omit<Tag | DBTag, "_id">): Promise<DBTag>;
+	deleteTag(tagId: Tag["_id"] | DBTag["_id"]): Promise<DBTag>;
+	updateTag(newTagData: Tag | DBTag): Promise<DBTag>;
 
-	addTodo(todo: Omit<Todo | ITodo, "_id">): Promise<ITodo>;
-	deleteTodo(todoId: Todo["_id"] | ITodo["_id"]): Promise<ITodo>;
-	updateTodo(newTodoData: Todo | ITodo): Promise<ITodo>;
+	addTodo(todo: Omit<Todo | DBTodo, "_id">): Promise<DBTodo>;
+	deleteTodo(todoId: Todo["_id"] | DBTodo["_id"]): Promise<DBTodo>;
+	updateTodo(newTodoData: Todo | DBTodo): Promise<DBTodo>;
 }
 
-type UserModel = Model<IUser, Record<string, never>, UserInstanceMethods>;
+type UserModel = Model<DBUser, Record<string, never>, UserInstanceMethods>;
 
-export type UserDoc = HydratedDocument<IUser, UserInstanceMethods>;
+export type UserDoc = HydratedDocument<DBUser, UserInstanceMethods>;
 
-const UserSchema = new Schema<IUser, UserModel, UserInstanceMethods>(
+const UserSchema = new Schema<DBUser, UserModel, UserInstanceMethods>(
 	{
 		username : {
-			type     : String,
-			required : true
-		},
-		email : {
 			type     : String,
 			required : true
 		},
@@ -47,6 +43,14 @@ const UserSchema = new Schema<IUser, UserModel, UserInstanceMethods>(
 			default : {},
 			type    : Map,
 			of      : TodoSchema
+		},
+		authProviders : {
+			firebase : {
+				type : {
+					local : Map
+				},
+				required : true
+			}
 		}
 	},
 	{ strict : "throw" }
@@ -57,9 +61,9 @@ const stringifyId = (id: string | Types.ObjectId) => typeof id === "string" ? id
 class UserSchemaMethods implements UserInstanceMethods {
 	public async addTag(
 		this: UserDoc,
-		tag: Omit<ITag | Tag, "_id">
-	): Promise<ITag> {
-		const newTag: ITag = {
+		tag: Omit<DBTag, "_id">
+	): Promise<DBTag> {
+		const newTag: DBTag = {
 			...tag,
 			_id : new Types.ObjectId()
 		};
@@ -73,8 +77,8 @@ class UserSchemaMethods implements UserInstanceMethods {
 
 	public async deleteTag(
 		this: UserDoc,
-		tagId: string | Types.ObjectId
-	): Promise<ITag> {
+		tagId: DBTag["_id"]
+	): Promise<DBTag> {
 		const id = stringifyId(tagId);
 
 		const toBeDeletedTag = this.tags.get(id);
@@ -91,8 +95,8 @@ class UserSchemaMethods implements UserInstanceMethods {
 
 	public async updateTag(
 		this: UserDoc,
-		newTagData: ITag | Tag
-	): Promise<ITag> {
+		newTagData: DBTag
+	): Promise<DBTag> {
 		const id = stringifyId(newTagData._id);
 
 		const toBeUpdatedTag = this.tags.get(id);
@@ -109,9 +113,9 @@ class UserSchemaMethods implements UserInstanceMethods {
 
 	public async addTodo(
 		this: UserDoc,
-		todo: Omit<ITodo | Todo, "_id">
-	): Promise<ITodo> {
-		const newTodo: ITodo = {
+		todo: Omit<DBTodo, "_id">
+	): Promise<DBTodo> {
+		const newTodo: DBTodo = {
 			...todo,
 			_id : new Types.ObjectId()
 		};
@@ -125,8 +129,8 @@ class UserSchemaMethods implements UserInstanceMethods {
 
 	public async deleteTodo(
 		this: UserDoc,
-		todoId: string | Types.ObjectId
-	): Promise<ITodo> {
+		todoId: DBTodo["_id"]
+	): Promise<DBTodo> {
 		const id = stringifyId(todoId);
 
 		const toBeDeletedTodo = this.todos.get(id);
@@ -143,8 +147,8 @@ class UserSchemaMethods implements UserInstanceMethods {
 
 	public async updateTodo(
 		this: UserDoc,
-		newTodoData: ITodo | Todo
-	): Promise<ITodo> {
+		newTodoData: DBTodo
+	): Promise<DBTodo> {
 		const id = stringifyId(newTodoData._id);
 
 		const toBeUpdatedTodo = this.todos.get(id);
@@ -162,6 +166,6 @@ class UserSchemaMethods implements UserInstanceMethods {
 
 UserSchema.loadClass(UserSchemaMethods);
 
-const User = model<IUser, UserModel>("User", UserSchema);
+const User = model<DBUser, UserModel>("User", UserSchema);
 
 export default User;

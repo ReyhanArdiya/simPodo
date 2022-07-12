@@ -1,11 +1,20 @@
 import { Schema, Types } from "mongoose";
-import type Todo from "../base/todo";
+import Todo from "../base/todo";
 
-export interface ITodo extends Omit<Todo, "_id" > {
-	readonly _id: Types.ObjectId;
+export class DBTodo extends Todo {
+	constructor(
+		title: Todo["title"],
+		details: Todo["details"],
+		timeStart: Todo["timeStart"],
+		completed: Todo["completed"] = false,
+		public tagId: string = "",
+		public _id: Types.ObjectId = new Types.ObjectId()
+	) {
+		super(title, details, timeStart, completed);
+	}
 }
 
-const TodoSchema = new Schema<ITodo>({
+const TodoSchema = new Schema<DBTodo>({
 	title : {
 		type     : String,
 		required : true
