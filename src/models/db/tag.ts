@@ -14,11 +14,13 @@ export class DBTag extends Tag {
 const TagSchema = new Schema<DBTag>({
 	color : {
 		type     : String,
-		required : true
+		required : true,
+		trim     : true
 	},
 	name : {
 		type     : String,
-		required : true
+		required : true,
+		trim     : true
 	},
 }, { strict : "throw" });
 

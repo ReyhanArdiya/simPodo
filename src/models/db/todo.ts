@@ -17,7 +17,8 @@ export class DBTodo extends Todo {
 const TodoSchema = new Schema<DBTodo>({
 	title : {
 		type     : String,
-		required : true
+		required : true,
+		trim     : true
 	},
 	completed : {
 		type    : Boolean,
@@ -25,11 +26,13 @@ const TodoSchema = new Schema<DBTodo>({
 	},
 	tagId : {
 		type     : String,
-		required : true
+		required : true,
+		trim     : true
 	},
 	details : {
 		type     : String,
-		required : true
+		required : true,
+		trim     : true
 	},
 	timeStart : {
 		type     : Date,

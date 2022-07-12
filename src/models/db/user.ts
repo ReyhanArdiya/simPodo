@@ -32,7 +32,7 @@ const UserSchema = new Schema<DBUser, UserModel, UserInstanceMethods>(
 	{
 		username : {
 			type     : String,
-			required : true
+			trim     : true,
 		},
 		tags : {
 			default : {},
