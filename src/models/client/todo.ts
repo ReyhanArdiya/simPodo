@@ -1,14 +1,16 @@
+import type { Dayjs } from "dayjs";
 import Todo from "../base/todo";
 
-export default abstract class ClientTodo extends Todo {
+export default class ClientTodo extends Todo {
 	constructor(
 		title: Todo["title"],
 		details: Todo["details"],
-		timeStart: Todo["timeStart"],
+		public timeStart: Dayjs,
 		completed: Todo["completed"] = false,
 		public tagId: string = "",
 		public _id = ""
 	) {
-		super(title, details, timeStart, completed);
+		super(title, details, completed);
+		this.timeStart = timeStart;
 	}
 }

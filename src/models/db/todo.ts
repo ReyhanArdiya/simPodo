@@ -5,12 +5,12 @@ export class DBTodo extends Todo {
 	constructor(
 		title: Todo["title"],
 		details: Todo["details"],
-		timeStart: Todo["timeStart"],
+		public timeStart: Date,
 		completed: Todo["completed"] = false,
 		public tagId: string = "",
 		public _id: Types.ObjectId = new Types.ObjectId()
 	) {
-		super(title, details, timeStart, completed);
+		super(title, details, completed);
 	}
 }
 
