@@ -43,6 +43,27 @@ describe("User document", () => {
 
 		expect(await User.findById(deletedUser?._id)).toBeNull();
 	});
+
+	it("throws when trying to save non-unique username", async () => {
+		const nonUnique = {
+			username      : "nonunique",
+			authProviders : {
+				firebase : {
+					local : {
+						uid   : "meowmeowmeow",
+						email : "meow@gmail.com"
+					}
+				}
+			}
+		};
+
+		const u1 = new User({ ...nonUnique });
+
+		const u2 = new User({ ...nonUnique });
+
+		await u1.save();
+		await expect(u2.save()).rejects.toBeInstanceOf(Error);
+	});
 });
 
 describe("tags path manipulation", () => {

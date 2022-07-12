@@ -2,13 +2,13 @@ import { HydratedDocument, Model, model, Schema, Types } from "mongoose";
 import replaceO1 from "../../utils/replaceO1";
 import type Tag from "../base/tag";
 import type Todo from "../base/todo";
-import CUser from "../base/user";
+import IUser from "../base/user";
 import NoTagFoundError from "../errors/no-tag-found-error";
 import NoTodoFoundError from "../errors/no-todo-found-error";
 import TagSchema, { DBTag } from "./tag";
 import TodoSchema, { DBTodo } from "./todo";
 
-export class DBUser extends CUser {
+export class DBUser extends IUser {
 	public tags: Types.Map<DBTag> = new Types.Map();
 	public todos: Types.Map<DBTodo> = new Types.Map();
 	public _id: Types.ObjectId = new Types.ObjectId();
@@ -32,7 +32,9 @@ const UserSchema = new Schema<DBUser, UserModel, UserInstanceMethods>(
 	{
 		username : {
 			type     : String,
+			required : true,
 			trim     : true,
+			unique   : true,
 		},
 		tags : {
 			default : {},
