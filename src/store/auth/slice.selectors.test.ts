@@ -1,4 +1,4 @@
-import User from "../../models/user";
+import User from "../../models/base/user";
 import mockRootState from "../../tests/mock-rootstate";
 import { authSliceSelectors } from "./slice";
 

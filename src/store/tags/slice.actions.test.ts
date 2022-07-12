@@ -1,5 +1,5 @@
 import NoTagFoundError from "../../models/errors/no-tag-found-error";
-import Tag from "../../models/tag";
+import Tag from "../../models/base/tag";
 import tagsSlice, { TagsSliceState } from "./slice";
 
 const { actions, reducer } = tagsSlice;

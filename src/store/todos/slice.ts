@@ -3,8 +3,8 @@ import dayjs, { Dayjs } from "dayjs";
 import { HYDRATE } from "next-redux-wrapper";
 import type { RootState } from "..";
 import NoTodoFoundError from "../../models/errors/no-todo-found-error";
-import type Tag from "../../models/tag";
-import type Todo from "../../models/todo";
+import type Tag from "../../models/base/tag";
+import type Todo from "../../models/base/todo";
 import replaceO1Proxies from "../../utils/replaceO1-proxies";
 
 export interface IStoreTodo extends Omit<Todo, "timeStart"> {

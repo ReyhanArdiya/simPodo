@@ -2,7 +2,7 @@ import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "..";
 import UserAlreadyLoggedInError from "../../models/errors/user-already-logged-in-error";
 import UserNotLoggedInError from "../../models/errors/user-not-logged-in-error";
-import type User from "../../models/user";
+import type User from "../../models/base/user";
 import replaceO1Proxies from "../../utils/replaceO1-proxies";
 
 type StoreUser = Omit<User, "tags" | "todos">;

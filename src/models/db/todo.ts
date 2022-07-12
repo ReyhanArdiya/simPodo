@@ -1,5 +1,5 @@
 import { Schema, Types } from "mongoose";
-import type Todo from "../todo";
+import type Todo from "../base/todo";
 
 export interface ITodo extends Omit<Todo, "_id" > {
 	readonly _id: Types.ObjectId;

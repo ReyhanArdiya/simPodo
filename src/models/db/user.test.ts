@@ -1,8 +1,8 @@
 import mockMongoDB from "../../tests/mock-mongoDB";
 import NoTodoFoundError from "../errors/no-todo-found-error";
 import NoTagFoundError from "../errors/no-tag-found-error";
-import Tag from "../tag";
-import Todo from "../todo";
+import Tag from "../base/tag";
+import Todo from "../base/todo";
 import User, { UserDoc } from "./user";
 
 beforeAll(async () => await mockMongoDB.setUp());

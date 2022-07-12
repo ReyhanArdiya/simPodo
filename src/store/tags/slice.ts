@@ -1,7 +1,7 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "..";
 import NoTagFoundError from "../../models/errors/no-tag-found-error";
-import type Tag from "../../models/tag";
+import type Tag from "../../models/base/tag";
 import replaceO1Proxies from "../../utils/replaceO1-proxies";
 
 export type ITagsHash = {

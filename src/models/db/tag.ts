@@ -1,5 +1,5 @@
 import { Schema, Types } from "mongoose";
-import type Tag from "../tag";
+import type Tag from "../base/tag";
 
 export interface ITag extends Omit<Tag, "_id"> {
 	readonly _id: Types.ObjectId;

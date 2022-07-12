@@ -2,9 +2,9 @@ import { HydratedDocument, Model, model, Schema, Types } from "mongoose";
 import replaceO1 from "../../utils/replaceO1";
 import NoTagFoundError from "../errors/no-tag-found-error";
 import NoTodoFoundError from "../errors/no-todo-found-error";
-import type Tag from "../tag";
-import type Todo from "../todo";
-import type CUser from "../user";
+import type Tag from "../base/tag";
+import type Todo from "../base/todo";
+import type CUser from "../base/user";
 import TagSchema, { ITag } from "./tag";
 import TodoSchema, { ITodo } from "./todo";
 
