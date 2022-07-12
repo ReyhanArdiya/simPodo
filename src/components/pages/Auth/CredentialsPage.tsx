@@ -138,7 +138,7 @@ const CredentialsPage = ({ onSubmit, login = true }: CredentialsPageProps) => {
 
 	return (
 		<AuthPageLayout id="credentials" title="simPodo">
-			<Form name="credentials">
+			<Form name="credentials" onSubmit={e => e.preventDefault()}>
 				<SemanticInput
 					dark={dark}
 					errorMsg={emailErrMsg}

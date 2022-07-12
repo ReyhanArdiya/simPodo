@@ -79,7 +79,7 @@ const UsernamePage = ({ onSubmit }: UsernamePageProps) => {
 
 	return (
 		<AuthPageLayout id="username" title="Enter a Username">
-			<Form name="username">
+			<Form name="username" onSubmit={e => e.preventDefault()}>
 				<SemanticInput
 					dark={dark}
 					// errorMsg={errMsg}
