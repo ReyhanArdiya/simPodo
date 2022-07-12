@@ -1,14 +1,24 @@
 import { Schema, Types } from "mongoose";
-import type Todo from "../todo";
+import Todo from "../base/todo";
 
-export interface ITodo extends Omit<Todo, "_id" > {
-	readonly _id: Types.ObjectId;
+export class DBTodo extends Todo {
+	constructor(
+		title: Todo["title"],
+		details: Todo["details"],
+		public timeStart: Date,
+		completed: Todo["completed"] = false,
+		public tagId: string = "",
+		public _id: Types.ObjectId = new Types.ObjectId()
+	) {
+		super(title, details, completed);
+	}
 }
 
-const TodoSchema = new Schema<ITodo>({
+const TodoSchema = new Schema<DBTodo>({
 	title : {
 		type     : String,
-		required : true
+		required : true,
+		trim     : true
 	},
 	completed : {
 		type    : Boolean,
@@ -16,11 +26,13 @@ const TodoSchema = new Schema<ITodo>({
 	},
 	tagId : {
 		type     : String,
-		required : true
+		required : true,
+		trim     : true
 	},
 	details : {
 		type     : String,
-		required : true
+		required : true,
+		trim     : true
 	},
 	timeStart : {
 		type     : Date,

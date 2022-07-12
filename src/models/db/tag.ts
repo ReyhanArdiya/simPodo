@@ -1,18 +1,26 @@
 import { Schema, Types } from "mongoose";
-import type Tag from "../tag";
+import Tag from "../base/tag";
 
-export interface ITag extends Omit<Tag, "_id"> {
-	readonly _id: Types.ObjectId;
+export class DBTag extends Tag {
+	constructor(
+		name: Tag["name"],
+		color: Tag["color"],
+		public _id: Types.ObjectId = new Types.ObjectId()
+	) {
+		super(name, color);
+	}
 }
 
-const TagSchema = new Schema<ITag>({
+const TagSchema = new Schema<DBTag>({
 	color : {
 		type     : String,
-		required : true
+		required : true,
+		trim     : true
 	},
 	name : {
 		type     : String,
-		required : true
+		required : true,
+		trim     : true
 	},
 }, { strict : "throw" });
 

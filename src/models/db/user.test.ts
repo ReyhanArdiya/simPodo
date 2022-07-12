@@ -1,8 +1,8 @@
 import mockMongoDB from "../../tests/mock-mongoDB";
 import NoTodoFoundError from "../errors/no-todo-found-error";
 import NoTagFoundError from "../errors/no-tag-found-error";
-import Tag from "../tag";
-import Todo from "../todo";
+import { DBTag } from "./tag";
+import { DBTodo } from "./todo";
 import User, { UserDoc } from "./user";
 
 beforeAll(async () => await mockMongoDB.setUp());
@@ -15,8 +15,15 @@ let user: UserDoc;
 
 beforeEach(() => {
 	user = new User({
-		email    : "email",
-		username : "username"
+		username      : "username",
+		authProviders : {
+			firebase : {
+				local : {
+					uid   : "meowmeowmeow",
+					email : "meow@gmail.com"
+				}
+			}
+		}
 	});
 });
 
@@ -36,13 +43,34 @@ describe("User document", () => {
 
 		expect(await User.findById(deletedUser?._id)).toBeNull();
 	});
+
+	it("throws when trying to save non-unique username", async () => {
+		const nonUnique = {
+			username      : "nonunique",
+			authProviders : {
+				firebase : {
+					local : {
+						uid   : "meowmeowmeow",
+						email : "meow@gmail.com"
+					}
+				}
+			}
+		};
+
+		const u1 = new User({ ...nonUnique });
+
+		const u2 = new User({ ...nonUnique });
+
+		await u1.save();
+		await expect(u2.save()).rejects.toBeInstanceOf(Error);
+	});
 });
 
 describe("tags path manipulation", () => {
-	let newTag: Tag;
+	let newTag: DBTag;
 
 	beforeEach(async () => {
-		newTag = new Tag("tag1", "salmon", "_id");
+		newTag = new DBTag("tag1", "salmon");
 
 		await user.save();
 	});
@@ -93,7 +121,7 @@ describe("tags path manipulation", () => {
 
 	it("throws a NoTagFoundError when updating a nonexistent tag", async () => {
 		await expect(
-			user.updateTag(new Tag("", "", "helwlofjeiowf"))
+			user.updateTag(new DBTag("", ""))
 		).rejects.toBeInstanceOf(NoTagFoundError);
 	});
 
@@ -111,10 +139,10 @@ describe("tags path manipulation", () => {
 
 		expect(userWTag?.tags.has(oldTag._id.toString())).toBe(true);
 
-		const newTagData = new Tag(
+		const newTagData = new DBTag(
 			"updatedTag1",
 			oldTag.color,
-			oldTag._id.toString()
+			oldTag._id
 		);
 		const updatedTag = await user.updateTag(newTagData);
 		const userWUTag = await User.findById(user._id);
@@ -131,16 +159,15 @@ describe("tags path manipulation", () => {
 });
 
 describe("todo path manipulation", () => {
-	let newTodo: Todo;
+	let newTodo: DBTodo;
 
 	beforeEach(async () => {
-		newTodo = new Todo(
+		newTodo = new DBTodo(
 			"todo1",
 			"details",
 			new Date(),
 			false,
 			"tagId",
-			"_id"
 		);
 
 		await user.save();
@@ -193,13 +220,12 @@ describe("todo path manipulation", () => {
 	it("throws a NoTodoFoundError when updating a nonexistent tag", async () => {
 		await expect(
 			user.updateTodo(
-				new Todo(
+				new DBTodo(
 					"",
 					"details",
 					new Date(),
 					false,
 					"tagId",
-					"helwlofjeiowf"
 				)
 			)
 		).rejects.toBeInstanceOf(NoTodoFoundError);
@@ -219,13 +245,13 @@ describe("todo path manipulation", () => {
 
 		expect(userWTodo?.todos.has(oldTodo._id.toString())).toBe(true);
 
-		const newTodoData = new Todo(
+		const newTodoData = new DBTodo(
 			"updatedTodo1",
 			"details",
 			new Date(),
 			oldTodo.completed,
 			"tagId",
-			oldTodo._id.toString()
+			oldTodo._id
 		);
 		const updatedTodo = await user.updateTodo(newTodoData);
 		const userWUTodo = await User.findById(user._id);
