@@ -1,30 +1,44 @@
+import ClientUser from "../../models/client/user";
 import UserAlreadyLoggedInError from "../../models/errors/user-already-logged-in-error";
 import UserNotLoggedInError from "../../models/errors/user-not-logged-in-error";
-import User from "../../models/base/user";
+
 import authSlice, { AuthSliceState } from "./slice";
 
 const { actions, reducer } = authSlice;
-
 let loggedInState: AuthSliceState;
-let mockUser: User;
+let mockUser: ClientUser;
 beforeEach(() => {
-	mockUser = new User(
+	mockUser = new ClientUser(
 		"username",
-		"email",
-		"token",
-		new Map(),
-		new Map(),
-		"_id"
+		{
+			firebase : {
+				local : {
+					operationType : "signIn",
+					providerId    : "2",
+					// @ts-expect-error: ain't nobody got time for dat
+					user          : {
+						uid : "uid"
+					}
+				}
+			}
+		}
 	);
 
 	loggedInState = {
-		user : new User(
+		user : new ClientUser(
 			"username",
-			"email",
-			"token",
-			new Map(),
-			new Map(),
-			"_id"
+			{
+				firebase : {
+					local : {
+						operationType : "signIn",
+						providerId    : "2",
+						// @ts-expect-error: ain't nobody got time for dat
+						user          : {
+							uid : "uid"
+						}
+					}
+				}
+			}
 		)
 	};
 });
@@ -36,7 +50,7 @@ describe("authSlice actions for user's login state", () => {
 			actions.userLoggedIn(mockUser)
 		);
 
-		expect(newState.user).toBeInstanceOf(User);
+		expect(newState.user).toBeInstanceOf(ClientUser);
 	});
 	it("throws an error when logging in a logged in user", () => {
 		expect(() => reducer(
@@ -56,42 +70,33 @@ describe("authSlice actions for user's login state", () => {
 
 		expect(newState.user).toBeUndefined();
 	});
-
-	it("throws an error when refreshing a not logged in user's token", () => {
-		const errFn = () => reducer({ user : undefined }, actions.tokenRefreshed("newToken"));
-
-		expect(errFn).toThrow(UserNotLoggedInError);
-	});
-	it("refreshes the token WHEN the user is logged in", () => {
-		const newToken = "newToken";
-
-		const { user } = reducer(
-			loggedInState,
-			actions.tokenRefreshed(newToken)
-		);
-
-		expect(user?.token).toBe(newToken);
-	});
 });
 
 describe("authSlice actions for user's data", () => {
 	it("throws an error when updating a not logged in user", () => {
 		const errorFn = () => reducer(
 			{ user : undefined },
-			actions.userDataUpdated({} as User)
+			actions.userDataUpdated({} as ClientUser)
 		);
 
 		expect(errorFn).toThrow(UserNotLoggedInError);
 	});
 
 	it("updates the user data selectively", () => {
-		const user = new User(
+		const user = new ClientUser(
 			"username",
-			"email",
-			"token",
-			new Map(),
-			new Map(),
-			"_id"
+			{
+				firebase : {
+					local : {
+						operationType : "signIn",
+						providerId    : "2",
+						// @ts-expect-error: ain't nobody got time for dat
+						user          : {
+							uid : "uid"
+						}
+					}
+				}
+			}
 		);
 
 		const loggedInState = reducer(
@@ -99,7 +104,7 @@ describe("authSlice actions for user's data", () => {
 			actions.userLoggedIn(user)
 		);
 
-		const newUserData: User = {
+		const newUserData: ClientUser = {
 			...user,
 			username : "updatedUsername"
 		};
