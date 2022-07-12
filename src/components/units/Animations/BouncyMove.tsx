@@ -4,7 +4,7 @@ import type { CSSTransitionProps } from "react-transition-group/CSSTransition";
 import baseTransitionMs from "../../../styles/global/base-transition-ms";
 import type { StartAnimation } from "./start-animation.interface";
 
-type BouncyMoveStartAnimation = StartAnimation
+type BouncyMoveStartAnimation = StartAnimation;
 
 interface BouncyMoveProps {
 	CSSTransitionOpts?: CSSTransitionProps;

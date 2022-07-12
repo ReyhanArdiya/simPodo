@@ -63,7 +63,7 @@ export const List = ({ quant = 31, ...args }) => {
 	return <DateCards
 		{...args}
 		dates={dates}
-	       />;
+	/>;
 };
 
 export default meta;

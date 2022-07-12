@@ -53,12 +53,12 @@ export const TextPopups: StoryFn<Args> = ({
 		return <TextPopupSm
 			{...args}
 			text={text}
-		       />;
+		/>;
 	} else {
 		return <TextPopupLg
 			{...args}
 			text={text}
-		       />;
+		/>;
 	}
 };
 

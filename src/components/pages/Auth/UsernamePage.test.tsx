@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, act } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import "../../../tests/mock-matchMedia";
 import MockStore from "../../../tests/mock-store";
 import MockTheme from "../../../tests/MockTheme";
