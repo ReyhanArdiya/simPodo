@@ -1,20 +1,23 @@
 import type Tag from "./tag";
 import type Todo from "./todo";
+import type { UserCredential } from "firebase/auth";
+import type { DualId } from "./base.interfaces";
 
-export default class User {
+interface AuthProviders {
+	[authProvider: string]: unknown;
+
+	firebase: {
+		local: UserCredential;
+	};
+}
+
+export default abstract class User {
+	public abstract readonly _id: DualId;
+	public abstract tags: Map<Tag["_id"], Tag>;
+	public abstract todos: Map<Todo["_id"], Todo>;
+
 	constructor(
 		public username: string,
-		public email: string,
-		public token: string = "",
-		public tags: Map<Tag["_id"], Tag> = new Map(),
-		public todos: Map<Todo["_id"], Todo> = new Map(),
-		public readonly _id: string = "",
-	) {
-		this.username = username;
-		this.email = email;
-		this.token = token;
-		this.tags = tags;
-		this.todos = todos;
-		this._id = _id;
-	}
+		public authProviders: AuthProviders,
+	) {}
 }
