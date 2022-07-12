@@ -2,37 +2,13 @@ import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import dayjs, { Dayjs } from "dayjs";
 import { HYDRATE } from "next-redux-wrapper";
 import type { RootState } from "..";
+import type ClientTag from "../../models/client/tag";
+import type ClientTodo from "../../models/client/todo";
 import NoTodoFoundError from "../../models/errors/no-todo-found-error";
-import type Tag from "../../models/base/tag";
-import type Todo from "../../models/base/todo";
 import replaceO1Proxies from "../../utils/replaceO1-proxies";
 
-export interface IStoreTodo extends Omit<Todo, "timeStart"> {
-	timeStart: Dayjs;
-}
 
-// CMT I can't extend Todo since timeStart must be of different type and bcz off
-// Liskov substituion sumn2 I can't just do that easily, so I need to make a new one.
-export class StoreTodo implements IStoreTodo {
-	constructor(
-		public title: string,
-		public details: string,
-		public timeStart: Dayjs,
-		public completed: boolean = false,
-		public readonly tagId: Tag["_id"],
-		public readonly _id: string = ""
-	) {
-		// Todo.call(this, title, details, timeStart, completed, tagId, _id);
-		this.title = title;
-		this.details = details;
-		this.timeStart = timeStart;
-		this.completed = completed;
-		this.tagId = tagId;
-		this._id = _id;
-	}
-}
-
-export type ITodoHash = { [todoId: IStoreTodo["_id"]]: IStoreTodo | undefined };
+export type ITodoHash = { [todoId: ClientTodo["_id"]]: ClientTodo | undefined };
 
 export interface TodosSliceState {
 	todos: ITodoHash;
@@ -54,12 +30,12 @@ const todosSlice = createSlice({
 	initialState : {} as TodosSliceState,
 	name         : "todos",
 	reducers     : {
-		todoAdded(state, { payload: todo }: PayloadAction<IStoreTodo>) {
+		todoAdded(state, { payload: todo }: PayloadAction<ClientTodo>) {
 			state.todos[todo._id] = todo;
 		},
 		todoCompleted(
 			state,
-			{ payload: _id }: PayloadAction<IStoreTodo["_id"]>
+			{ payload: _id }: PayloadAction<ClientTodo["_id"]>
 		) {
 			const toBeCompletedTodo = state.todos[_id];
 
@@ -67,7 +43,7 @@ const todosSlice = createSlice({
 				toBeCompletedTodo.completed = true;
 			}
 		},
-		todoDeleted(state, { payload: _id }: PayloadAction<IStoreTodo["_id"]>) {
+		todoDeleted(state, { payload: _id }: PayloadAction<ClientTodo["_id"]>) {
 			delete state.todos[_id];
 		},
 		todosReplaced(state, { payload: newTodos }: PayloadAction<ITodoHash>) {
@@ -78,7 +54,7 @@ const todosSlice = createSlice({
 			{
 				payload: newTodoData
 			}: PayloadAction<
-				Partial<Omit<IStoreTodo, "_id">> & Pick<IStoreTodo, "_id">
+				Partial<Omit<ClientTodo, "_id">> & Pick<ClientTodo, "_id">
 			> // CMT Partial here because we can selectively pick which prop to update
 		) {
 			const { _id } = newTodoData;
@@ -105,13 +81,13 @@ export const todoSliceSelectors = {
 		todos => Object.values(todos).filter(t => t!.completed).length
 	),
 	selectTodoById : createSelector(
-		[ (state: RootState, id: IStoreTodo["_id"]) => state.todos.todos[id] ],
+		[ (state: RootState, id: ClientTodo["_id"]) => state.todos.todos[id] ],
 		todo => todo
 	),
 	filterByTagId : createSelector(
 		[
 			(state: RootState) => state.todos.todos,
-			(_state: RootState, tagId: Tag["_id"]) => tagId
+			(_state: RootState, tagId: ClientTag["_id"]) => tagId
 		],
 		(todos, tagId) => Object.values(todos).filter(t => t!.tagId === tagId)
 	),

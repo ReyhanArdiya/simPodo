@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
+import ClientTodo from "../../models/client/todo";
 import NoTodoFoundError from "../../models/errors/no-todo-found-error";
 import todosSlice, {
 	ITodoHash,
-	StoreTodo,
 	todoSliceReducer, todosSliceActions,
 	TodosSliceState
 } from "./slice";
@@ -25,7 +25,7 @@ beforeEach(() => {
 
 describe("todoSlice actions", () => {
 	it("adds a todo", () => {
-		const newTodo = new StoreTodo("todo2", "details", dayjs(), false, "tagId", "todoId2");
+		const newTodo = new ClientTodo("todo2", "details", dayjs(), false, "tagId", "todoId2");
 
 		const newState = todosSlice.reducer(
 			initialState,
@@ -145,7 +145,7 @@ describe("todoSlice actions", () => {
 			}
 		};
 
-		const newTodoData = new StoreTodo("todo1 updated", "details", dayjs(), true, "tagId", todoId);
+		const newTodoData = new ClientTodo("todo1 updated", "details", dayjs(), true, "tagId", todoId);
 
 		const newState = todoSliceReducer(
 			initialState,
