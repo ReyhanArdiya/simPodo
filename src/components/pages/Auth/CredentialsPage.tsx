@@ -1,4 +1,4 @@
-import { FormEventHandler, useState } from "react";
+import { FormEventHandler, MouseEventHandler, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import useInputValidation from "../../../hooks/use-input-validation";
@@ -49,10 +49,15 @@ export interface CredentialsPageProps {
 		password: string,
 		login: CredentialsPageProps["login"]
 	): Promise<void>;
+	onModeClick(login: boolean): void;
 	login?: boolean;
 }
 
-const CredentialsPage = ({ onSubmit, login = true }: CredentialsPageProps) => {
+const CredentialsPage = ({
+	onSubmit,
+	onModeClick,
+	login = true
+}: CredentialsPageProps) => {
 	const dark = useSelector(themeSliceSelectors.selectIsDark);
 
 	const [ mode, setMode ] = useState(login);
@@ -99,6 +104,11 @@ const CredentialsPage = ({ onSubmit, login = true }: CredentialsPageProps) => {
 
 		return false;
 	});
+
+	const modeTogglerHandler: MouseEventHandler = () => {
+		setMode(p => !p);
+		onModeClick(!mode);
+	};
 
 	const onSubmitHandler: FormEventHandler = async () => {
 		setLoading(false);
@@ -161,7 +171,7 @@ const CredentialsPage = ({ onSubmit, login = true }: CredentialsPageProps) => {
 				/>
 				<ModeToggler
 					dark={dark}
-					onClick={() => setMode(p => !p)}
+					onClick={modeTogglerHandler}
 					type="button"
 				>
 					{mode ? "sign up" : "login"}
