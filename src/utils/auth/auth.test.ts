@@ -1,5 +1,11 @@
 import InvalidEmailError from "../../models/errors/invalid-email-error";
-import InvalidPassError, { PassErrors } from "../../models/errors/invalid-pass-error";
+import InvalidPassError, {
+	PassErrors
+} from "../../models/errors/invalid-pass-error";
+import InvalidUsernameError, {
+	UsernameErrors
+} from "../../models/errors/invalid-username-error";
+import validateUsername from "./validate-username";
 import validateEmail from "./validateEmail";
 import validatePass from "./validatePass";
 
@@ -15,10 +21,18 @@ describe("validateEmail", () => {
 	it("throws an InvalidEmailError when it receives an invalid email", () => {
 		expect(() => validateEmail("fjeujfeuie")).toThrow(InvalidEmailError);
 		expect(() => validateEmail("fjeujfeuie@")).toThrow(InvalidEmailError);
-		expect(() => validateEmail("fjeujfeuie@gmail")).toThrow(InvalidEmailError);
-		expect(() => validateEmail("fjeujfeuie@gmail.o")).toThrow(InvalidEmailError);
-		expect(() => validateEmail("fjeujfeuie@gmail.com1")).toThrow(InvalidEmailError);
-		expect(() => validateEmail("fjeujfeuie@com")).toThrow(InvalidEmailError);
+		expect(() => validateEmail("fjeujfeuie@gmail")).toThrow(
+			InvalidEmailError
+		);
+		expect(() => validateEmail("fjeujfeuie@gmail.o")).toThrow(
+			InvalidEmailError
+		);
+		expect(() => validateEmail("fjeujfeuie@gmail.com1")).toThrow(
+			InvalidEmailError
+		);
+		expect(() => validateEmail("fjeujfeuie@com")).toThrow(
+			InvalidEmailError
+		);
 	});
 });
 
@@ -42,11 +56,17 @@ describe("validatePass", () => {
 		expect(validatePass("amajingdwEdjwi1")).toBe(true);
 	});
 	it("throws when pass is not alphanumeric", () => {
-		const notAlphanumericError = new InvalidPassError(PassErrors.NOT_ALPHANUMERIC);
+		const notAlphanumericError = new InvalidPassError(
+			PassErrors.NOT_ALPHANUMERIC
+		);
 
 		expect(() => validatePass("12345678910")).toThrow(notAlphanumericError);
-		expect(() => validatePass("thisisWRONGtoo")).toThrow(notAlphanumericError);
-		expect(() => validatePass("???whatareyouTALKINGABOUT")).toThrow(notAlphanumericError);
+		expect(() => validatePass("thisisWRONGtoo")).toThrow(
+			notAlphanumericError
+		);
+		expect(() => validatePass("???whatareyouTALKINGABOUT")).toThrow(
+			notAlphanumericError
+		);
 	});
 
 	it("passes when pass has at least 1 capital letter", () => {
@@ -58,13 +78,51 @@ describe("validatePass", () => {
 		const noCapitalError = new InvalidPassError(PassErrors.NO_CAPITAL);
 
 		expect(() => validatePass("nopenopenope3")).toThrow(noCapitalError);
-		expect(() => validatePass("shortsuperdupershor1t")).toThrow(noCapitalError);
-		expect(() => validatePass("stackhellowrodlsmeo1")).toThrow(noCapitalError);
+		expect(() => validatePass("shortsuperdupershor1t")).toThrow(
+			noCapitalError
+		);
+		expect(() => validatePass("stackhellowrodlsmeo1")).toThrow(
+			noCapitalError
+		);
 	});
 
 	it("handles special characters", () => {
 		expect(validatePass("IwillbeBACKfj3ei!fejf")).toBe(true);
 		expect(validatePass("Thisisright12233#442")).toBe(true);
 		expect(validatePass("harHAR12234@42")).toBe(true);
+	});
+});
+
+describe("validateUSername", () => {
+	it("passes with correct username", () => {
+		expect(validateUsername("username")).toBe(true);
+		expect(validateUsername("elys")).toBe(true);
+		expect(validateUsername("hellowrold")).toBe(true);
+	});
+
+	it("throws when username is empty", () => {
+		const emptyUsernameError = new InvalidUsernameError(
+			UsernameErrors.EMPTY
+		);
+
+		expect(() => validateUsername("")).toThrow(emptyUsernameError);
+		expect(() => validateUsername("")).toThrow(emptyUsernameError);
+		expect(() => validateUsername("")).toThrow(emptyUsernameError);
+	});
+
+	it("throws when username is taken based on errorCode from mongo", () => {
+		const takenUsernameError = new InvalidUsernameError(
+			UsernameErrors.TAKEN
+		);
+
+		expect(() => validateUsername("dup", UsernameErrors.TAKEN)).toThrow(
+			takenUsernameError
+		);
+		expect(() => validateUsername("dup", UsernameErrors.TAKEN)).toThrow(
+			takenUsernameError
+		);
+		expect(() => validateUsername("dup", UsernameErrors.TAKEN)).toThrow(
+			takenUsernameError
+		);
 	});
 });
