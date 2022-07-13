@@ -6,8 +6,8 @@ import InvalidUsernameError, {
 	UsernameErrors
 } from "../../models/errors/invalid-username-error";
 import validateUsername from "./validate-username";
-import validateEmail from "./validateEmail";
-import validatePass from "./validatePass";
+import validateEmail from "./validate-email";
+import validatePass from "./validate-pass";
 
 describe("validateEmail", () => {
 	it("validates the correct email", () => {
