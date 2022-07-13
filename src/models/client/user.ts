@@ -1,4 +1,4 @@
-import User from "../base/user";
+import User, { AuthProviders } from "../base/user";
 import type ClientTag from "./tag";
 import type ClientTodo from "./todo";
 
@@ -9,8 +9,8 @@ export default class ClientUser extends User {
 
 	constructor(
 		public username: string,
-		authProviders: User["authProviders"]
+		public authProviders: AuthProviders
 	) {
-		super(authProviders);
+		super();
 	}
 }

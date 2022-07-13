@@ -1,4 +1,5 @@
-import { HydratedDocument, Model, model, Schema, Types } from "mongoose";
+import type { UserCredential } from "firebase/auth";
+import mongoose, { HydratedDocument, Model, model, Schema, Types } from "mongoose";
 import replaceO1 from "../../utils/replaceO1";
 import type Tag from "../base/tag";
 import type Todo from "../base/todo";
@@ -13,6 +14,11 @@ export class DBUser extends IUser {
 	public todos: Types.Map<DBTodo> = new Types.Map();
 	public _id: Types.ObjectId = new Types.ObjectId();
 	public username?: string;
+	constructor(
+		public authProviders: { firebase: { local: { user: Pick<UserCredential["user"], "uid"> } } }
+	) {
+		super();
+	}
 }
 
 export interface UserInstanceMethods {
@@ -170,6 +176,6 @@ class UserSchemaMethods implements UserInstanceMethods {
 
 UserSchema.loadClass(UserSchemaMethods);
 
-const User = model<DBUser, UserModel>("User", UserSchema);
+const User = mongoose.models.User || model<DBUser, UserModel>("User", UserSchema);
 
 export default User;

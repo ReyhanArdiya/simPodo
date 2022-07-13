@@ -3,7 +3,7 @@ import type Todo from "./todo";
 import type { UserCredential } from "firebase/auth";
 import type { DualId } from "./base.interfaces";
 
-interface AuthProviders {
+export interface AuthProviders {
 	[authProvider: string]: unknown;
 
 	firebase: {
@@ -16,8 +16,5 @@ export default abstract class User {
 	public abstract tags: Map<Tag["_id"], Tag>;
 	public abstract todos: Map<Todo["_id"], Todo>;
 	public abstract username?: string;
-
-	constructor(
-		public authProviders: AuthProviders,
-	) {}
+	public abstract authProviders: AuthProviders | {firebase: {local: {user: Pick<UserCredential["user"], "uid">}}};
 }
