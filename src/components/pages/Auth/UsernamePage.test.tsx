@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import "../../../tests/mock-matchMedia";
+import "../../../utils/tests/mock-matchMedia";
 import MockStore from "../../../tests/mock-store";
 import MockTheme from "../../../tests/MockTheme";
 import UsernamePage from "./UsernamePage";

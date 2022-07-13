@@ -1,5 +1,5 @@
 import ClientUser from "../../models/client/user";
-import mockRootState from "../../tests/mock-rootstate";
+import mockRootState from "../../utils/tests/mock-rootstate";
 import { authSliceSelectors } from "./slice";
 
 const initialState = mockRootState;

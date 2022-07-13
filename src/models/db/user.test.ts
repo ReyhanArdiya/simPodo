@@ -1,4 +1,4 @@
-import mockMongoDB from "../../tests/mock-mongoDB";
+import mockMongoDB from "../../utils/tests/mock-mongoDB";
 import NoTodoFoundError from "../errors/no-todo-found-error";
 import NoTagFoundError from "../errors/no-tag-found-error";
 import { DBTag } from "./tag";

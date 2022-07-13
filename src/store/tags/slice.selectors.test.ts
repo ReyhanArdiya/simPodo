@@ -1,4 +1,4 @@
-import mockRootState from "../../tests/mock-rootstate";
+import mockRootState from "../../utils/tests/mock-rootstate";
 import { tagsSliceSelectors } from "./slice";
 
 const initialId = "1";

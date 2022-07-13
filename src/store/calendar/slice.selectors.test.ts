@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import mockRootState from "../../tests/mock-rootstate";
+import mockRootState from "../../utils/tests/mock-rootstate";
 import { calendarSliceSelectors, type CalendarSliceState } from "./slice";
 
 const initialState = mockRootState;
