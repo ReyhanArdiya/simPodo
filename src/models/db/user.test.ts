@@ -64,6 +64,26 @@ describe("User document", () => {
 		await u1.save();
 		await expect(u2.save()).rejects.toBeInstanceOf(Error);
 	});
+
+	it("handles multiple undefined username field", async () => {
+		const nullishUser = {
+			authProviders : {
+				firebase : {
+					local : {
+						uid   : "meowmeowmeow",
+						email : "meow@gmail.com"
+					}
+				}
+			}
+		};
+
+		const u1 = new User({ ...nullishUser });
+
+		const u2 = new User({ ...nullishUser });
+
+		await u1.save();
+		await expect(u2.save()).resolves.toBeInstanceOf(User);
+	});
 });
 
 describe("tags path manipulation", () => {
