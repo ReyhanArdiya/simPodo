@@ -12,6 +12,7 @@ export class DBUser extends IUser {
 	public tags: Types.Map<DBTag> = new Types.Map();
 	public todos: Types.Map<DBTodo> = new Types.Map();
 	public _id: Types.ObjectId = new Types.ObjectId();
+	public username?: string;
 }
 
 export interface UserInstanceMethods {

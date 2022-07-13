@@ -6,4 +6,11 @@ export default class ClientUser extends User {
 	public _id = "";
 	public tags: Map<ClientTag["_id"], ClientTag> = new Map();
 	public todos: Map<ClientTodo["_id"], ClientTodo> = new Map();
+
+	constructor(
+		public username: string,
+		authProviders: User["authProviders"]
+	) {
+		super(authProviders);
+	}
 }
