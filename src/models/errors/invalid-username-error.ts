@@ -20,5 +20,6 @@ export default class InvalidUsernameError extends Error {
 		}
 
 		super(errMsg);
+		this.name = "InvalidUsernameError";
 	}
 }

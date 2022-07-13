@@ -28,5 +28,6 @@ export default class InvalidPassError extends Error {
 		}
 
 		super(errMsg);
+		this.name = "InvalidPassError";
 	}
 }
